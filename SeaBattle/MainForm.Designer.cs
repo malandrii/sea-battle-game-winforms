@@ -388,6 +388,7 @@
             this.checkBoxEnemyRandomMoves.TabIndex = 20;
             this.checkBoxEnemyRandomMoves.Text = "Random moves";
             this.checkBoxEnemyRandomMoves.UseVisualStyleBackColor = true;
+            this.checkBoxEnemyRandomMoves.CheckedChanged += new System.EventHandler(this.CheckBoxEnemyRandomMoves_CheckedChanged);
             // 
             // buttonArrangeShipsRandomly
             // 

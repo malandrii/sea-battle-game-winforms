@@ -161,9 +161,11 @@ namespace SeaBattle
         {
             int progressBarIncrement = 10;
             if (progressBar.Value < s_progressBarMaximumValue - progressBarIncrement)
+            {
                 progressBar.Value += progressBarIncrement;
-            else 
-            { 
+            }
+            else
+            {
                 ShipsArranged();
                 return;
             }
@@ -201,12 +203,12 @@ namespace SeaBattle
 
         private void PlayerButton_MouseEnter(object sender, EventArgs e)
         {
-            SetShipVisibility((ShipButton)sender, true);
+            SetShipVisibility((ShipButton)sender, toAppear: true);
         }
 
         private void PlayerButton_MouseLeave(object sender, EventArgs e)
         {
-            SetShipVisibility((ShipButton)sender, false);
+            SetShipVisibility((ShipButton)sender, toAppear: false);
         }
 
         private void SetShipVisibility(ShipButton button, bool toAppear)
@@ -296,34 +298,19 @@ namespace SeaBattle
 
         private void CheckBoxMarkEnemyMoves_CheckedChanged(object sender, EventArgs e)
         {
-            SetCheckboxesValues(checkBoxMarkEnemyMoves, 
-                MarkComputerMovesToolStripMenuItem, forCheckbox: true);
+            _enemy.MarkMoves = checkBoxMarkEnemyMoves.Checked;
+            MarkComputerMovesToolStripMenuItem.Checked = checkBoxMarkEnemyMoves.Checked;
         }
 
-        private void SetCheckboxesValues(CheckBox checkBox, 
-            ToolStripMenuItem toolStripMenuItem, bool forCheckbox)
+        private void CheckBoxEnemyRandomMoves_CheckedChanged(object sender, EventArgs e)
         {
-            bool mark = toolStripMenuItem == MarkComputerMovesToolStripMenuItem;
-            if (mark) _enemy.MarkMoves = checkBox.Checked;
-            else
-            {
-                _enemy.RandomMoves = checkBox.Checked;
-                _enemy.SetEnemyAI();
-            }
-            toolStripMenuItem.Checked = !toolStripMenuItem.Checked;
-            if (forCheckbox) toolStripMenuItem.Checked = checkBox.Checked;
-            else checkBox.Checked = toolStripMenuItem.Checked;
+            _enemy.RandomMoves = checkBoxEnemyRandomMoves.Checked;
         }
 
         private void MarkComputerMovesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RefreshShipMarkings();
-        }
-
-        private void RefreshShipMarkings()
-        {
-            SetCheckboxesValues(checkBoxMarkEnemyMoves, 
-                MarkComputerMovesToolStripMenuItem, forCheckbox: false);
+            _enemy.MarkMoves = MarkComputerMovesToolStripMenuItem.Checked;
+            checkBoxMarkEnemyMoves.Checked = MarkComputerMovesToolStripMenuItem.Checked;
             foreach (ShipButton button in _user.Field)
                 button.RefreshMarking(MarkComputerMovesToolStripMenuItem.Checked);
         }

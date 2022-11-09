@@ -82,9 +82,9 @@ namespace SeaBattle
             {
                 if (!_shipHorizontalitySet) SetHorizontality(x, y);
                 _enemy.ShiftCoordinates(_shipIsHorizontal, ChangeGuessingAttackSide, ref x, ref y);
-                bool sideNeededToChange = !_enemyFieldController.AreCoordinatesInsideField(x, y)
+                bool needSideToChange = !_enemyFieldController.AreCoordinatesInsideField(x, y)
                     || ChangeDefinedAttackSide || _userField[x, y].IsShot;
-                if (sideNeededToChange)
+                if (needSideToChange)
                 {
                     ChangeTurningToOtherSide(ref x, ref y);
                     _enemy.ShiftCoordinates(_shipIsHorizontal, ChangeGuessingAttackSide, ref x, ref y);
@@ -103,8 +103,8 @@ namespace SeaBattle
         private void SetHorizontality(int x, int y)
         {
             _shipIsHorizontal = _userField[x, y].X != _foundShipButton.X;
-            if (_shipIsHorizontal) ChangeGuessingAttackSide = _foundShipButton.X < x;
-            else ChangeGuessingAttackSide = _foundShipButton.Y < y;
+            ChangeGuessingAttackSide = _shipIsHorizontal ? 
+                _foundShipButton.X < x : _foundShipButton.Y < y;
             _shipHorizontalitySet = true;
         }
 

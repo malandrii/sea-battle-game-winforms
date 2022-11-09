@@ -58,10 +58,9 @@ namespace SeaBattle
                     for (int nextShipPart = specificShipPart + 1;
                         nextShipPart < coordinateCopies.Count; nextShipPart++)
                     {
-                        sameCoordinates = coordinateCopies[specificShipPart].X ==
-                        coordinateCopies[nextShipPart].X
-                        && coordinateCopies[specificShipPart].Y ==
-                        coordinateCopies[nextShipPart].Y;
+                        sameCoordinates = 
+                            coordinateCopies[specificShipPart].X == coordinateCopies[nextShipPart].X
+                         && coordinateCopies[specificShipPart].Y == coordinateCopies[nextShipPart].Y;
                         if (sameCoordinates) return;
                     }
                 }

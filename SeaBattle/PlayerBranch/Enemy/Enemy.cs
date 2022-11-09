@@ -23,11 +23,6 @@ namespace SeaBattle
             _fieldSize = _fieldController.FieldSize;
             Field = new ShipButton[_fieldController.FieldSize, _fieldController.FieldSize];
             _attackTimer = new EnemyTimer(this, _fieldController, mainForm);
-            SetEnemyAI();
-        }
-
-        public void SetEnemyAI()
-        {
             _enemyAI = new EnemyAI(this, _fieldController);
         }
 
