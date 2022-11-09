@@ -309,6 +309,7 @@ namespace SeaBattle
 
         private void MarkComputerMovesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            MarkComputerMovesToolStripMenuItem.Checked = !MarkComputerMovesToolStripMenuItem.Checked;
             _enemy.MarkMoves = MarkComputerMovesToolStripMenuItem.Checked;
             checkBoxMarkEnemyMoves.Checked = MarkComputerMovesToolStripMenuItem.Checked;
             foreach (ShipButton button in _user.Field)
