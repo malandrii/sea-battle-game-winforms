@@ -42,13 +42,11 @@ namespace SeaBattle
 
         public void RefreshMarking(bool mark)
         {
-            if (ShipFrom != null)
+            if (IsShipPart)
             {
                 if (IsShot)
                 {
-                    if (ShipFrom.IsDead()) BackColor = Color.Red;
-                    else if (mark) BackColor = Color.DarkRed;
-                    else BackColor = Color.Blue;
+                    BackColor = ShipFrom.IsDead() ? Color.Red : (mark ? Color.DarkRed : Color.Blue);
                 }
             }
             else MainForm.ButtonColorToStandart(this);
