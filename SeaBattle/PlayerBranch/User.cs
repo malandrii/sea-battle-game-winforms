@@ -11,7 +11,6 @@ namespace SeaBattle
         {
             int userMarkingOffset = 0;
             _markingOffset = userMarkingOffset;
-            _mainForm = mainForm;
         }
 
         public void SetEnemy(Enemy enemy)

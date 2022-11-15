@@ -18,10 +18,7 @@ namespace SeaBattle
             int enemyMarkingOffset = 380;
             _markingOffset = enemyMarkingOffset;
             _user = user;
-            _mainForm = mainForm;
-            _fieldController = new FieldController(_mainForm);
-            _fieldSize = _fieldController.FieldSize;
-            Field = new ShipButton[_fieldController.FieldSize, _fieldController.FieldSize];
+            Field = new ShipButton[_fieldSize, _fieldSize];
             _attackTimer = new EnemyTimer(this, _fieldController, mainForm);
             _enemyAI = new EnemyAI(this, _fieldController);
         }

@@ -163,20 +163,16 @@ namespace SeaBattle
             if (progressBar.Value < s_progressBarMaximumValue - progressBarIncrement)
             {
                 progressBar.Value += progressBarIncrement;
+                currentSizeShipsLeft.Text = 
+                    Convert.ToString(Convert.ToInt32(currentSizeShipsLeft.Text) - NextIndex);
+                if (currentSizeShipsLeft.Text == s_firstIndex.ToString())
+                {
+                    selectedButton.Enabled = false;
+                    ButtonColorToStandart(selectedButton);
+                    _makeSizeZero = true;
+                }
             }
-            else
-            {
-                ShipsArranged();
-                return;
-            }
-            currentSizeShipsLeft.Text = Convert.ToString(
-                Convert.ToInt32(currentSizeShipsLeft.Text) - NextIndex);
-            if (currentSizeShipsLeft.Text == s_firstIndex.ToString())
-            {
-                selectedButton.Enabled = false;
-                ButtonColorToStandart(selectedButton);
-                _makeSizeZero = true;
-            }
+            else ShipsArranged();
         }
 
         private void ShipsArranged()
