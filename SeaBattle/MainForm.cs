@@ -21,7 +21,7 @@ namespace SeaBattle
         public int ChosenSize { get; set; } = 0;
         public int ShipSizesAmount { get; } = 4;
         public bool ChosenShipIsHorizontal { get; set; } = false;
-        public bool ComputerMovingLabelVisibile { get; set; } = false;
+        public bool ComputerMovingLabelVisible { get; set; } = false;
 
         public MainForm()
         {
@@ -289,7 +289,7 @@ namespace SeaBattle
 
         private void LabelComputerMove_VisibleChanged(object sender, EventArgs e)
         {
-            ComputerMovingLabelVisibile = labelComputerMove.Visible;
+            ComputerMovingLabelVisible = labelComputerMove.Visible;
         }
 
         private void CheckBoxMarkEnemyMoves_CheckedChanged(object sender, EventArgs e)

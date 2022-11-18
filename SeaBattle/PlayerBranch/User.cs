@@ -58,7 +58,7 @@ namespace SeaBattle
 
         public void Attack(object sender)
         {
-            bool canMove = !_mainForm.ComputerMovingLabelVisibile;
+            bool canMove = !_mainForm.ComputerMovingLabelVisible;
             if (canMove)
             {
                 _mainForm.SetFocus();

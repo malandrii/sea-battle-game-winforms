@@ -7,7 +7,7 @@ namespace SeaBattle
     {
         private readonly User _user;
         private readonly EnemyTimer _attackTimer;
-        private EnemyAI _enemyAI;
+        private readonly EnemyAI _enemyAI;
         private int _xToAttack = 0;
         private int _yToAttack = 0;
         public bool RandomMoves { get; set; } = false;

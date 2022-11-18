@@ -92,8 +92,9 @@ namespace SeaBattle
             {
                 for (int i = oneSquareShipSize; i < size; i++)
                 {
-                    int sizeToCheck = _fieldSize - size - oneSquareShipSize;
-                    bool insideField = isHorizontal ? x < sizeToCheck : y < sizeToCheck;
+                    int sizeToCheck = _fieldSize - size - oneSquareShipSize,
+                        coordinateToCheck = isHorizontal ? x : y;
+                    bool insideField = coordinateToCheck < sizeToCheck;
                     ShiftCoordinates(isHorizontal, insideField, ref x, ref y);
                     coordinateCopies.Add(new Point(x, y));
                 }
@@ -109,11 +110,11 @@ namespace SeaBattle
         private void DeclareShip(int size, List<Point> coordinatesCopies)
         {
             List<ShipButton> shipButtonList = new List<ShipButton>();
-            for (int i = 0; i < size; i++) shipButtonList.Add(Field[coordinatesCopies[i].X,
-                coordinatesCopies[i].Y]);
+            for (int i = 0; i < size; i++) 
+                shipButtonList.Add(Field[coordinatesCopies[i].X, coordinatesCopies[i].Y]);
             Ship ship = new Ship(shipButtonList);
-            for (int i = 0; i < size; i++) MakeShipPart(coordinatesCopies[i].X,
-                coordinatesCopies[i].Y, ship);
+            for (int i = 0; i < size; i++) 
+                MakeShipPart(coordinatesCopies[i].X, coordinatesCopies[i].Y, ship);
         }
 
         public bool CheckDeath()
