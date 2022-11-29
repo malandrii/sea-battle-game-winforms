@@ -248,6 +248,7 @@ namespace SeaBattle
             SetControlsVisibility(visible: false);
             labelStatus.Visible = true;
             labelEnemyField.Visible = true;
+            _enemy.RandomMoves = checkBoxEnemyRandomMoves.Checked;
             ContextMenuStrip.Items[s_firstIndex].Text = "Restart Game";
             _enemy.DeclareField();
             _enemy.SpawnRandomShips();
@@ -288,11 +289,6 @@ namespace SeaBattle
         {
             _enemy.MarkMoves = checkBoxMarkEnemyMoves.Checked;
             MarkComputerMovesToolStripMenuItem.Checked = checkBoxMarkEnemyMoves.Checked;
-        }
-
-        private void CheckBoxEnemyRandomMoves_CheckedChanged(object sender, EventArgs e)
-        {
-            _enemy.RandomMoves = checkBoxEnemyRandomMoves.Checked;
         }
 
         private void MarkComputerMovesToolStripMenuItem_Click(object sender, EventArgs e)
