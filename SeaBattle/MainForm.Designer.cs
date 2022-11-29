@@ -147,7 +147,7 @@
             // 
             this.labelEnemyField.AutoSize = true;
             this.labelEnemyField.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.labelEnemyField.Location = new System.Drawing.Point(542, 9);
+            this.labelEnemyField.Location = new System.Drawing.Point(535, 9);
             this.labelEnemyField.Name = "labelEnemyField";
             this.labelEnemyField.Size = new System.Drawing.Size(64, 13);
             this.labelEnemyField.TabIndex = 10;
@@ -435,6 +435,8 @@
             this.Controls.Add(this.button4x);
             this.Controls.Add(this.panel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sea battle";

@@ -46,8 +46,8 @@ namespace SeaBattle
                     Field[x, y].BackColor = Color.Blue;
                     newPlayerShip.ShipParts.Add(Field[x, y]);
                 }
-                else 
-                { 
+                else
+                {
                     MakeShipPart(x, y, newPlayerShip);
                     newPlayerShip.MakeShipUnabled();
                 }
@@ -59,31 +59,27 @@ namespace SeaBattle
         public void Attack(object sender)
         {
             bool canMove = !_mainForm.ComputerMovingLabelVisible;
-            if (canMove)
+            if (!canMove) return;
+            _mainForm.SetFocus();
+            ShipButton senderButton = (ShipButton)sender;
+            senderButton.Enabled = false;
+            senderButton.Shoot();
+            if (!senderButton.IsShipPart)
             {
-                _mainForm.SetFocus();
-                ShipButton senderButton = (ShipButton)sender;
-                senderButton.Enabled = false;
-                senderButton.Shoot();
-                if (senderButton.IsShipPart)
-                {
-                    senderButton.ShipFrom.TakeDamage();
-                    _enemy.ShipPartsAlive--;
-                    _mainForm.SetLabelStatus("Hit", Color.DarkRed);
-                    if (senderButton.ShipFrom.IsDead())
-                    {
-                        _mainForm.SetLabelStatus("Dead", Color.Red);
-                        senderButton.ShipFrom.Death();
-                    }
-                    _enemy.CheckDeath();
-                }
-                else
-                {
-                    _mainForm.SetLabelStatus(MainForm.StandartLabelStatusText, 
-                        MainForm.StandartLabelStatusColor);
-                    if (!_enemy.CheckDeath() && !CheckDeath()) _enemy.StartAttack();
-                }
+                _mainForm.SetLabelStatus(MainForm.StandartLabelStatusText,
+                    MainForm.StandartLabelStatusColor);
+                if (!_enemy.CheckDeath() && !CheckDeath()) _enemy.StartAttack();
+                return;
             }
+            senderButton.ShipFrom.TakeDamage();
+            _enemy.ShipPartsAlive--;
+            _mainForm.SetLabelStatus("Hit", Color.DarkRed);
+            if (senderButton.ShipFrom.IsDead())
+            {
+                _mainForm.SetLabelStatus("Dead", Color.Red);
+                senderButton.ShipFrom.Death();
+            }
+            _enemy.CheckDeath();
         }
     }
 }

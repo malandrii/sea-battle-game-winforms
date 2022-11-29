@@ -52,7 +52,6 @@ namespace SeaBattle
         {
             int nextIndex = MainForm.NextIndex, lastCoordinate = FieldSize - nextIndex;
             List<Point> coordinatesToAdd = new List<Point>();
-
             if (x > StartingCoordinate && y > StartingCoordinate)
                 coordinatesToAdd.Add(new Point(x - nextIndex, y - nextIndex));
             if (x > StartingCoordinate)
@@ -77,7 +76,6 @@ namespace SeaBattle
             char[] englishLetters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
             int buttonSize = ButtonSize, doubleButtonSize = buttonSize * 2,
                 coordinateOffset = buttonSize * coordinate;
-
             Label letter = new Label
             {
                 Location = new Point(doubleButtonSize + offset + coordinateOffset, buttonSize),
@@ -90,7 +88,6 @@ namespace SeaBattle
                 Text = Convert.ToString(coordinate + MainForm.NextIndex),
                 AutoSize = true
             };
-
             _mainForm.Controls.Add(digit);
             _mainForm.Controls.Add(letter);
         }

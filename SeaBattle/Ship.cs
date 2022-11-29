@@ -27,8 +27,8 @@ namespace SeaBattle
 
         public void Death()
         {
-            foreach (ShipButton button in ShipParts) 
-                button.BackColor = Color.Red;
+            foreach (ShipButton shipPart in ShipParts) 
+                shipPart.BackColor = Color.Red;
             for (int i = 0; i < MarkedParts.Count; i++)
             {
                 foreach (ShipButton button in MarkedParts)
@@ -45,8 +45,9 @@ namespace SeaBattle
 
         public void MakeShipUnabled()
         {
-            foreach (ShipButton button in ShipParts) button.Enabled = false;
-            foreach (ShipButton button in MarkedParts) button.Enabled = false;
+            List<ShipButton> allParts = ShipParts;
+            allParts.AddRange(MarkedParts);
+            foreach (ShipButton button in allParts) button.Enabled = false;
         }
     }
 }

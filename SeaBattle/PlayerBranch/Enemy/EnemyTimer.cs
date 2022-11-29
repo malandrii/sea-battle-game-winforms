@@ -32,11 +32,10 @@ namespace SeaBattle
             tickAmountFromSpeed = ((computerMovesSpeedCount - MainForm.NextIndex
                 - _mainForm.GetComputerMoveSpeedSelectedIndex())
                 * _fieldController.ButtonSize) + MainForm.NextIndex;
-
             if (_timerTicks == tickAmountFromSpeed)
             {
                 _mainForm.SetLabelComputerMoveVisibility(visible: false);
-                _enemy.Attack();
+                _enemy.ContinueAttack();
                 _mainForm.SetComputerMovesToolStripsEnables(enable: true);
             }
             _timerTicks++;

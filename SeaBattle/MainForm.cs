@@ -26,8 +26,6 @@ namespace SeaBattle
         public MainForm()
         {
             InitializeComponent();
-            MaximizeBox = false;
-            MinimizeBox = false;
             int mediumSpeedSelectedIndex = 1;
             comboBoxComputerMoveSpeed.SelectedIndex = mediumSpeedSelectedIndex;
             comboBoxComputerMoveSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -95,25 +93,22 @@ namespace SeaBattle
             SetSizeChoosingButton(chosenButton, ref chooseSizeButtonNumber, firstCheck: false);
         }
 
-        private void SetSizeChoosingButton(Button chosenButton, ref int chooseSizeButtonNumber, 
+        private void SetSizeChoosingButton(Button chosenButton, ref int chooseSizeButtonNumber,
             bool firstCheck)
         {
             for (int i = 0; i < ShipSizesAmount; i++)
             {
-                if (firstCheck)
-                {
-                    if (chosenButton == _chooseSizeButtons[i])
-                    {
-                        ChosenSize = i + NextIndex;
-                        _chooseSizeButtons[i].BackColor = Color.LightSkyBlue;
-                        chooseSizeButtonNumber = i;
-                    }
-                }
-                else
+                if (!firstCheck)
                 {
                     Label label = (Label)Controls[GetControlText("label", i + NextIndex)];
                     if (label.Text != s_firstIndex.ToString() && i != chooseSizeButtonNumber)
                         ButtonColorToStandart(_chooseSizeButtons[i]);
+                }
+                else if (chosenButton == _chooseSizeButtons[i])
+                {
+                    ChosenSize = i + NextIndex;
+                    _chooseSizeButtons[i].BackColor = Color.LightSkyBlue;
+                    chooseSizeButtonNumber = i;
                 }
             }
         }
@@ -142,7 +137,6 @@ namespace SeaBattle
         {
             ShipButton senderShipButton = (ShipButton)sender;
             bool buttonChosen = senderShipButton.BackColor == Color.LightBlue;
-
             if (buttonChosen)
             {
                 ChangeShipsLeft((Button)Controls[GetControlText("button", ChosenSize)],
@@ -163,7 +157,7 @@ namespace SeaBattle
             if (progressBar.Value < s_progressBarMaximumValue - progressBarIncrement)
             {
                 progressBar.Value += progressBarIncrement;
-                currentSizeShipsLeft.Text = 
+                currentSizeShipsLeft.Text =
                     Convert.ToString(Convert.ToInt32(currentSizeShipsLeft.Text) - NextIndex);
                 if (currentSizeShipsLeft.Text == s_firstIndex.ToString())
                 {
@@ -177,12 +171,12 @@ namespace SeaBattle
 
         private void ShipsArranged()
         {
-            foreach (Button button in _chooseSizeButtons) 
+            foreach (Button button in _chooseSizeButtons)
             {
                 ButtonColorToStandart(button);
-                button.Enabled = false; 
+                button.Enabled = false;
             }
-            foreach (Label label in _chooseSizeLabels) 
+            foreach (Label label in _chooseSizeLabels)
                 label.Text = s_firstIndex.ToString();
             progressBar.Value = s_progressBarMaximumValue;
             SetShipArrangeButtonEnables(shipsPlaced: true);
@@ -221,19 +215,17 @@ namespace SeaBattle
         {
             int x = button.X;
             int y = button.Y;
-            if (spaceIsFree)
+            if (!spaceIsFree) return;
+            for (int i = 0; i < ChosenSize; i++)
             {
-                for (int i = 0; i < ChosenSize; i++)
+                if (firstTest) spaceIsFree = _user.Field[x, y].Enabled;
+                else
                 {
-                    if (firstTest) spaceIsFree = _user.Field[x, y].Enabled;
-                    else
-                    {
-                        if (toAppear) _user.Field[x, y].BackColor = Color.LightBlue;
-                        else ButtonColorToStandart(_user.Field[x, y]);
-                    }
-                    _user.ShiftCoordinates(isHorizontal: ChosenShipIsHorizontal, 
-                        Sum: ChosenShipIsHorizontal, ref x, ref y);
+                    if (toAppear) _user.Field[x, y].BackColor = Color.LightBlue;
+                    else ButtonColorToStandart(_user.Field[x, y]);
                 }
+                _user.ShiftCoordinates(isHorizontal: ChosenShipIsHorizontal,
+                    Sum: ChosenShipIsHorizontal, ref x, ref y);
             }
         }
 
@@ -335,13 +327,13 @@ namespace SeaBattle
 
         private void SetControlsVisibility(bool visible)
         {
-            Control[] controlsToSetVisibility = { button1x, button2x, button3x,
-                button4x, buttonRotate, label1x, label2x, label3x, label4x, labelPlaceShips,
-                labelShipsPlaceLeft, progressBar, buttonGameStart, labelComputerMovingSpeed,
+            Control[] controlsToSetVisibility = { 
+                button1x, button2x, button3x,
+                button4x, buttonRotate, label1x, label2x, label3x, 
+                label4x, labelPlaceShips, labelShipsPlaceLeft, progressBar, 
+                buttonGameStart, labelComputerMovingSpeed,
                 comboBoxComputerMoveSpeed, checkBoxMarkEnemyMoves, panel };
-
             Label[] labelsToSetOppositeVisibility = { labelStatus, labelEnemyField };
-
             foreach (Control control in controlsToSetVisibility) control.Visible = visible;
             foreach (Label label in labelsToSetOppositeVisibility) label.Visible = !visible;
         }
@@ -372,7 +364,7 @@ namespace SeaBattle
             RestartGame();
             _user.SpawnRandomShips();
             ShipsArranged();
-            foreach (ShipButton button in _user.Field) 
+            foreach (ShipButton button in _user.Field)
                 if (button.IsShipPart) button.BackColor = Color.Blue;
         }
 

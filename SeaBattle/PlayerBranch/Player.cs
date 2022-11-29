@@ -85,7 +85,6 @@ namespace SeaBattle
             bool canMakeShip = true, sameCoordinates = false,
                  fiftyfiftyChance = _random.Next(1, 3) == 1,
                  isHorizontal = fiftyfiftyChance;
-
             MakeCoordinatesRandom(ref x, ref y);
             List<Point> coordinateCopies = new List<Point> { new Point(x, y) };
             if (size > oneSquareShipSize)

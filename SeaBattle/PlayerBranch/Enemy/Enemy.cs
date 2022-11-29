@@ -41,38 +41,46 @@ namespace SeaBattle
             _mainForm.SetLabelComputerMoveVisibility(visible: true);
         }
 
-        public void Attack()
+        public void ContinueAttack()
         {
             _enemyAI.SetAttackCoordinates(ref _xToAttack, ref _yToAttack);
             ShipButton buttonToAttack = _user.Field[_xToAttack, _yToAttack];
-            if (buttonToAttack.IsShot && _enemyAI.HorizontalityDefined) 
-                _enemyAI.ChangeDefinedAttackSide = true;
-            if (!buttonToAttack.IsShot || (!RandomMoves && _enemyAI.FoundUserShip))
+            if (buttonToAttack.IsShot)
             {
-                buttonToAttack.Shoot();
-                if (MarkMoves) buttonToAttack.BackColor = Color.DarkRed;
-                if (buttonToAttack.IsShipPart)
+                if (_enemyAI.HorizontalityDefined)
+                    _enemyAI.ChangeDefinedAttackSide = true;
+                if (RandomMoves || !_enemyAI.FoundUserShip)
                 {
-                    if (_enemyAI.FoundUserShip) _enemyAI.HorizontalityDefined = true;
-                    _enemyAI.FoundUserShip = true;
-                    buttonToAttack.ShipFrom.TakeDamage();
-                    _user.ShipPartsAlive--;
-                    if (buttonToAttack.ShipFrom.IsDead())
-                    {
-                        buttonToAttack.ShipFrom.Death();
-                        _enemyAI.ResetVariables();
-                        if (_user.CheckDeath()) return;
-                    }
-                    else _enemyAI.SetButtonsAroundButtonToAttack(buttonToAttack, _user.Field);
-                    StartAttack();
-                }
-                else 
-                {
-                    if(_enemyAI.HorizontalityDefined) _enemyAI.ChangeDefinedAttackSide = true;
-                    _attackTimer.Stop(); 
+                    ContinueAttack();
+                    return;
                 }
             }
-            else Attack();
+            Attack(buttonToAttack);
+        }
+
+        private void Attack(ShipButton buttonToAttack)
+        {
+            buttonToAttack.Shoot();
+            if (MarkMoves) buttonToAttack.BackColor = Color.DarkRed;
+            if (!buttonToAttack.IsShipPart)
+            {
+                if (_enemyAI.HorizontalityDefined) 
+                    _enemyAI.ChangeDefinedAttackSide = true;
+                _attackTimer.Stop();
+                return;
+            }
+            if (_enemyAI.FoundUserShip) _enemyAI.HorizontalityDefined = true;
+            _enemyAI.FoundUserShip = true;
+            buttonToAttack.ShipFrom.TakeDamage();
+            _user.ShipPartsAlive--;
+            if (buttonToAttack.ShipFrom.IsDead())
+            {
+                buttonToAttack.ShipFrom.Death();
+                _enemyAI.ResetVariables();
+                if (_user.CheckDeath()) return;
+            }
+            else _enemyAI.SetButtonsAroundButtonToAttack(buttonToAttack, _user.Field);
+            StartAttack();
         }
 
         public void FinishGame()
