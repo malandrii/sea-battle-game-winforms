@@ -135,20 +135,18 @@ namespace SeaBattle
 
         private void PlayerButton_Click(object sender, EventArgs e)
         {
+            SetFocus();
             ShipButton senderShipButton = (ShipButton)sender;
             bool buttonChosen = senderShipButton.BackColor == Color.LightBlue;
-            if (buttonChosen)
+            if (!buttonChosen) return;
+            ChangeShipsLeft((Button)Controls[GetControlText("button", ChosenSize)],
+                (Label)Controls[GetControlText("label", ChosenSize).ToString()]);
+            _user.SetShip(senderShipButton);
+            if (_makeSizeZero)
             {
-                ChangeShipsLeft((Button)Controls[GetControlText("button", ChosenSize)],
-                    (Label)Controls[GetControlText("label", ChosenSize).ToString()]);
-                _user.SetShip(senderShipButton);
-                if (_makeSizeZero)
-                {
-                    ChosenSize = 0;
-                    _makeSizeZero = false;
-                }
+                ChosenSize = 0;
+                _makeSizeZero = false;
             }
-            SetFocus();
         }
 
         private void ChangeShipsLeft(Button selectedButton, Label currentSizeShipsLeft)
@@ -159,12 +157,10 @@ namespace SeaBattle
                 progressBar.Value += progressBarIncrement;
                 currentSizeShipsLeft.Text =
                     Convert.ToString(Convert.ToInt32(currentSizeShipsLeft.Text) - NextIndex);
-                if (currentSizeShipsLeft.Text == s_firstIndex.ToString())
-                {
-                    selectedButton.Enabled = false;
-                    ButtonColorToStandart(selectedButton);
-                    _makeSizeZero = true;
-                }
+                if (currentSizeShipsLeft.Text != s_firstIndex.ToString()) return;
+                selectedButton.Enabled = false;
+                ButtonColorToStandart(selectedButton);
+                _makeSizeZero = true;
             }
             else ShipsArranged();
         }
@@ -323,10 +319,10 @@ namespace SeaBattle
 
         private void SetControlsVisibility(bool visible)
         {
-            Control[] controlsToSetVisibility = { 
+            Control[] controlsToSetVisibility = {
                 button1x, button2x, button3x,
-                button4x, buttonRotate, label1x, label2x, label3x, 
-                label4x, labelPlaceShips, labelShipsPlaceLeft, progressBar, 
+                button4x, buttonRotate, label1x, label2x, label3x,
+                label4x, labelPlaceShips, labelShipsPlaceLeft, progressBar,
                 buttonGameStart, labelComputerMovingSpeed,
                 comboBoxComputerMoveSpeed, checkBoxMarkEnemyMoves, panel };
             Label[] labelsToSetOppositeVisibility = { labelStatus, labelEnemyField };

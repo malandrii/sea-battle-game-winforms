@@ -8,6 +8,9 @@ namespace SeaBattle
     public class FieldController
     {
         private readonly MainForm _mainForm;
+        private List<Point> _coordinatesAround;
+        private int _initialX;
+        private int _initialY;
         public int StartingCoordinate { get; } = 0;
         public int FieldSize { get; } = 10;
         public int ButtonSize { get; } = 30;
@@ -38,37 +41,57 @@ namespace SeaBattle
 
         public void ClearField(ShipButton[,] field)
         {
-            foreach (ShipButton button in field) 
+            foreach (ShipButton button in field)
                 if (button != null) button.Dispose();
         }
 
         public bool AreCoordinatesInsideField(int x, int y)
         {
-            return x >= StartingCoordinate && x < FieldSize
-                && y >= StartingCoordinate && y < FieldSize;
+            return IsCoordinateInsideField(x) && IsCoordinateInsideField(y);
+        }
+
+        public bool IsCoordinateInsideField(int coordinate)
+        {
+            return coordinate >= StartingCoordinate && coordinate < FieldSize;
         }
 
         public List<Point> GetCoordinatesAround(int x, int y)
         {
             int nextIndex = MainForm.NextIndex, lastCoordinate = FieldSize - nextIndex;
-            List<Point> coordinatesToAdd = new List<Point>();
-            if (x > StartingCoordinate && y > StartingCoordinate)
-                coordinatesToAdd.Add(new Point(x - nextIndex, y - nextIndex));
-            if (x > StartingCoordinate)
-                coordinatesToAdd.Add(new Point(x - nextIndex, y));
-            if (x > StartingCoordinate && y < lastCoordinate)
-                coordinatesToAdd.Add(new Point(x - nextIndex, y + nextIndex));
-            if (y < lastCoordinate)
-                coordinatesToAdd.Add(new Point(x, y + nextIndex));
-            if (x < lastCoordinate && y < lastCoordinate)
-                coordinatesToAdd.Add(new Point(x + nextIndex, y + nextIndex));
-            if (x < lastCoordinate)
-                coordinatesToAdd.Add(new Point(x + nextIndex, y));
-            if (y > StartingCoordinate && x < lastCoordinate)
-                coordinatesToAdd.Add(new Point(x + nextIndex, y - nextIndex));
+            _coordinatesAround = new List<Point>();
+            _initialX = x;
+            _initialY = y;
+            AddDimensionRelatedCoordinates(lastCoordinate, coordinateIsX: true);
+            AddDimensionRelatedCoordinates(lastCoordinate, coordinateIsX: false);
+            return _coordinatesAround;
+        }
+
+        private void AddDimensionRelatedCoordinates(int lastCoordinate, bool coordinateIsX)
+        {
+            int coordinate = coordinateIsX ? _initialX : _initialY;
+            if (coordinate > StartingCoordinate)
+                AddDimensionRelatedCoordinates2(lastCoordinate, coordinateIsX, offsetToDownLeft: true);
+            if (coordinate < lastCoordinate)
+                AddDimensionRelatedCoordinates2(lastCoordinate, coordinateIsX, offsetToDownLeft: false);
+        }
+
+        private void AddDimensionRelatedCoordinates2(int lastCoordinate,
+            bool coordinateIsX, bool offsetToDownLeft)
+        {
+            int x = _initialX, y = _initialY,
+                nextIndex = MainForm.NextIndex,
+                offsetCoordinate = coordinateIsX ? x : y;
+            offsetCoordinate += offsetToDownLeft ? -nextIndex : nextIndex;
+            if (!coordinateIsX)
+            {
+                _coordinatesAround.Add(new Point(x, offsetCoordinate));
+                return;
+            }
+            _coordinatesAround.Add(new Point(offsetCoordinate, y));
             if (y > StartingCoordinate)
-                coordinatesToAdd.Add(new Point(x, y - nextIndex));
-            return coordinatesToAdd;
+                _coordinatesAround.Add(new Point(offsetCoordinate, y - nextIndex));
+            if (y < lastCoordinate)
+                _coordinatesAround.Add(new Point(offsetCoordinate, y + nextIndex));
         }
 
         private void AddMarking(int coordinate, int offset)
