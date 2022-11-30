@@ -70,12 +70,12 @@ namespace SeaBattle
         {
             int coordinate = coordinateIsX ? _initialX : _initialY;
             if (coordinate > StartingCoordinate)
-                AddDimensionRelatedCoordinates2(lastCoordinate, coordinateIsX, offsetToDownLeft: true);
+                AddSpecificDimensionRelatedCoordinates(lastCoordinate, coordinateIsX, offsetToDownLeft: true);
             if (coordinate < lastCoordinate)
-                AddDimensionRelatedCoordinates2(lastCoordinate, coordinateIsX, offsetToDownLeft: false);
+                AddSpecificDimensionRelatedCoordinates(lastCoordinate, coordinateIsX, offsetToDownLeft: false);
         }
 
-        private void AddDimensionRelatedCoordinates2(int lastCoordinate,
+        private void AddSpecificDimensionRelatedCoordinates(int lastCoordinate,
             bool coordinateIsX, bool offsetToDownLeft)
         {
             int x = _initialX, y = _initialY,
