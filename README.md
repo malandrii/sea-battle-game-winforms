@@ -5,7 +5,7 @@ Classic "Sea Battle" game on Windows Forms with Enemy bot
 
 ![image](https://user-images.githubusercontent.com/111363234/205208661-8c191fac-0f5f-4828-b15f-07611fa2db8e.png)
 
-> *moouse left button*
+> *mouse left button*
 
 ![image](https://user-images.githubusercontent.com/111363234/205208823-f3327c16-c121-4d5b-8182-6a796878feaf.png)
 
