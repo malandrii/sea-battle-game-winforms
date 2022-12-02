@@ -20,7 +20,7 @@ After you place all the ships choose enemy settings and press "Start Game"
 
 ![image](https://user-images.githubusercontent.com/111363234/205209496-fa32a483-32c4-4cb7-8076-79a4ef576701.png)
 
-Place on the enemy field button. You and enemy go one by one. <br />
+Press on the enemy field button. You and enemy go one by one. <br />
 If the text of the button is dot - this cell is clear <br />
 If cross - you hit the enemy ship
 
@@ -42,7 +42,7 @@ Meanwhile, enemy-bot is attacking our field
 
 ![image](https://user-images.githubusercontent.com/111363234/205210557-3b03fdf9-acb7-4d98-900c-45030238bc0b.png)
 
-Game stops as someone destroys all the enemy ships and you can see where were they located
+Game stops as someone destroys all the enemy ships and you can see where they were located
 
 ![image](https://user-images.githubusercontent.com/111363234/205210651-2c50fc15-1bff-4c64-b8bf-a57bfaf3fc66.png)
 
