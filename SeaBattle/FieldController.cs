@@ -7,12 +7,12 @@ namespace SeaBattle
 {
     public class FieldController
     {
+        public const int FieldSize = 10;
         private readonly MainForm _mainForm;
         private List<Point> _coordinatesAround;
         private int _initialX;
         private int _initialY;
         public int StartingCoordinate { get; } = 0;
-        public int FieldSize { get; } = 10;
         public int ButtonSize { get; } = 30;
 
         public FieldController(MainForm mainForm)

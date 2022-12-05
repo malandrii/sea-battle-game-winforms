@@ -9,7 +9,7 @@ namespace SeaBattle
 
         public User(MainForm mainForm) : base(mainForm)
         {
-            int userMarkingOffset = 0;
+            const int userMarkingOffset = 0;
             _markingOffset = userMarkingOffset;
         }
 

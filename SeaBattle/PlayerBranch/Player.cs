@@ -18,7 +18,7 @@ namespace SeaBattle
         {
             _mainForm = mainForm;
             _fieldController = new FieldController(_mainForm);
-            _fieldSize = _fieldController.FieldSize;
+            _fieldSize = FieldController.FieldSize;
         }
 
         public virtual void DeclareField()

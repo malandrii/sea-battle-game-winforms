@@ -15,7 +15,7 @@ namespace SeaBattle
 
         public Enemy(MainForm mainForm, User user) : base(mainForm)
         {
-            int enemyMarkingOffset = 380;
+            const int enemyMarkingOffset = 380;
             _markingOffset = enemyMarkingOffset;
             _user = user;
             Field = new ShipButton[_fieldSize, _fieldSize];

@@ -5,9 +5,9 @@ namespace SeaBattle
 {
     public class ShipButton : Button
     {
+        private const string ShotShipPartText = "X";
+        public const string ShotText = ".";
         private bool _marked = false;
-        private readonly string _shotShipPartText = "X";
-        public string ShotText { get; } = ".";
         public bool IsShipPart { get; set; } = false;
         public bool IsShot { get; set; } = false;
         public Ship ShipFrom { get; set; }
@@ -23,7 +23,7 @@ namespace SeaBattle
         public void Shoot()
         {
             IsShot = true;
-            Text = IsShipPart ? _shotShipPartText : ShotText;
+            Text = IsShipPart ? ShotShipPartText : ShotText;
         }
 
         public bool CanMakeShip()

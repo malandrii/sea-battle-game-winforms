@@ -13,7 +13,7 @@ namespace SeaBattle
         public EnemyTimer(Enemy enemy, FieldController fieldController,
             MainForm mainForm)
         {
-            int minimalTimerInterval = 1;
+            const int minimalTimerInterval = 1;
             Interval = minimalTimerInterval;
             Tick += new EventHandler(Timer_Tick);
             _enemy = enemy;

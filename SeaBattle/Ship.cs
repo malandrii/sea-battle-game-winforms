@@ -36,7 +36,7 @@ namespace SeaBattle
                     if (!MarkedParts[i].IsShipPart)
                     {
                         button.IsShot = true;
-                        MarkedParts[i].Text = button.ShotText;
+                        MarkedParts[i].Text = ShipButton.ShotText;
                         MarkedParts[i].Enabled = false;
                     }
                 }

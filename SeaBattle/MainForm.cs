@@ -6,8 +6,8 @@ namespace SeaBattle
 {
     public partial class MainForm : Form
     {
-        private static readonly int s_progressBarMaximumValue = 100;
-        private static readonly int s_firstIndex = 0;
+        private const int ProgressBarMaximumValue = 100;
+        private const int FirstIndex = 0;
         private static int s_fieldSize;
         private Button[] _chooseSizeButtons;
         private Label[] _chooseSizeLabels;
@@ -26,7 +26,7 @@ namespace SeaBattle
         public MainForm()
         {
             InitializeComponent();
-            int mediumSpeedSelectedIndex = 1;
+            const int mediumSpeedSelectedIndex = 1;
             comboBoxComputerMoveSpeed.SelectedIndex = mediumSpeedSelectedIndex;
             comboBoxComputerMoveSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
         }
@@ -38,10 +38,10 @@ namespace SeaBattle
 
         private void StartGame()
         {
-            string clearFieldButtonText = "Clear Field";
-            ContextMenuStrip.Items[s_firstIndex].Text = clearFieldButtonText;
+            const string clearFieldButtonText = "Clear Field";
+            ContextMenuStrip.Items[FirstIndex].Text = clearFieldButtonText;
             _fieldController = new FieldController(this);
-            s_fieldSize = _fieldController.FieldSize;
+            s_fieldSize = FieldController.FieldSize;
             _chooseSizeButtons = new Button[ShipSizesAmount];
             _chooseSizeLabels = new Label[ShipSizesAmount];
             for (int shipSizeIndex = 0; shipSizeIndex < ShipSizesAmount; shipSizeIndex++)
@@ -101,7 +101,7 @@ namespace SeaBattle
                 if (!firstCheck)
                 {
                     Label label = (Label)Controls[GetControlText("label", i + NextIndex)];
-                    if (label.Text != s_firstIndex.ToString() && i != chooseSizeButtonNumber)
+                    if (label.Text != FirstIndex.ToString() && i != chooseSizeButtonNumber)
                         ButtonColorToStandart(_chooseSizeButtons[i]);
                 }
                 else if (chosenButton == _chooseSizeButtons[i])
@@ -151,13 +151,13 @@ namespace SeaBattle
 
         private void ChangeShipsLeft(Button selectedButton, Label currentSizeShipsLeft)
         {
-            int progressBarIncrement = 10;
-            if (progressBar.Value < s_progressBarMaximumValue - progressBarIncrement)
+            const int progressBarIncrement = 10;
+            if (progressBar.Value < ProgressBarMaximumValue - progressBarIncrement)
             {
                 progressBar.Value += progressBarIncrement;
                 currentSizeShipsLeft.Text =
                     Convert.ToString(Convert.ToInt32(currentSizeShipsLeft.Text) - NextIndex);
-                if (currentSizeShipsLeft.Text != s_firstIndex.ToString()) return;
+                if (currentSizeShipsLeft.Text != FirstIndex.ToString()) return;
                 selectedButton.Enabled = false;
                 ButtonColorToStandart(selectedButton);
                 _makeSizeZero = true;
@@ -173,8 +173,8 @@ namespace SeaBattle
                 button.Enabled = false;
             }
             foreach (Label label in _chooseSizeLabels)
-                label.Text = s_firstIndex.ToString();
-            progressBar.Value = s_progressBarMaximumValue;
+                label.Text = FirstIndex.ToString();
+            progressBar.Value = ProgressBarMaximumValue;
             SetShipArrangeButtonEnables(shipsPlaced: true);
             _user.UnableField();
         }
@@ -245,7 +245,7 @@ namespace SeaBattle
             labelStatus.Visible = true;
             labelEnemyField.Visible = true;
             _enemy.RandomMoves = checkBoxEnemyRandomMoves.Checked;
-            ContextMenuStrip.Items[s_firstIndex].Text = "Restart Game";
+            ContextMenuStrip.Items[FirstIndex].Text = "Restart Game";
             _enemy.DeclareField();
             _enemy.SpawnRandomShips();
         }
@@ -341,8 +341,8 @@ namespace SeaBattle
             }
             SetControlsVisibility(visible: true);
             SetLabelStatus(StandartLabelStatusText, StandartLabelStatusColor);
-            ChosenSize = s_firstIndex;
-            progressBar.Value = s_firstIndex;
+            ChosenSize = FirstIndex;
+            progressBar.Value = FirstIndex;
             SetShipArrangeButtonEnables(shipsPlaced: false);
             buttonRestart.Visible = false;
             _makeSizeZero = false;
