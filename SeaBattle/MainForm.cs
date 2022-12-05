@@ -8,6 +8,7 @@ namespace SeaBattle
     {
         private const int ProgressBarMaximumValue = 100;
         private const int FirstIndex = 0;
+        public const int NextIndex = 1;
         private static int s_fieldSize;
         private Button[] _chooseSizeButtons;
         private Label[] _chooseSizeLabels;
@@ -17,7 +18,6 @@ namespace SeaBattle
         private bool _makeSizeZero = false;
         public static string StandartLabelStatusText { get; } = "----";
         public static Color StandartLabelStatusColor { get; } = Color.Black;
-        public static int NextIndex { get; } = 1;
         public int ChosenSize { get; set; } = 0;
         public int ShipSizesAmount { get; } = 4;
         public bool ChosenShipIsHorizontal { get; set; } = false;

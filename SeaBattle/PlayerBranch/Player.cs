@@ -37,11 +37,11 @@ namespace SeaBattle
             for (int specificSizeShipSpawnAmount = _mainForm.ShipSizesAmount;
                 specificSizeShipSpawnAmount > 0; specificSizeShipSpawnAmount--)
             {
-                int sizeOfShip = 1;
+                int shipSize = 1;
                 for (int i = 0; i < specificSizeShipSpawnAmount; i++)
                 {
-                    SpawnShip(sizeOfShip);
-                    sizeOfShip++;
+                    SpawnShip(shipSize);
+                    shipSize++;
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace SeaBattle
         private void CheckForSameLocatedShips(ref bool sameCoordinates, int size,
             List<Point> coordinateCopies)
         {
-            int minimumShipSizeToCheck = 2, nextIndex = MainForm.NextIndex;
+            const int minimumShipSizeToCheck = 2, nextIndex = MainForm.NextIndex;
             if (size > minimumShipSizeToCheck)
             {
                 for (int specificShipPart = 0; specificShipPart < coordinateCopies.Count - nextIndex;
@@ -80,8 +80,8 @@ namespace SeaBattle
 
         private void SpawnShip(int size)
         {
-            int x = 0, y = 0,
-                oneSquareShipSize = 1;
+            const int oneSquareShipSize = 1;
+            int x = 0, y = 0;
             bool canMakeShip = true, sameCoordinates = false,
                  fiftyfiftyChance = _random.Next(1, 3) == 1,
                  isHorizontal = fiftyfiftyChance;

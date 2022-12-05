@@ -8,6 +8,8 @@ namespace SeaBattle
     public class FieldController
     {
         public const int FieldSize = 10;
+        private const int NextIndex = MainForm.NextIndex;
+        private const string EnglishLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private readonly MainForm _mainForm;
         private List<Point> _coordinatesAround;
         private int _initialX;
@@ -22,7 +24,7 @@ namespace SeaBattle
 
         public void CreateField(ShipButton[,] field, int markingOffset)
         {
-            int indent = 50;
+            const int indent = 50;
             for (int y = 0; y < FieldSize; y++)
             {
                 for (int x = 0; x < FieldSize; x++)
@@ -57,7 +59,7 @@ namespace SeaBattle
 
         public List<Point> GetCoordinatesAround(int x, int y)
         {
-            int nextIndex = MainForm.NextIndex, lastCoordinate = FieldSize - nextIndex;
+            int lastCoordinate = FieldSize - NextIndex;
             _coordinatesAround = new List<Point>();
             _initialX = x;
             _initialY = y;
@@ -79,9 +81,8 @@ namespace SeaBattle
             bool coordinateIsX, bool offsetToDownLeft)
         {
             int x = _initialX, y = _initialY,
-                nextIndex = MainForm.NextIndex,
                 offsetCoordinate = coordinateIsX ? x : y;
-            offsetCoordinate += offsetToDownLeft ? -nextIndex : nextIndex;
+            offsetCoordinate += offsetToDownLeft ? -NextIndex : NextIndex;
             if (!coordinateIsX)
             {
                 _coordinatesAround.Add(new Point(x, offsetCoordinate));
@@ -89,20 +90,19 @@ namespace SeaBattle
             }
             _coordinatesAround.Add(new Point(offsetCoordinate, y));
             if (y > StartingCoordinate)
-                _coordinatesAround.Add(new Point(offsetCoordinate, y - nextIndex));
+                _coordinatesAround.Add(new Point(offsetCoordinate, y - NextIndex));
             if (y < lastCoordinate)
-                _coordinatesAround.Add(new Point(offsetCoordinate, y + nextIndex));
+                _coordinatesAround.Add(new Point(offsetCoordinate, y + NextIndex));
         }
 
         private void AddMarking(int coordinate, int offset)
         {
-            char[] englishLetters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
             int buttonSize = ButtonSize, doubleButtonSize = buttonSize * 2,
                 coordinateOffset = buttonSize * coordinate;
             Label letter = new Label
             {
                 Location = new Point(doubleButtonSize + offset + coordinateOffset, buttonSize),
-                Text = Convert.ToString(englishLetters[coordinate]),
+                Text = Convert.ToString(EnglishLetters[coordinate]),
                 AutoSize = true
             };
             Label digit = new Label
