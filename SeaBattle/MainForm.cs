@@ -136,7 +136,7 @@ namespace SeaBattle
         private void PlayerButton_Click(object sender, EventArgs e)
         {
             SetFocus();
-            ShipButton senderShipButton = (ShipButton)sender;
+            ShipButton senderShipButton = sender as ShipButton;
             bool buttonChosen = senderShipButton.BackColor == Color.LightBlue;
             if (!buttonChosen) return;
             ChangeShipsLeft((Button)Controls[GetControlText("button", ChosenSize)],
@@ -209,19 +209,21 @@ namespace SeaBattle
 
         private void ShipToAppear(ShipButton button, ref bool spaceIsFree, bool toAppear, bool firstTest)
         {
-            int x = button.X;
-            int y = button.Y;
+            int x = button.X, y = button.Y;
             if (!spaceIsFree) return;
             for (int i = 0; i < ChosenSize; i++)
             {
-                if (firstTest) spaceIsFree = _user.Field[x, y].Enabled;
+                if (firstTest)
+                {
+                    spaceIsFree = _user.Field[x, y].Enabled;
+                }
                 else
                 {
                     if (toAppear) _user.Field[x, y].BackColor = Color.LightBlue;
                     else ButtonColorToStandart(_user.Field[x, y]);
                 }
                 _user.ShiftCoordinates(isHorizontal: ChosenShipIsHorizontal,
-                    Sum: ChosenShipIsHorizontal, ref x, ref y);
+                    Add: ChosenShipIsHorizontal, ref x, ref y);
             }
         }
 
@@ -252,7 +254,7 @@ namespace SeaBattle
 
         public void ShipButton_TextChanged(object sender, EventArgs e)
         {
-            ShipButton button = (ShipButton)sender;
+            ShipButton button = sender as ShipButton;
             int fontSize = button.Text == "." ? 15 : 8;
             FontStyle fontStyle = button.Text == "." ? FontStyle.Bold : FontStyle.Regular;
             button.Font = new Font(button.Font.Name, fontSize, fontStyle);
@@ -357,7 +359,10 @@ namespace SeaBattle
             _user.SpawnRandomShips();
             ShipsArranged();
             foreach (ShipButton button in _user.Field)
-                if (button.IsShipPart) button.BackColor = Color.Blue;
+            {
+                if (!button.IsShipPart) continue;
+                button.BackColor = Color.Blue;
+            }
         }
 
         private void ButtonRestart_Click(object sender, EventArgs e)

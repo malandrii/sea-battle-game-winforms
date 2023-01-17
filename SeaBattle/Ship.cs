@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 
 namespace SeaBattle
@@ -27,27 +28,17 @@ namespace SeaBattle
 
         public void Death()
         {
-            foreach (ShipButton shipPart in ShipParts) 
-                shipPart.BackColor = Color.Red;
-            for (int i = 0; i < MarkedParts.Count; i++)
+            foreach (ShipButton shipPart in ShipParts)
             {
-                foreach (ShipButton button in MarkedParts)
-                {
-                    if (!MarkedParts[i].IsShipPart)
-                    {
-                        button.IsShot = true;
-                        MarkedParts[i].Text = ShipButton.ShotText;
-                        MarkedParts[i].Enabled = false;
-                    }
-                }
+                shipPart.BackColor = Color.Red;
             }
-        }
-
-        public void MakeShipUnabled()
-        {
-            List<ShipButton> allParts = ShipParts;
-            allParts.AddRange(MarkedParts);
-            foreach (ShipButton button in allParts) button.Enabled = false;
+            foreach (ShipButton button in MarkedParts)
+            {
+                if (button.IsShipPart) continue;
+                button.IsShot = true;
+                button.Text = ShipButton.ShotText;
+                button.Enabled = false;
+            }
         }
     }
 }

@@ -41,7 +41,7 @@ namespace SeaBattle
             _mainForm.SetLabelComputerMoveVisibility(visible: true);
         }
 
-        public void ContinueAttack()
+        public void ContinueTheAttack()
         {
             _enemyAI.SetAttackCoordinates(ref _xToAttack, ref _yToAttack);
             ShipButton buttonToAttack = _user.Field[_xToAttack, _yToAttack];
@@ -51,7 +51,7 @@ namespace SeaBattle
                     _enemyAI.ChangeDefinedAttackSide = true;
                 if (RandomMoves || !_enemyAI.FoundUserShip)
                 {
-                    ContinueAttack();
+                    ContinueTheAttack();
                     return;
                 }
             }

@@ -43,8 +43,8 @@ namespace SeaBattle
 
         public void ClearField(ShipButton[,] field)
         {
-            foreach (ShipButton button in field)
-                if (button != null) button.Dispose();
+            foreach (ShipButton button in field) 
+                button?.Dispose();
         }
 
         public bool AreCoordinatesInsideField(int x, int y)

@@ -10,8 +10,7 @@ namespace SeaBattle
         private readonly MainForm _mainForm;
         private int _timerTicks = 0;
 
-        public EnemyTimer(Enemy enemy, FieldController fieldController,
-            MainForm mainForm)
+        public EnemyTimer(Enemy enemy, FieldController fieldController, MainForm mainForm)
         {
             const int minimalTimerInterval = 1;
             Interval = minimalTimerInterval;
@@ -28,14 +27,14 @@ namespace SeaBattle
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            int computerMovesSpeedCount = 4,
-            tickAmountFromSpeed = ((computerMovesSpeedCount - MainForm.NextIndex
+            const int computerMovesSpeedCount = 4;
+            int tickAmountFromSpeed = ((computerMovesSpeedCount - MainForm.NextIndex
                 - _mainForm.GetComputerMoveSpeedSelectedIndex())
                 * _fieldController.ButtonSize) + MainForm.NextIndex;
             if (_timerTicks == tickAmountFromSpeed)
             {
                 _mainForm.SetLabelComputerMoveVisibility(visible: false);
-                _enemy.ContinueAttack();
+                _enemy.ContinueTheAttack();
                 _mainForm.SetComputerMovesToolStripsEnables(enable: true);
             }
             _timerTicks++;
