@@ -40,7 +40,7 @@ namespace SeaBattle
                 int shipSize = 1;
                 for (int i = 0; i < specificSizeShipSpawnAmount; i++)
                 {
-                    SpawnShip(shipSize);
+                    SpawnRandomShip(shipSize);
                     shipSize++;
                 }
             }
@@ -50,7 +50,7 @@ namespace SeaBattle
             List<Point> coordinateCopies)
         {
             const int minimumShipSizeToCheck = 2;
-            if (size < minimumShipSizeToCheck) return;
+            if (size <= minimumShipSizeToCheck) return;
             for (int specificShipPart = 0; specificShipPart < coordinateCopies.Count - MainForm.NextIndex; specificShipPart++)
             {
                 for (int nextShipPart = specificShipPart + MainForm.NextIndex;
@@ -64,28 +64,43 @@ namespace SeaBattle
             }
         }
 
-        public void ShiftCoordinates(bool isHorizontal, bool Sum, ref int x, ref int y)
+        public void ShiftCoordinates(bool isHorizontal, bool Add, ref int x, ref int y)
         {
-            if (isHorizontal) 
-                ShiftCoordinate(ref x, Sum);
-            else 
-                ShiftCoordinate(ref y, Sum);
+            if (isHorizontal)
+                ShiftCoordinate(ref x, Add);
+            else
+                ShiftCoordinate(ref y, Add);
         }
 
-        private void ShiftCoordinate(ref int coordinate, bool Sum)
+        private void ShiftCoordinate(ref int coordinate, bool Add)
         {
-            coordinate = Sum ? ++coordinate : --coordinate;
+            coordinate = Add ? ++coordinate : --coordinate;
         }
 
-        private void SpawnShip(int size)
+        private void SpawnRandomShip(int size)
         {
-            const int oneSquareShipSize = 1;
             int x = 0, y = 0;
             bool canMakeShip = true, sameCoordinates = false,
                  fiftyFiftyChance = _random.Next(1, 3) == 1,
                  isHorizontal = fiftyFiftyChance;
             MakeCoordinatesRandom(ref x, ref y);
-            List<Point> coordinateCopies = new List<Point> { new Point(x, y) };
+            List<Point> shipCoordinates = GetShipCoordinates(size, x, y, isHorizontal, randomShip: true);
+            for (int i = 0; i < size; i++)
+            {
+                if (Field[shipCoordinates[i].X, shipCoordinates[i].Y].CanMakeShip()) continue;
+                canMakeShip = false;
+            }
+            CheckForSameLocatedShips(ref sameCoordinates, size, shipCoordinates);
+            if (canMakeShip && !sameCoordinates)
+                DeclareShip(shipCoordinates);
+            else
+                SpawnRandomShip(size);
+        }
+
+        protected List<Point> GetShipCoordinates(int size, int x, int y, bool isHorizontal, bool randomShip)
+        {
+            const int oneSquareShipSize = 1;
+            List<Point> shipCoordinates = new List<Point> { new Point(x, y) };
             if (size > oneSquareShipSize)
             {
                 for (int i = oneSquareShipSize; i < size; i++)
@@ -93,30 +108,23 @@ namespace SeaBattle
                     int sizeToCheck = _fieldSize - size - oneSquareShipSize,
                         coordinateToCheck = isHorizontal ? x : y;
                     bool insideField = coordinateToCheck < sizeToCheck;
-                    ShiftCoordinates(isHorizontal, insideField, ref x, ref y);
-                    coordinateCopies.Add(new Point(x, y));
+                    ShiftCoordinates(isHorizontal, randomShip ? insideField : _mainForm.ChosenShipIsHorizontal, ref x, ref y);
+                    shipCoordinates.Add(new Point(x, y));
                 }
             }
-            for (int i = 0; i < size; i++)
-            {
-                if (Field[coordinateCopies[i].X, coordinateCopies[i].Y].CanMakeShip()) continue;
-                canMakeShip = false;
-            }
-            CheckForSameLocatedShips(ref sameCoordinates, size, coordinateCopies);
-            if (canMakeShip && !sameCoordinates) 
-                DeclareShip(size, coordinateCopies);
-            else 
-                SpawnShip(size);
+            return shipCoordinates;
         }
 
-        private void DeclareShip(int size, List<Point> coordinatesCopies)
+        protected Ship DeclareShip(List<Point> shipCoordinates)
         {
-            List<ShipButton> shipButtonList = new List<ShipButton>();
+            int size = shipCoordinates.Count;
+            List<ShipButton> shipParts = new List<ShipButton>();
             for (int i = 0; i < size; i++)
-                shipButtonList.Add(Field[coordinatesCopies[i].X, coordinatesCopies[i].Y]);
-            Ship ship = new Ship(shipButtonList);
+                shipParts.Add(Field[shipCoordinates[i].X, shipCoordinates[i].Y]);
+            Ship ship = new Ship(shipParts);
             for (int i = 0; i < size; i++)
-                MakeShipPart(coordinatesCopies[i].X, coordinatesCopies[i].Y, ship);
+                MakeShipPart(shipCoordinates[i].X, shipCoordinates[i].Y, ship);
+            return ship;
         }
 
         public bool CheckDeath()
@@ -136,7 +144,7 @@ namespace SeaBattle
         private void OccupyAroundShip(int x, int y)
         {
             foreach (Point point in _fieldController.GetCoordinatesAround(x, y))
-                Field[point.X, point.Y].Mark(x, y, Field);
+                Field[point.X, point.Y].Mark(shipFrom: Field[x, y].ShipFrom);
         }
     }
 }

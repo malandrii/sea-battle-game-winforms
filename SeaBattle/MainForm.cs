@@ -223,7 +223,7 @@ namespace SeaBattle
                     else ButtonColorToStandart(_user.Field[x, y]);
                 }
                 _user.ShiftCoordinates(isHorizontal: ChosenShipIsHorizontal,
-                    Sum: ChosenShipIsHorizontal, ref x, ref y);
+                    Add: ChosenShipIsHorizontal, ref x, ref y);
             }
         }
 

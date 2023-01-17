@@ -20,41 +20,24 @@ namespace SeaBattle
 
         public void SetShip(ShipButton senderShipButton)
         {
-            int x = senderShipButton.X,
-                y = senderShipButton.Y,
-                xCopy = x,
-                yCopy = y;
-            List<ShipButton> shipParts = new List<ShipButton>();
-            TuneShip(ref x, ref y, new Ship(shipParts), setButtons: true);
-            y = yCopy; x = xCopy;
-            TuneShip(ref x, ref y, new Ship(shipParts), setButtons: false);
+            List<Point> shipCoordinates = GetShipCoordinates(size: _mainForm.ChosenSize, 
+                senderShipButton.X, senderShipButton.Y, 
+                isHorizontal: _mainForm.ChosenShipIsHorizontal, randomShip: false);
+
+            Ship newPlayerShip = DeclareShip(shipCoordinates);
+            foreach (ShipButton shipPart in newPlayerShip.ShipParts)
+                shipPart.BackColor = Color.Blue;
+
+            foreach (var shipButton in newPlayerShip.ShipParts)
+                shipButton.Enabled = false;
+            foreach (var shipButton in newPlayerShip.MarkedParts)
+                shipButton.Enabled = false;
         }
 
         public void UnableField()
         {
             foreach (ShipButton button in Field) 
                 button.Enabled = false;
-        }
-
-        private void TuneShip(ref int x, ref int y, Ship newPlayerShip, bool setButtons)
-        {
-            for (int i = 0; i < _mainForm.ChosenSize; i++)
-            {
-                Field[x, y].IsShipPart = true;
-                if (setButtons)
-                {
-                    Field[x, y].Enabled = false;
-                    Field[x, y].BackColor = Color.Blue;
-                    newPlayerShip.ShipParts.Add(Field[x, y]);
-                }
-                else
-                {
-                    MakeShipPart(x, y, newPlayerShip);
-                    newPlayerShip.MakeShipUnabled();
-                }
-                ShiftCoordinates(isHorizontal: _mainForm.ChosenShipIsHorizontal,
-                        Sum: _mainForm.ChosenShipIsHorizontal, ref x, ref y);
-            }
         }
 
         public void Attack(object sender)

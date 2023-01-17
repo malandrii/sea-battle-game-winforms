@@ -31,11 +31,10 @@ namespace SeaBattle
             return (!IsShipPart && !_marked);
         }
 
-        public void Mark(int y, int x, ShipButton[,] field)
+        public void Mark(Ship shipFrom)
         {
-            if (IsShipPart) return;
             _marked = true;
-            field[y, x].ShipFrom.MarkedParts.Add(this);
+            shipFrom.MarkedParts.Add(this);
         }
 
         public void RefreshMarking(bool mark)
