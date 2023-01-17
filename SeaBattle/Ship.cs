@@ -27,18 +27,16 @@ namespace SeaBattle
 
         public void Death()
         {
-            foreach (ShipButton shipPart in ShipParts) 
+            foreach (ShipButton shipPart in ShipParts)
                 shipPart.BackColor = Color.Red;
             for (int i = 0; i < MarkedParts.Count; i++)
             {
                 foreach (ShipButton button in MarkedParts)
                 {
-                    if (!MarkedParts[i].IsShipPart)
-                    {
-                        button.IsShot = true;
-                        MarkedParts[i].Text = ShipButton.ShotText;
-                        MarkedParts[i].Enabled = false;
-                    }
+                    if (MarkedParts[i].IsShipPart) continue;
+                    button.IsShot = true;
+                    MarkedParts[i].Text = ShipButton.ShotText;
+                    MarkedParts[i].Enabled = false;
                 }
             }
         }

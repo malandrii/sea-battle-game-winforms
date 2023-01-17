@@ -32,7 +32,8 @@ namespace SeaBattle
 
         public void UnableField()
         {
-            foreach (ShipButton button in Field) button.Enabled = false;
+            foreach (ShipButton button in Field) 
+                button.Enabled = false;
         }
 
         private void TuneShip(ref int x, ref int y, Ship newPlayerShip, bool setButtons)
@@ -61,7 +62,7 @@ namespace SeaBattle
             bool canMove = !_mainForm.ComputerMovingLabelVisible;
             if (!canMove) return;
             _mainForm.SetFocus();
-            ShipButton senderButton = (ShipButton)sender;
+            ShipButton senderButton = sender as ShipButton;
             senderButton.Enabled = false;
             senderButton.Shoot();
             if (!senderButton.IsShipPart)
