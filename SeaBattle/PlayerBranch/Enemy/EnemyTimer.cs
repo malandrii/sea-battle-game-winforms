@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace SeaBattle
 {
-    public class EnemyTimer : Timer
+    sealed public class EnemyTimer : Timer
     {
         private readonly Enemy _enemy;
         private readonly FieldController _fieldController;

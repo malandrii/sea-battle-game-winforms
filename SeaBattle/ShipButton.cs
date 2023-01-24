@@ -3,16 +3,13 @@ using System.Drawing;
 
 namespace SeaBattle
 {
-    public class ShipButton : Button
+    sealed public class ShipButton : Button
     {
         private const string ShotShipPartText = "X";
         public const string ShotText = ".";
         private bool _marked = false;
-        public bool IsShipPart { get; set; } = false;
-        public bool IsShot { get; set; } = false;
-        public Ship ShipFrom { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
+        private int _x;
+        private int _y;
 
         public ShipButton(int x, int y)
         {
@@ -20,15 +17,33 @@ namespace SeaBattle
             Y = y;
         }
 
+        public Ship ShipFrom { get; set; }
+        public int X
+        {
+            get => _x;
+            private set
+            {
+                if (FieldController.IsCoordinateInsideField(value))
+                    _x = value;
+            }
+        }
+        public int Y
+        {
+            get => _y;
+            private set
+            {
+                if (FieldController.IsCoordinateInsideField(value))
+                    _y = value;
+            }
+        }
+        public bool IsShipPart { get; set; } = false;
+        public bool IsShot { get; set; } = false;
+        public bool CanMakeShip { get => !IsShipPart && !_marked; }
+
         public void Shoot()
         {
             IsShot = true;
             Text = IsShipPart ? ShotShipPartText : ShotText;
-        }
-
-        public bool CanMakeShip()
-        {
-            return (!IsShipPart && !_marked);
         }
 
         public void Mark(Ship shipFrom)
@@ -46,7 +61,7 @@ namespace SeaBattle
             }
             if (IsShot)
             {
-                BackColor = ShipFrom.IsDead() ? Color.Red : (mark ? Color.DarkRed : Color.Blue);
+                BackColor = ShipFrom.IsDead ? Color.Red : (mark ? Color.DarkRed : Color.Blue);
             }
         }
     }

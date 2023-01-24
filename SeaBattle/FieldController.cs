@@ -7,6 +7,7 @@ namespace SeaBattle
 {
     public class FieldController
     {
+        public const int StartingCoordinate = 0;
         public const int FieldSize = 10;
         private const int NextIndex = MainForm.NextIndex;
         private const string EnglishLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -14,13 +15,13 @@ namespace SeaBattle
         private List<Point> _coordinatesAround;
         private int _initialX;
         private int _initialY;
-        public int StartingCoordinate { get; } = 0;
-        public int ButtonSize { get; } = 30;
 
         public FieldController(MainForm mainForm)
         {
             _mainForm = mainForm;
         }
+
+        public int ButtonSize { get; } = 30;
 
         public void CreateField(ShipButton[,] field, int markingOffset)
         {
@@ -52,7 +53,7 @@ namespace SeaBattle
             return IsCoordinateInsideField(x) && IsCoordinateInsideField(y);
         }
 
-        public bool IsCoordinateInsideField(int coordinate)
+        public static bool IsCoordinateInsideField(int coordinate)
         {
             return coordinate >= StartingCoordinate && coordinate < FieldSize;
         }
@@ -99,13 +100,13 @@ namespace SeaBattle
         {
             int buttonSize = ButtonSize, doubleButtonSize = buttonSize * 2,
                 coordinateOffset = buttonSize * coordinate;
-            Label letter = new Label
+            var letter = new Label
             {
                 Location = new Point(doubleButtonSize + offset + coordinateOffset, buttonSize),
                 Text = Convert.ToString(EnglishLetters[coordinate]),
                 AutoSize = true
             };
-            Label digit = new Label
+            var digit = new Label
             {
                 Location = new Point(buttonSize + offset, doubleButtonSize + coordinateOffset),
                 Text = Convert.ToString(coordinate + MainForm.NextIndex),
