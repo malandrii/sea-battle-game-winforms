@@ -7,9 +7,10 @@ namespace SeaBattle
     public partial class MainForm : Form
     {
         private const int ProgressBarMaximumValue = 100;
-        private const int FirstIndex = 0;
-        public const string StandartLabelStatusText = "----";
+        private const int FirstIndex = FieldController.StartingCoordinate;
         public const int NextIndex = 1;
+        public const int ShipSizesAmount = 4;
+        public const string StandartLabelStatusText = "----";
         public static readonly Color StandartLabelStatusColor = Color.Black;
         private static int s_fieldSize;
         private Button[] _chooseSizeButtons;
@@ -18,6 +19,7 @@ namespace SeaBattle
         private User _user;
         private Enemy _enemy;
         private bool _makeSizeZero = false;
+        private int _chosenSize = 0;
         
         public MainForm()
         {
@@ -27,8 +29,15 @@ namespace SeaBattle
             comboBoxComputerMoveSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
-        public int ChosenSize { get; private set; } = 0;
-        public int ShipSizesAmount { get; } = 4;
+        public int ChosenSize 
+        { 
+            get => _chosenSize; 
+            private set 
+            { 
+                if (value >= FirstIndex && value <= ShipSizesAmount) 
+                    _chosenSize = value; 
+            } 
+        }
         public bool ChosenShipIsHorizontal { get; private set; } = false;
         public bool ComputerMovingLabelVisible { get; private set; } = false;
 
@@ -89,7 +98,7 @@ namespace SeaBattle
         {
             SetFocus();
             int chooseSizeButtonNumber = 0;
-            Button chosenButton = (Button)sender;
+            var chosenButton = (Button)sender;
             SetSizeChoosingButton(chosenButton, ref chooseSizeButtonNumber, firstCheck: true);
             SetSizeChoosingButton(chosenButton, ref chooseSizeButtonNumber, firstCheck: false);
         }
@@ -101,7 +110,7 @@ namespace SeaBattle
             {
                 if (!firstCheck)
                 {
-                    Label label = (Label)Controls[GetControlText("label", i + NextIndex)];
+                    var label = (Label)Controls[GetControlText("label", i + NextIndex)];
                     if (label.Text != FirstIndex.ToString() && i != chooseSizeButtonNumber)
                         ButtonColorToStandart(_chooseSizeButtons[i]);
                 }
@@ -137,7 +146,7 @@ namespace SeaBattle
         private void PlayerButton_Click(object sender, EventArgs e)
         {
             SetFocus();
-            ShipButton senderShipButton = sender as ShipButton;
+            var senderShipButton = sender as ShipButton;
             bool buttonChosen = senderShipButton.BackColor == Color.LightBlue;
             if (!buttonChosen) return;
             ChangeShipsLeft((Button)Controls[GetControlText("button", ChosenSize)],
@@ -203,7 +212,7 @@ namespace SeaBattle
             int previousSize = ChosenSize - NextIndex;
             bool spaceIsFree = ChosenShipIsHorizontal ?
                 (button.X + previousSize) < s_fieldSize :
-                (button.Y - previousSize) >= _fieldController.StartingCoordinate;
+                (button.Y - previousSize) >= FieldController.StartingCoordinate;
             ShipToAppear(button, ref spaceIsFree, toAppear, firstTest: true);
             ShipToAppear(button, ref spaceIsFree, toAppear, firstTest: false);
         }
@@ -255,7 +264,7 @@ namespace SeaBattle
 
         public void ShipButton_TextChanged(object sender, EventArgs e)
         {
-            ShipButton button = sender as ShipButton;
+            var button = sender as ShipButton;
             int fontSize = button.Text == "." ? 15 : 8;
             FontStyle fontStyle = button.Text == "." ? FontStyle.Bold : FontStyle.Regular;
             button.Font = new Font(button.Font.Name, fontSize, fontStyle);

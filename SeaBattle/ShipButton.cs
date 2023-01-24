@@ -8,6 +8,8 @@ namespace SeaBattle
         private const string ShotShipPartText = "X";
         public const string ShotText = ".";
         private bool _marked = false;
+        private int _x;
+        private int _y;
 
         public ShipButton(int x, int y)
         {
@@ -16,8 +18,24 @@ namespace SeaBattle
         }
 
         public Ship ShipFrom { get; set; }
-        public int X { get; private set; }
-        public int Y { get; private set; }
+        public int X
+        {
+            get => _x;
+            private set
+            {
+                if (FieldController.IsCoordinateInsideField(value))
+                    _x = value;
+            }
+        }
+        public int Y
+        {
+            get => _y;
+            private set
+            {
+                if (FieldController.IsCoordinateInsideField(value))
+                    _y = value;
+            }
+        }
         public bool IsShipPart { get; set; } = false;
         public bool IsShot { get; set; } = false;
         public bool CanMakeShip { get => !IsShipPart && !_marked; }

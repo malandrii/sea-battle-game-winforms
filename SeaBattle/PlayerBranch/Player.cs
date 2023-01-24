@@ -7,6 +7,7 @@ namespace SeaBattle
     public class Player
     {
         private static readonly Random _random = new Random();
+        private int _shipPartsAlive = 20;
         protected MainForm _mainForm;
         protected FieldController _fieldController;
         protected int _fieldSize;
@@ -19,7 +20,7 @@ namespace SeaBattle
             _fieldSize = FieldController.FieldSize;
         }
 
-        public int ShipPartsAlive { get; set; } = 20;
+        public int ShipPartsAlive { get => _shipPartsAlive; set { if (value >= 0) _shipPartsAlive = value; } }
         public ShipButton[,] Field { get; set; }
 
         public virtual void DeclareField()
@@ -35,7 +36,7 @@ namespace SeaBattle
 
         public void SpawnRandomShips()
         {
-            for (int specificSizeShipSpawnAmount = _mainForm.ShipSizesAmount;
+            for (int specificSizeShipSpawnAmount = MainForm.ShipSizesAmount;
                 specificSizeShipSpawnAmount > 0; specificSizeShipSpawnAmount--)
             {
                 int shipSize = 1;
@@ -101,7 +102,7 @@ namespace SeaBattle
         protected List<Point> GetShipCoordinates(int size, int x, int y, bool isHorizontal, bool randomShip)
         {
             const int oneSquareShipSize = 1;
-            List<Point> shipCoordinates = new List<Point> { new Point(x, y) };
+            var shipCoordinates = new List<Point> { new Point(x, y) };
             if (size > oneSquareShipSize)
             {
                 for (int i = oneSquareShipSize; i < size; i++)
@@ -119,7 +120,7 @@ namespace SeaBattle
         protected Ship DeclareShip(List<Point> shipCoordinates)
         {
             int size = shipCoordinates.Count;
-            List<ShipButton> shipParts = new List<ShipButton>();
+            var shipParts = new List<ShipButton>();
             for (int i = 0; i < size; i++)
                 shipParts.Add(Field[shipCoordinates[i].X, shipCoordinates[i].Y]);
             Ship ship = new Ship(shipParts);
