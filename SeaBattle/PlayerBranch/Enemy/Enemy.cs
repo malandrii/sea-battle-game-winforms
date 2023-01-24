@@ -10,8 +10,6 @@ namespace SeaBattle
         private readonly EnemyAI _enemyAI;
         private int _xToAttack = 0;
         private int _yToAttack = 0;
-        public bool RandomMoves { get; set; } = false;
-        public bool MarkMoves { get; set; } = true;
 
         public Enemy(MainForm mainForm, User user) : base(mainForm)
         {
@@ -22,6 +20,9 @@ namespace SeaBattle
             _attackTimer = new EnemyTimer(this, _fieldController, mainForm);
             _enemyAI = new EnemyAI(this, _fieldController);
         }
+
+        public bool RandomMoves { get; set; } = false;
+        public bool MarkMoves { private get; set; } = true;
 
         public override void DeclareField()
         {
@@ -73,7 +74,7 @@ namespace SeaBattle
             _enemyAI.FoundUserShip = true;
             buttonToAttack.ShipFrom.TakeDamage();
             _user.ShipPartsAlive--;
-            if (buttonToAttack.ShipFrom.IsDead())
+            if (buttonToAttack.ShipFrom.IsDead)
             {
                 buttonToAttack.ShipFrom.Death();
                 _enemyAI.ResetVariables();

@@ -14,13 +14,14 @@ namespace SeaBattle
         private List<Point> _coordinatesAround;
         private int _initialX;
         private int _initialY;
-        public int StartingCoordinate { get; } = 0;
-        public int ButtonSize { get; } = 30;
 
         public FieldController(MainForm mainForm)
         {
             _mainForm = mainForm;
         }
+
+        public int StartingCoordinate { get; } = 0;
+        public int ButtonSize { get; } = 30;
 
         public void CreateField(ShipButton[,] field, int markingOffset)
         {

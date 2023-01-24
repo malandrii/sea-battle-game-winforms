@@ -8,7 +8,9 @@ namespace SeaBattle
     {
         private const int ProgressBarMaximumValue = 100;
         private const int FirstIndex = 0;
+        public const string StandartLabelStatusText = "----";
         public const int NextIndex = 1;
+        public static readonly Color StandartLabelStatusColor = Color.Black;
         private static int s_fieldSize;
         private Button[] _chooseSizeButtons;
         private Label[] _chooseSizeLabels;
@@ -16,13 +18,7 @@ namespace SeaBattle
         private User _user;
         private Enemy _enemy;
         private bool _makeSizeZero = false;
-        public static string StandartLabelStatusText { get; } = "----";
-        public static Color StandartLabelStatusColor { get; } = Color.Black;
-        public int ChosenSize { get; set; } = 0;
-        public int ShipSizesAmount { get; } = 4;
-        public bool ChosenShipIsHorizontal { get; set; } = false;
-        public bool ComputerMovingLabelVisible { get; set; } = false;
-
+        
         public MainForm()
         {
             InitializeComponent();
@@ -30,6 +26,11 @@ namespace SeaBattle
             comboBoxComputerMoveSpeed.SelectedIndex = mediumSpeedSelectedIndex;
             comboBoxComputerMoveSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
         }
+
+        public int ChosenSize { get; private set; } = 0;
+        public int ShipSizesAmount { get; } = 4;
+        public bool ChosenShipIsHorizontal { get; private set; } = false;
+        public bool ComputerMovingLabelVisible { get; private set; } = false;
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -55,7 +56,7 @@ namespace SeaBattle
                     new EventHandler(ToolStripItemToChooseSpeed_Click);
             }
             DeclarePlayers();
-            SetButtonEvents();
+            SetButtonsEvents();
             _enemy.MarkMoves = MarkComputerMovesToolStripMenuItem.Checked;
         }
 
@@ -73,7 +74,7 @@ namespace SeaBattle
             return (controlName + (index) + "x").ToString();
         }
 
-        private void SetButtonEvents()
+        private void SetButtonsEvents()
         {
             foreach (ShipButton shipButton in _user.Field)
             {

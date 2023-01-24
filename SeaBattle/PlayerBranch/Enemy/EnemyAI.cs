@@ -16,10 +16,7 @@ namespace SeaBattle
         private bool _firstCheck = true;
         private bool _shipHorizontalitySet = false;
         private bool _shipIsHorizontal;
-        public bool FoundUserShip { get; set; } = false;
-        public bool HorizontalityDefined { get; set; } = false;
-        public bool ChangeGuessingAttackSide { get; set; } = false;
-        public bool ChangeDefinedAttackSide { get; set; } = false;
+        private bool _changeGuessingAttackSide = false;
 
         public EnemyAI(Enemy enemy, FieldController fieldController)
         {
@@ -32,6 +29,10 @@ namespace SeaBattle
                 new Point(crossDownLeft, 0),
                 new Point(0, crossDownLeft) };
         }
+
+        public bool FoundUserShip { get; set; } = false;
+        public bool HorizontalityDefined { get; set; } = false;
+        public bool ChangeDefinedAttackSide { private get; set; } = false;
 
         public void SetButtonsAroundButtonToAttack(ShipButton button, ShipButton[,] Field)
         {
@@ -85,13 +86,13 @@ namespace SeaBattle
                 return;
             }
             if (!_shipHorizontalitySet) SetHorizontality(x, y);
-            _enemy.ShiftCoordinates(_shipIsHorizontal, ChangeGuessingAttackSide, ref x, ref y);
+            _enemy.ShiftCoordinates(_shipIsHorizontal, _changeGuessingAttackSide, ref x, ref y);
             bool needSideChange = !_enemyFieldController.AreCoordinatesInsideField(x, y)
                 || ChangeDefinedAttackSide || _userField[x, y].IsShot;
             if (needSideChange)
             {
                 ChangeTurningToOtherSide(ref x, ref y);
-                _enemy.ShiftCoordinates(_shipIsHorizontal, ChangeGuessingAttackSide, ref x, ref y);
+                _enemy.ShiftCoordinates(_shipIsHorizontal, _changeGuessingAttackSide, ref x, ref y);
                 ChangeDefinedAttackSide = false;
             }
         }
@@ -99,7 +100,7 @@ namespace SeaBattle
         private void SetHorizontality(int x, int y)
         {
             _shipIsHorizontal = _userField[x, y].X != _foundShipButton.X;
-            ChangeGuessingAttackSide = _shipIsHorizontal ?
+            _changeGuessingAttackSide = _shipIsHorizontal ?
                 _foundShipButton.X < x : _foundShipButton.Y < y;
             _shipHorizontalitySet = true;
         }
@@ -108,7 +109,7 @@ namespace SeaBattle
         {
             x = _foundShipButton.X;
             y = _foundShipButton.Y;
-            ChangeGuessingAttackSide = !ChangeGuessingAttackSide;
+            _changeGuessingAttackSide = !_changeGuessingAttackSide;
         }
     }
 }

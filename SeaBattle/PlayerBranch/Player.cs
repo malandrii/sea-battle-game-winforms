@@ -11,8 +11,6 @@ namespace SeaBattle
         protected FieldController _fieldController;
         protected int _fieldSize;
         protected int _markingOffset;
-        public int ShipPartsAlive { get; set; } = 20;
-        public ShipButton[,] Field { get; set; }
 
         public Player(MainForm mainForm)
         {
@@ -20,6 +18,9 @@ namespace SeaBattle
             _fieldController = new FieldController(_mainForm);
             _fieldSize = FieldController.FieldSize;
         }
+
+        public int ShipPartsAlive { get; set; } = 20;
+        public ShipButton[,] Field { get; set; }
 
         public virtual void DeclareField()
         {
@@ -87,7 +88,7 @@ namespace SeaBattle
             List<Point> shipCoordinates = GetShipCoordinates(size, x, y, isHorizontal, randomShip: true);
             for (int i = 0; i < size; i++)
             {
-                if (Field[shipCoordinates[i].X, shipCoordinates[i].Y].CanMakeShip()) continue;
+                if (Field[shipCoordinates[i].X, shipCoordinates[i].Y].CanMakeShip) continue;
                 canMakeShip = false;
             }
             CheckForSameLocatedShips(ref sameCoordinates, size, shipCoordinates);

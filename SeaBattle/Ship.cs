@@ -7,8 +7,6 @@ namespace SeaBattle
     public class Ship
     {
         private int _size;
-        public List<ShipButton> ShipParts { get; set; }
-        public List<ShipButton> MarkedParts { get; set; } = new List<ShipButton>();
 
         public Ship(List<ShipButton> shipParts)
         {
@@ -16,14 +14,13 @@ namespace SeaBattle
             ShipParts = shipParts;
         }
 
+        public List<ShipButton> ShipParts { get; private set; }
+        public List<ShipButton> MarkedParts { get; set; } = new List<ShipButton>();
+        public bool IsDead { get => _size == 0; }
+
         public void TakeDamage()
         {
             if (_size != 0) _size--;
-        }
-
-        public bool IsDead()
-        {
-            return _size == 0;
         }
 
         public void Death()

@@ -58,7 +58,7 @@ namespace SeaBattle
             senderButton.ShipFrom.TakeDamage();
             _enemy.ShipPartsAlive--;
             _mainForm.SetLabelStatus("Hit", Color.DarkRed);
-            if (senderButton.ShipFrom.IsDead())
+            if (senderButton.ShipFrom.IsDead)
             {
                 _mainForm.SetLabelStatus("Dead", Color.Red);
                 senderButton.ShipFrom.Death();
