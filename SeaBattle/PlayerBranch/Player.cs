@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SeaBattle
 {
-    public class Player
+    abstract public class Player
     {
         private static readonly Random _random = new Random();
         private int _shipPartsAlive = 20;

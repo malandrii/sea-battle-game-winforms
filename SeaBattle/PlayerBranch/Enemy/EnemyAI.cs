@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace SeaBattle
 {
-    public class EnemyAI
+    sealed public class EnemyAI
     {
         private static readonly Random _random = new Random();
         private static Point[] _crossCoordiantesOffset;
