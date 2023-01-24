@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace SeaBattle
 {
-    public class Enemy : Player
+    sealed public class Enemy : Player
     {
         private readonly User _user;
         private readonly EnemyTimer _attackTimer;

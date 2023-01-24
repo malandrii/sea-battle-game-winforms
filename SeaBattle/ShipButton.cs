@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace SeaBattle
 {
-    public class ShipButton : Button
+    sealed public class ShipButton : Button
     {
         private const string ShotShipPartText = "X";
         public const string ShotText = ".";

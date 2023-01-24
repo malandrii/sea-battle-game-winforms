@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace SeaBattle
 {
-    public class User : Player
+    sealed public class User : Player
     {
         private Enemy _enemy;
 
