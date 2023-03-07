@@ -69,14 +69,7 @@ namespace SeaBattle
 
         public void ShiftCoordinates(bool isHorizontal, bool Add, ref int x, ref int y)
         {
-            if (isHorizontal)
-                ShiftCoordinate(ref x, Add);
-            else
-                ShiftCoordinate(ref y, Add);
-        }
-
-        private void ShiftCoordinate(ref int coordinate, bool Add)
-        {
+            ref int coordinate = ref isHorizontal ? ref x : ref y;
             coordinate = Add ? ++coordinate : --coordinate;
         }
 

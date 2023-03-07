@@ -24,9 +24,6 @@ namespace SeaBattle
         public MainForm()
         {
             InitializeComponent();
-            const int mediumSpeedSelectedIndex = 1;
-            comboBoxComputerMoveSpeed.SelectedIndex = mediumSpeedSelectedIndex;
-            comboBoxComputerMoveSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         public int ChosenSize 
@@ -47,6 +44,9 @@ namespace SeaBattle
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            const int mediumSpeedSelectedIndex = 1;
+            comboBoxComputerMoveSpeed.SelectedIndex = mediumSpeedSelectedIndex;
+            comboBoxComputerMoveSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
             StartGame();
         }
 

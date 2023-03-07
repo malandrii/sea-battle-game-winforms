@@ -17,7 +17,7 @@ namespace SeaBattle
             _markingOffset = enemyMarkingOffset;
             _user = user;
             Field = new ShipButton[_fieldSize, _fieldSize];
-            _attackTimer = new EnemyTimer(this, _fieldController, mainForm);
+            _attackTimer = new EnemyTimer(this, mainForm);
             _enemyAI = new EnemyAI(this, _fieldController);
         }
 
@@ -27,7 +27,7 @@ namespace SeaBattle
 
         public override void DeclareField()
         {
-            _fieldController.CreateField(Field, _markingOffset);
+            base.DeclareField();
             foreach (ShipButton shipButton in Field)
             {
                 shipButton.Click += new EventHandler(Button_Click);
@@ -43,7 +43,7 @@ namespace SeaBattle
             _mainForm.SetLabelComputerMoveVisibility(visible: true);
         }
 
-        public void ContinueTheAttack()
+        public void ContinueAttack()
         {
             _enemyAI.SetAttackCoordinates(ref _xToAttack, ref _yToAttack);
             ShipButton buttonToAttack = _user.Field[_xToAttack, _yToAttack];
@@ -53,7 +53,7 @@ namespace SeaBattle
                     _enemyAI.ChangeDefinedAttackSide = true;
                 if (RandomMoves || !_enemyAI.FoundUserShip)
                 {
-                    ContinueTheAttack();
+                    ContinueAttack();
                     return;
                 }
             }

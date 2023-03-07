@@ -7,10 +7,11 @@ namespace SeaBattle
 {
     public class FieldController
     {
+        private const string EnglishLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private const int NextIndex = MainForm.NextIndex;
         public const int StartingCoordinate = 0;
         public const int FieldSize = 10;
-        private const int NextIndex = MainForm.NextIndex;
-        private const string EnglishLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public const int ButtonSize = 30;
         private readonly MainForm _mainForm;
         private List<Point> _coordinatesAround;
         private int _initialX;
@@ -20,8 +21,6 @@ namespace SeaBattle
         {
             _mainForm = mainForm;
         }
-
-        public int ButtonSize { get; } = 30;
 
         public void CreateField(ShipButton[,] field, int markingOffset)
         {
