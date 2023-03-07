@@ -24,9 +24,6 @@ namespace SeaBattle
         public MainForm()
         {
             InitializeComponent();
-            const int mediumSpeedSelectedIndex = 1;
-            comboBoxComputerMoveSpeed.SelectedIndex = mediumSpeedSelectedIndex;
-            comboBoxComputerMoveSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         public int ChosenSize 
@@ -38,11 +35,18 @@ namespace SeaBattle
                     _chosenSize = value; 
             } 
         }
+
+        public int ComputerMoveSpeedSelectedIndex { get => comboBoxComputerMoveSpeed.SelectedIndex; }
+
         public bool ChosenShipIsHorizontal { get; private set; } = false;
+
         public bool ComputerMovingLabelVisible { get; private set; } = false;
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            const int mediumSpeedSelectedIndex = 1;
+            comboBoxComputerMoveSpeed.SelectedIndex = mediumSpeedSelectedIndex;
+            comboBoxComputerMoveSpeed.DropDownStyle = ComboBoxStyle.DropDownList;
             StartGame();
         }
 
@@ -306,11 +310,6 @@ namespace SeaBattle
             checkBoxMarkEnemyMoves.Checked = MarkComputerMovesToolStripMenuItem.Checked;
             foreach (ShipButton button in _user.Field)
                 button.RefreshMarking(MarkComputerMovesToolStripMenuItem.Checked);
-        }
-
-        public int GetComputerMoveSpeedSelectedIndex()
-        {
-            return comboBoxComputerMoveSpeed.SelectedIndex;
         }
 
         public void SetFocus()

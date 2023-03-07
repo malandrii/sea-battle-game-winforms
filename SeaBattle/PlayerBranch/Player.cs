@@ -21,6 +21,7 @@ namespace SeaBattle
         }
 
         public int ShipPartsAlive { get => _shipPartsAlive; set { if (value >= 0) _shipPartsAlive = value; } }
+
         public ShipButton[,] Field { get; set; }
 
         public virtual void DeclareField()
@@ -68,14 +69,7 @@ namespace SeaBattle
 
         public void ShiftCoordinates(bool isHorizontal, bool Add, ref int x, ref int y)
         {
-            if (isHorizontal)
-                ShiftCoordinate(ref x, Add);
-            else
-                ShiftCoordinate(ref y, Add);
-        }
-
-        private void ShiftCoordinate(ref int coordinate, bool Add)
-        {
+            ref int coordinate = ref isHorizontal ? ref x : ref y;
             coordinate = Add ? ++coordinate : --coordinate;
         }
 

@@ -18,6 +18,7 @@ namespace SeaBattle
         }
 
         public Ship ShipFrom { get; set; }
+
         public int X
         {
             get => _x;
@@ -27,6 +28,7 @@ namespace SeaBattle
                     _x = value;
             }
         }
+
         public int Y
         {
             get => _y;
@@ -36,8 +38,11 @@ namespace SeaBattle
                     _y = value;
             }
         }
+
         public bool IsShipPart { get; set; } = false;
+
         public bool IsShot { get; set; } = false;
+
         public bool CanMakeShip { get => !IsShipPart && !_marked; }
 
         public void Shoot()

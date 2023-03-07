@@ -6,13 +6,12 @@ namespace SeaBattle
 {
     sealed public class EnemyAI
     {
-        private static readonly Random _random = new Random();
         private static Point[] _crossCoordiantesOffset;
         private readonly Enemy _enemy;
         private readonly FieldController _enemyFieldController;
+        private List<ShipButton> _buttonsAround;
         private ShipButton[,] _userField;
         private ShipButton _foundShipButton;
-        private List<ShipButton> _buttonsAround;
         private bool _firstCheck = true;
         private bool _shipHorizontalitySet = false;
         private bool _shipIsHorizontal;
@@ -31,7 +30,9 @@ namespace SeaBattle
         }
 
         public bool FoundUserShip { get; set; } = false;
+
         public bool HorizontalityDefined { get; set; } = false;
+
         public bool ChangeDefinedAttackSide { private get; set; } = false;
 
         public void SetButtonsAroundButtonToAttack(ShipButton button, ShipButton[,] Field)
@@ -79,7 +80,7 @@ namespace SeaBattle
         {
             if (!HorizontalityDefined)
             {
-                ShipButton randomButtonAround = _buttonsAround[_random.Next(0, _buttonsAround.Count)];
+                ShipButton randomButtonAround = _buttonsAround[new Random().Next(0, _buttonsAround.Count)];
                 x = randomButtonAround.X;
                 y = randomButtonAround.Y;
                 _buttonsAround.Remove(randomButtonAround);

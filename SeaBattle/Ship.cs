@@ -14,7 +14,9 @@ namespace SeaBattle
         }
 
         public List<ShipButton> ShipParts { get; private set; }
+
         public List<ShipButton> MarkedParts { get; set; } = new List<ShipButton>();
+
         public bool IsDead { get => _size == 0; }
 
         public void TakeDamage()
