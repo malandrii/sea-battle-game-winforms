@@ -22,6 +22,7 @@ namespace SeaBattle
         }
 
         public bool RandomMoves { get; set; } = false;
+
         public bool MarkMoves { private get; set; } = true;
 
         public override void DeclareField()

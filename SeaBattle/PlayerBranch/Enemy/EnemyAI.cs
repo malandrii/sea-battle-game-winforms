@@ -31,7 +31,9 @@ namespace SeaBattle
         }
 
         public bool FoundUserShip { get; set; } = false;
+
         public bool HorizontalityDefined { get; set; } = false;
+
         public bool ChangeDefinedAttackSide { private get; set; } = false;
 
         public void SetButtonsAroundButtonToAttack(ShipButton button, ShipButton[,] Field)

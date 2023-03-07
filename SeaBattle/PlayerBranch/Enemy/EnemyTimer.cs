@@ -29,7 +29,7 @@ namespace SeaBattle
         {
             const int computerMovesSpeedCount = 4;
             int tickAmountFromSpeed = ((computerMovesSpeedCount - MainForm.NextIndex
-                - _mainForm.GetComputerMoveSpeedSelectedIndex())
+                - _mainForm.ComputerMoveSpeedSelectedIndex)
                 * _fieldController.ButtonSize) + MainForm.NextIndex;
             if (_timerTicks == tickAmountFromSpeed)
             {

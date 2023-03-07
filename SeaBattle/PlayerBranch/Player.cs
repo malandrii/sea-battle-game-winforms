@@ -21,6 +21,7 @@ namespace SeaBattle
         }
 
         public int ShipPartsAlive { get => _shipPartsAlive; set { if (value >= 0) _shipPartsAlive = value; } }
+
         public ShipButton[,] Field { get; set; }
 
         public virtual void DeclareField()
