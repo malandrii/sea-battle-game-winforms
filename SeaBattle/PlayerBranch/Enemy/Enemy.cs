@@ -74,7 +74,7 @@ namespace SeaBattle
             if (_enemyAI.FoundUserShip) _enemyAI.HorizontalityDefined = true;
             _enemyAI.FoundUserShip = true;
             buttonToAttack.ShipFrom.TakeDamage();
-            _user.ShipPartsAlive--;
+            _user.TakeDamage();
             if (buttonToAttack.ShipFrom.IsDead)
             {
                 buttonToAttack.ShipFrom.Death();
