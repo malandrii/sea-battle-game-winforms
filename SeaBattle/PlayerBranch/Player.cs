@@ -20,13 +20,18 @@ namespace SeaBattle
             _fieldSize = FieldController.FieldSize;
         }
 
-        public int ShipPartsAlive { get => _shipPartsAlive; set { if (value >= 0) _shipPartsAlive = value; } }
+        public int ShipPartsAlive { get => _shipPartsAlive; protected set { if (value >= 0) _shipPartsAlive = value; } }
 
         public ShipButton[,] Field { get; set; }
 
         public virtual void DeclareField()
         {
             _fieldController.CreateField(Field, _markingOffset);
+        }
+
+        public void TakeDamage()
+        {
+            ShipPartsAlive--;
         }
 
         public void MakeCoordinatesRandom(ref int x, ref int y)
