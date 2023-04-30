@@ -42,7 +42,7 @@ namespace SeaBattle
 
         public void Attack(object sender)
         {
-            bool canMove = !_mainForm.ComputerMovingLabelVisible;
+            bool canMove = !_mainForm.ComputerTurnLabelVisible;
             if (!canMove) return;
             _mainForm.SetFocus();
             ShipButton senderButton = sender as ShipButton;
@@ -52,7 +52,7 @@ namespace SeaBattle
             {
                 _mainForm.SetLabelStatus(MainForm.StandartLabelStatusText,
                     MainForm.StandartLabelStatusColor);
-                if (!_enemy.CheckDeath() && !CheckDeath()) _enemy.StartAttack();
+                if (!_enemy.CheckDeath() && !CheckDeath()) _enemy.StartNewAttack();
                 return;
             }
             senderButton.ShipFrom.TakeDamage();

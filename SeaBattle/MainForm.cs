@@ -40,7 +40,7 @@ namespace SeaBattle
 
         public bool ChosenShipIsHorizontal { get; private set; } = false;
 
-        public bool ComputerMovingLabelVisible { get; private set; } = false;
+        public bool ComputerTurnLabelVisible { get; private set; } = false;
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -56,6 +56,14 @@ namespace SeaBattle
             ContextMenuStrip.Items[FirstIndex].Text = clearFieldButtonText;
             _fieldController = new FieldController(this);
             s_fieldSize = FieldController.FieldSize;
+            CreateShipSizeChoosingPanel();
+            DeclarePlayers();
+            SetButtonsEvents();
+            _enemy.MarkMoves = MarkComputerMovesToolStripMenuItem.Checked;
+        }
+
+        private void CreateShipSizeChoosingPanel()
+        {
             _chooseSizeButtons = new Button[ShipSizesAmount];
             _chooseSizeLabels = new Label[ShipSizesAmount];
             for (int shipSizeIndex = 0; shipSizeIndex < ShipSizesAmount; shipSizeIndex++)
@@ -64,13 +72,10 @@ namespace SeaBattle
                     (Button)Controls[GetControlText("button", shipSizeIndex + NextIndex)];
                 _chooseSizeLabels[shipSizeIndex] =
                     (Label)Controls[GetControlText("label", shipSizeIndex + NextIndex)];
-                _chooseSizeButtons[shipSizeIndex].Click += new EventHandler(ButtonToChooseSize_Click);
+                _chooseSizeButtons[shipSizeIndex].Click += new EventHandler(ButtonToChooseShipSize_Click);
                 ComputerMovesSpeedToolStripMenuItem.DropDownItems[shipSizeIndex].Click +=
-                    new EventHandler(ToolStripItemToChooseSpeed_Click);
+                    new EventHandler(ToolStripItemToChooseComputerSpeed_Click);
             }
-            DeclarePlayers();
-            SetButtonsEvents();
-            _enemy.MarkMoves = MarkComputerMovesToolStripMenuItem.Checked;
         }
 
         private void DeclarePlayers()
@@ -98,36 +103,29 @@ namespace SeaBattle
             }
         }
 
-        private void ButtonToChooseSize_Click(object sender, EventArgs e)
+        private void ButtonToChooseShipSize_Click(object sender, EventArgs e)
         {
             SetFocus();
             int chooseSizeButtonNumber = 0;
             var chosenButton = (Button)sender;
-            SetSizeChoosingButton(chosenButton, ref chooseSizeButtonNumber, firstCheck: true);
-            SetSizeChoosingButton(chosenButton, ref chooseSizeButtonNumber, firstCheck: false);
+            SetShipSizeChoosingButtonsColors(chosenButton, ref chooseSizeButtonNumber);
         }
 
-        private void SetSizeChoosingButton(Button chosenButton, ref int chooseSizeButtonNumber,
-            bool firstCheck)
+        private void SetShipSizeChoosingButtonsColors(Button chosenButton, ref int chooseSizeButtonNumber)
         {
             for (int i = 0; i < ShipSizesAmount; i++)
             {
-                if (!firstCheck)
-                {
-                    var label = (Label)Controls[GetControlText("label", i + NextIndex)];
-                    if (label.Text != FirstIndex.ToString() && i != chooseSizeButtonNumber)
-                        ButtonColorToStandart(_chooseSizeButtons[i]);
-                }
-                else if (chosenButton == _chooseSizeButtons[i])
+                if (chosenButton == _chooseSizeButtons[i])
                 {
                     ChosenSize = i + NextIndex;
                     _chooseSizeButtons[i].BackColor = Color.LightSkyBlue;
                     chooseSizeButtonNumber = i;
                 }
+                else FieldController.ButtonColorToStandart(_chooseSizeButtons[i]);
             }
         }
 
-        private void ToolStripItemToChooseSpeed_Click(object sender, EventArgs e)
+        private void ToolStripItemToChooseComputerSpeed_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < ShipSizesAmount; i++)
                 if ((ToolStripItem)sender == ComputerMovesSpeedToolStripMenuItem.DropDownItems[i])
@@ -173,17 +171,17 @@ namespace SeaBattle
                     Convert.ToString(Convert.ToInt32(currentSizeShipsLeft.Text) - NextIndex);
                 if (currentSizeShipsLeft.Text != FirstIndex.ToString()) return;
                 selectedButton.Enabled = false;
-                ButtonColorToStandart(selectedButton);
+                FieldController.ButtonColorToStandart(selectedButton);
                 _makeSizeZero = true;
             }
-            else ShipsArranged();
+            else UnableShipsArrangePanel();
         }
 
-        private void ShipsArranged()
+        private void UnableShipsArrangePanel()
         {
             foreach (Button button in _chooseSizeButtons)
             {
-                ButtonColorToStandart(button);
+                FieldController.ButtonColorToStandart(button);
                 button.Enabled = false;
             }
             foreach (Label label in _chooseSizeLabels)
@@ -217,34 +215,28 @@ namespace SeaBattle
             bool spaceIsFree = ChosenShipIsHorizontal ?
                 (button.X + previousSize) < s_fieldSize :
                 (button.Y - previousSize) >= FieldController.StartingCoordinate;
-            ShipToAppear(button, ref spaceIsFree, toAppear, firstTest: true);
-            ShipToAppear(button, ref spaceIsFree, toAppear, firstTest: false);
+            ShipToAppear(button, ref spaceIsFree, toAppear, spaceIsFreeSet: false);
+            ShipToAppear(button, ref spaceIsFree, toAppear, spaceIsFreeSet: true);
         }
 
-        private void ShipToAppear(ShipButton button, ref bool spaceIsFree, bool toAppear, bool firstTest)
+        private void ShipToAppear(ShipButton button, ref bool spaceIsFree, bool toAppear, bool spaceIsFreeSet)
         {
             int x = button.X, y = button.Y;
             if (!spaceIsFree) return;
             for (int i = 0; i < ChosenSize; i++)
             {
-                if (firstTest)
+                if (!spaceIsFreeSet)
                 {
                     spaceIsFree = _user.Field[x, y].Enabled;
                 }
                 else
                 {
                     if (toAppear) _user.Field[x, y].BackColor = Color.LightBlue;
-                    else ButtonColorToStandart(_user.Field[x, y]);
+                    else FieldController.ButtonColorToStandart(_user.Field[x, y]);
                 }
                 _user.ShiftCoordinates(isHorizontal: ChosenShipIsHorizontal,
                     Add: ChosenShipIsHorizontal, ref x, ref y);
             }
-        }
-
-        public static void ButtonColorToStandart(Button button)
-        {
-            button.BackColor = SystemColors.ButtonFace;
-            button.UseVisualStyleBackColor = true;
         }
 
         private void ButtonRotate_Click(object sender, EventArgs e)
@@ -294,7 +286,7 @@ namespace SeaBattle
 
         private void LabelComputerMove_VisibleChanged(object sender, EventArgs e)
         {
-            ComputerMovingLabelVisible = labelComputerMove.Visible;
+            ComputerTurnLabelVisible = labelComputerMove.Visible;
         }
 
         private void CheckBoxMarkEnemyMoves_CheckedChanged(object sender, EventArgs e)
@@ -345,10 +337,7 @@ namespace SeaBattle
         {
             for (int i = 0; i < ShipSizesAmount; i++)
             {
-                _chooseSizeButtons[i].Enabled = true;
-                ((Label)Controls[GetControlText("label", i + NextIndex)]).Text
-                    = Convert.ToString(ShipSizesAmount - i);
-                ButtonColorToStandart((Button)Controls[GetControlText("button", i + NextIndex)]);
+                SetStartingShipAmountControlSettings(choosingSizeControlIndex: i);
             }
             SetControlsVisibility(visible: true);
             SetLabelStatus(StandartLabelStatusText, StandartLabelStatusColor);
@@ -362,11 +351,19 @@ namespace SeaBattle
             StartGame();
         }
 
+        private void SetStartingShipAmountControlSettings(int choosingSizeControlIndex)
+        {
+            _chooseSizeButtons[choosingSizeControlIndex].Enabled = true;
+            ((Label)Controls[GetControlText("label", choosingSizeControlIndex + NextIndex)]).Text
+                = Convert.ToString(ShipSizesAmount - choosingSizeControlIndex);
+            FieldController.ButtonColorToStandart((Button)Controls[GetControlText("button", choosingSizeControlIndex + NextIndex)]);
+        }
+
         private void ButtonArrangeShipsRandomly_Click(object sender, EventArgs e)
         {
             RestartGame();
             _user.SpawnRandomShips();
-            ShipsArranged();
+            UnableShipsArrangePanel();
             foreach (ShipButton button in _user.Field)
             {
                 if (!button.IsShipPart) continue;

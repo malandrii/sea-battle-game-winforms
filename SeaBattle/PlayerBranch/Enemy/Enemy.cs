@@ -35,7 +35,7 @@ namespace SeaBattle
             }
         }
 
-        public void StartAttack()
+        public void StartNewAttack()
         {
             _mainForm.SetComputerMovesToolStripsEnables(enable: false);
             _attackTimer.Start();
@@ -64,13 +64,18 @@ namespace SeaBattle
         {
             buttonToAttack.Shoot();
             if (MarkMoves) buttonToAttack.BackColor = Color.DarkRed;
-            if (!buttonToAttack.IsShipPart)
+            if (buttonToAttack.IsShipPart)
             {
-                if (_enemyAI.HorizontalityDefined) 
-                    _enemyAI.ChangeDefinedAttackSide = true;
-                _attackTimer.Stop();
-                return;
+                AttackShipPart(buttonToAttack);
             }
+            else
+            {
+                StopAttack();
+            }
+        }
+
+        private void AttackShipPart(ShipButton buttonToAttack)
+        {
             if (_enemyAI.FoundUserShip) _enemyAI.HorizontalityDefined = true;
             _enemyAI.FoundUserShip = true;
             buttonToAttack.ShipFrom.TakeDamage();
@@ -82,7 +87,14 @@ namespace SeaBattle
                 if (_user.CheckDeath()) return;
             }
             else _enemyAI.SetButtonsAroundButtonToAttack(buttonToAttack, _user.Field);
-            StartAttack();
+            StartNewAttack();
+        }
+
+        private void StopAttack()
+        {
+            if (_enemyAI.HorizontalityDefined)
+                _enemyAI.ChangeDefinedAttackSide = true;
+            _attackTimer.Stop();
         }
 
         public void FinishGame()
