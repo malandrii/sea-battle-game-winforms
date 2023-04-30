@@ -61,7 +61,7 @@ namespace SeaBattle
         {
             if (!IsShipPart)
             {
-                MainForm.ButtonColorToStandart(this);
+                FieldController.ButtonColorToStandart(this);
                 return;
             }
             if (IsShot)

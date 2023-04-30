@@ -22,6 +22,12 @@ namespace SeaBattle
             _mainForm = mainForm;
         }
 
+        public static void ButtonColorToStandart(Button button)
+        {
+            button.BackColor = SystemColors.ButtonFace;
+            button.UseVisualStyleBackColor = true;
+        }
+
         public void CreateField(ShipButton[,] field, int markingOffset)
         {
             const int indent = 50;
@@ -29,16 +35,21 @@ namespace SeaBattle
             {
                 for (int x = 0; x < FieldSize; x++)
                 {
-                    int xIndent = indent + markingOffset;
-                    field[x, y] = new ShipButton(x, y)
-                    {
-                        Location = new Point(x * ButtonSize + xIndent, y * ButtonSize + indent),
-                        Size = new Size(ButtonSize, ButtonSize)
-                    };
-                    _mainForm.Controls.Add(field[x, y]);
+                    CreateNewShipButton(field, markingOffset, indent, y, x);
                 }
                 AddMarking(y, markingOffset);
             }
+        }
+
+        private void CreateNewShipButton(ShipButton[,] field, int markingOffset, int indent, int y, int x)
+        {
+            int xIndent = indent + markingOffset;
+            field[x, y] = new ShipButton(x, y)
+            {
+                Location = new Point(x * ButtonSize + xIndent, y * ButtonSize + indent),
+                Size = new Size(ButtonSize, ButtonSize)
+            };
+            _mainForm.Controls.Add(field[x, y]);
         }
 
         public void ClearField(ShipButton[,] field)
