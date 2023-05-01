@@ -2,15 +2,23 @@
 
 namespace SeaBattle
 {
-    public class MainFormUserStatus
+    public class MainFormHumanPlayerStatus
     {
         private readonly MainForm _mainForm;
         private static readonly Color StandartLabelStatusColor = Color.Black;
+        public const string StatusText = "Status: ";
 
-        public MainFormUserStatus(MainForm mainForm)
+        public MainFormHumanPlayerStatus(MainForm mainForm)
         {
             _mainForm = mainForm;
-        }   
+        }
+
+        public static string GetShipPositionPlacementLabel(bool chosenShipIsHorizontal)
+        {
+            string shipPositionLabel = "Placement: ";
+            shipPositionLabel += chosenShipIsHorizontal ? "—" : "|";
+            return shipPositionLabel;
+        }
 
         public void SetStandartLabelStatus()
         {

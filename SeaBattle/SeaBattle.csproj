@@ -68,10 +68,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainForm\FieldControllers\MainFormButtonController.cs" />
-    <Compile Include="MainForm\MainFormUserStatus.cs" />
+    <Compile Include="GameControllers\GameController.cs" />
+    <Compile Include="MainForm\MainFormButtonController.cs" />
+    <Compile Include="MainForm\MainFormHumanPlayerStatus.cs" />
     <Compile Include="PlayerBranch\Enemy\Enemy.cs" />
-    <Compile Include="MainForm\FieldControllers\FieldController.cs" />
+    <Compile Include="GameControllers\FieldController.cs" />
     <Compile Include="MainForm\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
