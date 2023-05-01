@@ -68,12 +68,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainForm\FieldControllers\MainFormButtonController.cs" />
+    <Compile Include="MainForm\MainFormUserStatus.cs" />
     <Compile Include="PlayerBranch\Enemy\Enemy.cs" />
-    <Compile Include="FieldController.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="MainForm\FieldControllers\FieldController.cs" />
+    <Compile Include="MainForm\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="MainForm\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PlayerBranch\Enemy\EnemyAI.cs" />
@@ -87,8 +89,8 @@
     <Compile Include="ShipButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PlayerBranch\User.cs" />
-    <EmbeddedResource Include="MainForm.resx">
+    <Compile Include="PlayerBranch\HumanPlayer.cs" />
+    <EmbeddedResource Include="MainForm\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

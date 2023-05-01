@@ -5,17 +5,17 @@ namespace SeaBattle
 {
     sealed public class Enemy : Player
     {
-        private readonly User _user;
+        private readonly HumanPlayer _humanPlayer;
         private readonly EnemyTimer _attackTimer;
         private readonly EnemyAI _enemyAI;
         private int _xToAttack = 0;
         private int _yToAttack = 0;
 
-        public Enemy(MainForm mainForm, User user) : base(mainForm)
+        public Enemy(MainForm mainForm, HumanPlayer humanPlayer) : base(mainForm)
         {
             const int enemyMarkingOffset = 380;
             _markingOffset = enemyMarkingOffset;
-            _user = user;
+            _humanPlayer = humanPlayer;
             Field = new ShipButton[_fieldSize, _fieldSize];
             _attackTimer = new EnemyTimer(this, mainForm);
             _enemyAI = new EnemyAI(this, _fieldController);
@@ -46,12 +46,12 @@ namespace SeaBattle
         public void ContinueAttack()
         {
             _enemyAI.SetAttackCoordinates(ref _xToAttack, ref _yToAttack);
-            ShipButton buttonToAttack = _user.Field[_xToAttack, _yToAttack];
+            ShipButton buttonToAttack = _humanPlayer.Field[_xToAttack, _yToAttack];
             if (buttonToAttack.IsShot)
             {
                 if (_enemyAI.HorizontalityDefined)
                     _enemyAI.ChangeDefinedAttackSide = true;
-                if (RandomMoves || !_enemyAI.FoundUserShip)
+                if (RandomMoves || !_enemyAI.FoundHumanPlayerShip)
                 {
                     ContinueAttack();
                     return;
@@ -63,7 +63,7 @@ namespace SeaBattle
         private void Attack(ShipButton buttonToAttack)
         {
             buttonToAttack.Shoot();
-            if (MarkMoves) buttonToAttack.BackColor = Color.DarkRed;
+            if (MarkMoves) MainFormButtonController.ButtonColorEnemyMarkedHit(buttonToAttack);
             if (buttonToAttack.IsShipPart)
             {
                 AttackShipPart(buttonToAttack);
@@ -76,17 +76,17 @@ namespace SeaBattle
 
         private void AttackShipPart(ShipButton buttonToAttack)
         {
-            if (_enemyAI.FoundUserShip) _enemyAI.HorizontalityDefined = true;
-            _enemyAI.FoundUserShip = true;
+            if (_enemyAI.FoundHumanPlayerShip) _enemyAI.HorizontalityDefined = true;
+            _enemyAI.FoundHumanPlayerShip = true;
             buttonToAttack.ShipFrom.TakeDamage();
-            _user.TakeDamage();
+            _humanPlayer.TakeDamage();
             if (buttonToAttack.ShipFrom.IsDead)
             {
                 buttonToAttack.ShipFrom.Death();
                 _enemyAI.ResetVariables();
-                if (_user.CheckDeath()) return;
+                if (_humanPlayer.CheckDeath()) return;
             }
-            else _enemyAI.SetButtonsAroundButtonToAttack(buttonToAttack, _user.Field);
+            else _enemyAI.SetButtonsAroundButtonToAttack(buttonToAttack, _humanPlayer.Field);
             StartNewAttack();
         }
 
@@ -97,18 +97,9 @@ namespace SeaBattle
             _attackTimer.Stop();
         }
 
-        public void FinishGame()
-        {
-            foreach (ShipButton button in Field)
-            {
-                if (button.IsShipPart) button.BackColor = Color.Red;
-                button.Enabled = false;
-            }
-        }
-
         private void Button_Click(object sender, EventArgs e)
         {
-            _user.Attack(sender);
+            _humanPlayer.Attack(sender);
         }
     }
 }

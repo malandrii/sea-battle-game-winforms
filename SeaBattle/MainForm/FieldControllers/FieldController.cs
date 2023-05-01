@@ -11,7 +11,6 @@ namespace SeaBattle
         private const int NextIndex = MainForm.NextIndex;
         public const int StartingCoordinate = 0;
         public const int FieldSize = 10;
-        public const int ButtonSize = 30;
         private readonly MainForm _mainForm;
         private List<Point> _coordinatesAround;
         private int _initialX;
@@ -22,12 +21,6 @@ namespace SeaBattle
             _mainForm = mainForm;
         }
 
-        public static void ButtonColorToStandart(Button button)
-        {
-            button.BackColor = SystemColors.ButtonFace;
-            button.UseVisualStyleBackColor = true;
-        }
-
         public void CreateField(ShipButton[,] field, int markingOffset)
         {
             const int indent = 50;
@@ -35,21 +28,10 @@ namespace SeaBattle
             {
                 for (int x = 0; x < FieldSize; x++)
                 {
-                    CreateNewShipButton(field, markingOffset, indent, y, x);
+                    _mainForm.ButtonController.CreateNewShipButton(field, markingOffset, indent, y, x);
                 }
                 AddMarking(y, markingOffset);
             }
-        }
-
-        private void CreateNewShipButton(ShipButton[,] field, int markingOffset, int indent, int y, int x)
-        {
-            int xIndent = indent + markingOffset;
-            field[x, y] = new ShipButton(x, y)
-            {
-                Location = new Point(x * ButtonSize + xIndent, y * ButtonSize + indent),
-                Size = new Size(ButtonSize, ButtonSize)
-            };
-            _mainForm.Controls.Add(field[x, y]);
         }
 
         public void ClearField(ShipButton[,] field)
@@ -108,7 +90,7 @@ namespace SeaBattle
 
         private void AddMarking(int coordinate, int offset)
         {
-            int buttonSize = ButtonSize, doubleButtonSize = buttonSize * 2,
+            int buttonSize = MainFormButtonController.ButtonSize, doubleButtonSize = buttonSize * 2,
                 coordinateOffset = buttonSize * coordinate;
             var letter = new Label
             {
@@ -124,6 +106,15 @@ namespace SeaBattle
             };
             _mainForm.Controls.Add(digit);
             _mainForm.Controls.Add(letter);
+        }
+
+        public static void RevealShips(ShipButton[,] Field)
+        {
+            foreach (ShipButton button in Field)
+            {
+                if (button.IsShipPart) MainFormButtonController.ButtonColorShipHit(button);
+            }
+            MainFormButtonController.UnableField(Field);
         }
     }
 }

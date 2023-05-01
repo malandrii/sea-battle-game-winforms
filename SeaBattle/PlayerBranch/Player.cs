@@ -45,11 +45,9 @@ namespace SeaBattle
             for (int specificSizeShipSpawnAmount = MainForm.ShipSizesAmount;
                 specificSizeShipSpawnAmount > 0; specificSizeShipSpawnAmount--)
             {
-                int shipSize = 1;
-                for (int i = 0; i < specificSizeShipSpawnAmount; i++)
+                for (int shipSize = 1; shipSize <= specificSizeShipSpawnAmount; shipSize++)
                 {
                     SpawnRandomShip(shipSize);
-                    shipSize++;
                 }
             }
         }
@@ -81,39 +79,45 @@ namespace SeaBattle
         private void SpawnRandomShip(int size)
         {
             int x = 0, y = 0;
-            bool canMakeShip = true, sameCoordinates = false,
-                 fiftyFiftyChance = _random.Next(1, 3) == 1,
+            bool fiftyFiftyChance = _random.Next(1, 3) == 1,
                  isHorizontal = fiftyFiftyChance;
             MakeCoordinatesRandom(ref x, ref y);
             List<Point> shipCoordinates = GetShipCoordinates(size, x, y, isHorizontal, randomShip: true);
-            for (int i = 0; i < size; i++)
-            {
-                if (Field[shipCoordinates[i].X, shipCoordinates[i].Y].CanMakeShip) continue;
-                canMakeShip = false;
-            }
-            CheckForSameLocatedShips(ref sameCoordinates, size, shipCoordinates);
-            if (canMakeShip && !sameCoordinates)
+            if (CanMakeShip(size, shipCoordinates))
                 DeclareShip(shipCoordinates);
             else
                 SpawnRandomShip(size);
+        }
+
+        private bool CanMakeShip(int size, List<Point> shipCoordinates)
+        {
+            bool shipButtonsFree = true, sameCoordinates = false;
+            for (int i = 0; i < size; i++)
+            {
+                if (Field[shipCoordinates[i].X, shipCoordinates[i].Y].FreeForShipCreation) continue;
+                shipButtonsFree = false;
+            }
+            CheckForSameLocatedShips(ref sameCoordinates, size, shipCoordinates);
+            return shipButtonsFree && !sameCoordinates;
         }
 
         protected List<Point> GetShipCoordinates(int size, int x, int y, bool isHorizontal, bool randomShip)
         {
             const int oneSquareShipSize = 1;
             var shipCoordinates = new List<Point> { new Point(x, y) };
-            if (size > oneSquareShipSize)
+            for (int i = oneSquareShipSize; i < size; i++)
             {
-                for (int i = oneSquareShipSize; i < size; i++)
-                {
-                    int sizeToCheck = _fieldSize - size - oneSquareShipSize,
-                        coordinateToCheck = isHorizontal ? x : y;
-                    bool insideField = coordinateToCheck < sizeToCheck;
-                    ShiftCoordinates(isHorizontal, randomShip ? insideField : _mainForm.ChosenShipIsHorizontal, ref x, ref y);
-                    shipCoordinates.Add(new Point(x, y));
-                }
+                GetShipCoordinate(size, ref x, ref y, isHorizontal, randomShip, oneSquareShipSize);
+                shipCoordinates.Add(new Point(x, y));
             }
             return shipCoordinates;
+        }
+
+        private void GetShipCoordinate(int size, ref int x, ref int y, bool isHorizontal, bool randomShip, int oneSquareShipSize)
+        {
+            int sizeToCheck = _fieldSize - size - oneSquareShipSize, coordinateToCheck = isHorizontal ? x : y;
+            bool insideField = coordinateToCheck < sizeToCheck;
+            ShiftCoordinates(isHorizontal, randomShip ? insideField : _mainForm.ChosenShipIsHorizontal, ref x, ref y);
         }
 
         protected Ship DeclareShip(List<Point> shipCoordinates)

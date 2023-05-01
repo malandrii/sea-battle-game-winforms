@@ -1,12 +1,11 @@
 ﻿using System.Windows.Forms;
-using System.Drawing;
 
 namespace SeaBattle
 {
     sealed public class ShipButton : Button
     {
         private const string ShotShipPartText = "X";
-        public const string ShotText = ".";
+        private const string ShotText = ".";
         private bool _marked = false;
         private int _x;
         private int _y;
@@ -43,31 +42,19 @@ namespace SeaBattle
 
         public bool IsShot { get; set; } = false;
 
-        public bool CanMakeShip { get => !IsShipPart && !_marked; }
+        public bool FreeForShipCreation { get => !IsShipPart && !_marked; }
 
         public void Shoot()
         {
             IsShot = true;
             Text = IsShipPart ? ShotShipPartText : ShotText;
+            Enabled = false;
         }
 
         public void Mark(Ship shipFrom)
         {
             _marked = true;
             shipFrom.MarkedParts.Add(this);
-        }
-
-        public void RefreshMarking(bool mark)
-        {
-            if (!IsShipPart)
-            {
-                FieldController.ButtonColorToStandart(this);
-                return;
-            }
-            if (IsShot)
-            {
-                BackColor = ShipFrom.IsDead ? Color.Red : (mark ? Color.DarkRed : Color.Blue);
-            }
         }
     }
 }
