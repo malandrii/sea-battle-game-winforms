@@ -42,7 +42,7 @@ namespace SeaBattle
 
         public void SpawnRandomShips()
         {
-            for (int specificSizeShipSpawnAmount = MainForm.ShipSizesAmount;
+            for (int specificSizeShipSpawnAmount = FieldController.ShipSizesAmount;
                 specificSizeShipSpawnAmount > 0; specificSizeShipSpawnAmount--)
             {
                 for (int shipSize = 1; shipSize <= specificSizeShipSpawnAmount; shipSize++)
