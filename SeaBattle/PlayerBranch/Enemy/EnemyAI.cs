@@ -11,7 +11,7 @@ namespace SeaBattle
         private readonly Enemy _enemy;
         private readonly FieldController _enemyFieldController;
         private List<ShipButton> _buttonsAround;
-        private ShipButton[,] _userField;
+        private ShipButton[,] _humanPlayerField;
         private ShipButton _foundShipButton;
         private bool _buttonsAroundButtonToAttackSet = false;
         private bool _shipHorizontalitySet = false;
@@ -30,7 +30,7 @@ namespace SeaBattle
                 new Point(0, crossDownLeft) };
         }
 
-        public bool FoundUserShip { get; set; } = false;
+        public bool FoundHumanPlayerShip { get; set; } = false;
 
         public bool HorizontalityDefined { get; set; } = false;
 
@@ -40,14 +40,14 @@ namespace SeaBattle
         {
             if (_buttonsAroundButtonToAttackSet) return;
             ResetVariables();
-            FoundUserShip = true;
+            FoundHumanPlayerShip = true;
             _foundShipButton = button;
-            _userField = Field;
+            _humanPlayerField = Field;
             _buttonsAround.AddRange(from Point crossCoordianteOffset in _crossCoordiantesOffset
                                     let xShifted = _foundShipButton.X + crossCoordianteOffset.X
                                     let yShifted = _foundShipButton.Y + crossCoordianteOffset.Y
                                     where _enemyFieldController.AreCoordinatesInsideField(xShifted, yShifted)
-                                    let buttonAround = _userField[xShifted, yShifted]
+                                    let buttonAround = _humanPlayerField[xShifted, yShifted]
                                     where !buttonAround.IsShot
                                     select buttonAround);
             _buttonsAroundButtonToAttackSet = true;
@@ -57,7 +57,7 @@ namespace SeaBattle
         {
             _shipHorizontalitySet = false;
             _foundShipButton = null;
-            FoundUserShip = false;
+            FoundHumanPlayerShip = false;
             ChangeDefinedAttackSide = false;
             _buttonsAroundButtonToAttackSet = false;
             _buttonsAround = new List<ShipButton>();
@@ -65,7 +65,7 @@ namespace SeaBattle
 
         public void SetAttackCoordinates(ref int x, ref int y)
         {
-            if (_enemy.RandomMoves || !FoundUserShip)
+            if (_enemy.RandomMoves || !FoundHumanPlayerShip)
             {
                 SetRandomAttackingCoordinates(ref x, ref y);
             }
@@ -94,7 +94,7 @@ namespace SeaBattle
         {
             _enemy.ShiftCoordinates(_shipIsHorizontal, _changeAttackSide, ref x, ref y);
             bool needAttackSideChange = !_enemyFieldController.AreCoordinatesInsideField(x, y)
-                || ChangeDefinedAttackSide || _userField[x, y].IsShot;
+                || ChangeDefinedAttackSide || _humanPlayerField[x, y].IsShot;
             if (needAttackSideChange)
             {
                 SwitchAttackSide(ref x, ref y);
@@ -113,7 +113,7 @@ namespace SeaBattle
 
         private void SetHorizontality(int x, int y)
         {
-            _shipIsHorizontal = _userField[x, y].X != _foundShipButton.X;
+            _shipIsHorizontal = _humanPlayerField[x, y].X != _foundShipButton.X;
             _changeAttackSide = _shipIsHorizontal ? _foundShipButton.X < x : _foundShipButton.Y < y;
             _shipHorizontalitySet = true;
         }

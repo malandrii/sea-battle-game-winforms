@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 
 namespace SeaBattle
 {
@@ -28,14 +27,12 @@ namespace SeaBattle
         {
             foreach (ShipButton shipPart in ShipParts)
             {
-                shipPart.BackColor = Color.Red;
+                MainFormButtonController.ButtonColorShipHit(shipPart);
             }
             foreach (ShipButton button in MarkedParts)
             {
                 if (button.IsShipPart) continue;
-                button.IsShot = true;
-                button.Text = ShipButton.ShotText;
-                button.Enabled = false;
+                button.Shoot();
             }
         }
     }

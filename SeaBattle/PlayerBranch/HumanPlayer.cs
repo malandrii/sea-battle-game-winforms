@@ -3,14 +3,14 @@ using System.Drawing;
 
 namespace SeaBattle
 {
-    sealed public class User : Player
+    sealed public class HumanPlayer : Player
     {
         private Enemy _enemy;
 
-        public User(MainForm mainForm) : base(mainForm)
+        public HumanPlayer(MainForm mainForm) : base(mainForm)
         {
-            const int userMarkingOffset = 0;
-            _markingOffset = userMarkingOffset;
+            const int humanPlayerMarkingOffset = 0;
+            _markingOffset = humanPlayerMarkingOffset;
         }
 
         public void SetEnemy(Enemy enemy)
@@ -23,20 +23,15 @@ namespace SeaBattle
             List<Point> shipCoordinates = GetShipCoordinates(size: _mainForm.ChosenSize, 
                 senderShipButton.X, senderShipButton.Y, 
                 isHorizontal: _mainForm.ChosenShipIsHorizontal, randomShip: false);
-
             Ship newPlayerShip = DeclareShip(shipCoordinates);
-            foreach (ShipButton shipPart in newPlayerShip.ShipParts)
-                shipPart.BackColor = Color.Blue;
-
-            foreach (var shipButton in newPlayerShip.ShipParts)
-                shipButton.Enabled = false;
-            foreach (var shipButton in newPlayerShip.MarkedParts)
-                shipButton.Enabled = false;
+            MainFormButtonController.ColorHumanPlayerShip(newPlayerShip.ShipParts);
+            MainFormButtonController.UnableRegion(newPlayerShip.ShipParts);
+            MainFormButtonController.UnableRegion(newPlayerShip.MarkedParts);
         }
 
         public void UnableField()
         {
-            foreach (ShipButton button in Field) 
+            foreach (ShipButton button in Field)
                 button.Enabled = false;
         }
 
@@ -46,24 +41,27 @@ namespace SeaBattle
             if (!canMove) return;
             _mainForm.SetFocus();
             ShipButton senderButton = sender as ShipButton;
-            senderButton.Enabled = false;
             senderButton.Shoot();
             if (!senderButton.IsShipPart)
             {
-                _mainForm.SetLabelStatus(MainForm.StandartLabelStatusText,
-                    MainForm.StandartLabelStatusColor);
+                _mainForm.HumanPlayerStatus.SetStandartLabelStatus();
                 if (!_enemy.CheckDeath() && !CheckDeath()) _enemy.StartNewAttack();
                 return;
             }
             senderButton.ShipFrom.TakeDamage();
             _enemy.TakeDamage();
-            _mainForm.SetLabelStatus("Hit", Color.DarkRed);
+            SetHumanPlayerStatus(senderButton);
+            _enemy.CheckDeath();
+        }
+
+        private void SetHumanPlayerStatus(ShipButton senderButton)
+        {
+            _mainForm.HumanPlayerStatus.SetHitEnemyShipStatus();
             if (senderButton.ShipFrom.IsDead)
             {
-                _mainForm.SetLabelStatus("Dead", Color.Red);
+                _mainForm.HumanPlayerStatus.SetDeadEnemyShipStatus();
                 senderButton.ShipFrom.Death();
             }
-            _enemy.CheckDeath();
         }
     }
 }
