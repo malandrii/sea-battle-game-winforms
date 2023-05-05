@@ -17,7 +17,7 @@ namespace SeaBattle
             _humanPlayer = humanPlayer;
             Field = new ShipButton[_fieldSize, _fieldSize];
             _attackTimer = new EnemyTimer(this, mainForm);
-            _enemyAI = new EnemyAI(this, _fieldController);
+            _enemyAI = new EnemyAI(this);
         }
 
         public bool RandomMoves { get; set; } = false;

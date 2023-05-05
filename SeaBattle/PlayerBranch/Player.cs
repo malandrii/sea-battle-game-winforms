@@ -1,22 +1,18 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Collections.Generic;
 
 namespace SeaBattle
 {
     abstract public class Player
     {
-        private static readonly Random _random = new Random();
         private int _shipPartsAlive = 20;
         protected MainForm _mainForm;
-        protected FieldController _fieldController;
         protected int _fieldSize;
         protected int _markingOffset;
 
         public Player(MainForm mainForm)
         {
             _mainForm = mainForm;
-            _fieldController = new FieldController(_mainForm);
             _fieldSize = FieldController.FieldSize;
         }
 
@@ -26,7 +22,8 @@ namespace SeaBattle
 
         public virtual void DeclareField()
         {
-            _fieldController.CreateField(Field, _markingOffset);
+            FieldController fieldController = new FieldController(_mainForm);
+            fieldController.CreateField(Field, _markingOffset);
         }
 
         public void TakeDamage()
@@ -34,15 +31,9 @@ namespace SeaBattle
             ShipPartsAlive--;
         }
 
-        public void MakeCoordinatesRandom(ref int x, ref int y)
-        {
-            x = _random.Next(0, _fieldSize);
-            y = _random.Next(0, _fieldSize);
-        }
-
         public void SpawnRandomShips()
         {
-            for (int specificSizeShipSpawnAmount = FieldController.ShipSizesAmount;
+            for (int specificSizeShipSpawnAmount = GameController.ShipSizesAmount;
                 specificSizeShipSpawnAmount > 0; specificSizeShipSpawnAmount--)
             {
                 for (int shipSize = 1; shipSize <= specificSizeShipSpawnAmount; shipSize++)
@@ -57,9 +48,9 @@ namespace SeaBattle
         {
             const int minimumShipSizeToCheck = 2;
             if (size <= minimumShipSizeToCheck) return;
-            for (int specificShipPart = 0; specificShipPart < coordinateCopies.Count - MainForm.NextIndex; specificShipPart++)
+            for (int specificShipPart = 0; specificShipPart < coordinateCopies.Count - FieldController.NextIndex; specificShipPart++)
             {
-                for (int nextShipPart = specificShipPart + MainForm.NextIndex;
+                for (int nextShipPart = specificShipPart + FieldController.NextIndex;
                     nextShipPart < coordinateCopies.Count; nextShipPart++)
                 {
                     sameCoordinates =
@@ -70,7 +61,7 @@ namespace SeaBattle
             }
         }
 
-        public void ShiftCoordinates(bool isHorizontal, bool Add, ref int x, ref int y)
+        public static void ShiftCoordinates(bool isHorizontal, bool Add, ref int x, ref int y)
         {
             ref int coordinate = ref isHorizontal ? ref x : ref y;
             coordinate = Add ? ++coordinate : --coordinate;
@@ -79,9 +70,8 @@ namespace SeaBattle
         private void SpawnRandomShip(int size)
         {
             int x = 0, y = 0;
-            bool fiftyFiftyChance = _random.Next(1, 3) == 1,
-                 isHorizontal = fiftyFiftyChance;
-            MakeCoordinatesRandom(ref x, ref y);
+            bool isHorizontal = Randomizer.FiftyFifty;
+            Randomizer.MakeCoordinatesRandom(ref x, ref y);
             List<Point> shipCoordinates = GetShipCoordinates(size, x, y, isHorizontal, randomShip: true);
             if (CanMakeShip(size, shipCoordinates))
                 DeclareShip(shipCoordinates);
@@ -117,7 +107,7 @@ namespace SeaBattle
         {
             int sizeToCheck = _fieldSize - size - oneSquareShipSize, coordinateToCheck = isHorizontal ? x : y;
             bool insideField = coordinateToCheck < sizeToCheck;
-            ShiftCoordinates(isHorizontal, randomShip ? insideField : _mainForm.ChosenShipIsHorizontal, ref x, ref y);
+            ShiftCoordinates(isHorizontal, randomShip ? insideField : _mainForm.PreGameController.ChosenShipIsHorizontal, ref x, ref y);
         }
 
         protected Ship DeclareShip(List<Point> shipCoordinates)
@@ -135,7 +125,7 @@ namespace SeaBattle
         public bool CheckDeath()
         {
             bool isDead = ShipPartsAlive == 0;
-            if (isDead) _mainForm.FinishGame();
+            if (isDead) _mainForm.GameController.FinishGame();
             return isDead;
         }
 
@@ -148,7 +138,7 @@ namespace SeaBattle
 
         private void OccupyAroundShip(int x, int y)
         {
-            foreach (Point point in _fieldController.GetCoordinatesAround(x, y))
+            foreach (Point point in FieldController.GetCoordinatesAround(x, y))
                 Field[point.X, point.Y].Mark(shipFrom: Field[x, y].ShipFrom);
         }
     }

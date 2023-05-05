@@ -26,9 +26,9 @@ namespace SeaBattle
         private void Timer_Tick(object sender, EventArgs e)
         {
             const int computerMovesSpeedCount = 4;
-            int tickAmountFromSpeed = ((computerMovesSpeedCount - MainForm.NextIndex
-                - _mainForm.ComputerMoveSpeedSelectedIndex)
-                * MainFormButtonController.ButtonSize) + MainForm.NextIndex;
+            int tickAmountFromSpeed = ((computerMovesSpeedCount - FieldController.NextIndex
+                - _mainForm.GameController.ComputerMoveSpeed)
+                * MainFormButtonController.ButtonSize) + FieldController.NextIndex;
             if (_timerTicks == tickAmountFromSpeed)
             {
                 _mainForm.SetLabelComputerMoveVisibility(visible: false);

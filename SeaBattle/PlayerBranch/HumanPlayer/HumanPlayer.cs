@@ -20,13 +20,13 @@ namespace SeaBattle
 
         public void SetShip(ShipButton senderShipButton)
         {
-            List<Point> shipCoordinates = GetShipCoordinates(size: _mainForm.ChosenSize, 
+            List<Point> shipCoordinates = GetShipCoordinates(size: _mainForm.PreGameController.ChosenShipSize, 
                 senderShipButton.X, senderShipButton.Y, 
-                isHorizontal: _mainForm.ChosenShipIsHorizontal, randomShip: false);
+                isHorizontal: _mainForm.PreGameController.ChosenShipIsHorizontal, randomShip: false);
             Ship newPlayerShip = DeclareShip(shipCoordinates);
-            MainFormButtonController.ColorHumanPlayerShip(newPlayerShip.ShipParts);
-            MainFormButtonController.UnableRegion(newPlayerShip.ShipParts);
-            MainFormButtonController.UnableRegion(newPlayerShip.MarkedParts);
+            HumanPlayerShipController.ColorShip(newPlayerShip.ShipParts);
+            FieldController.UnableRegion(newPlayerShip.ShipParts);
+            FieldController.UnableRegion(newPlayerShip.MarkedParts);
         }
 
         public void UnableField()
@@ -37,7 +37,7 @@ namespace SeaBattle
 
         public void Attack(object sender)
         {
-            bool canMove = !_mainForm.ComputerTurnLabelVisible;
+            bool canMove = !_mainForm.GameController.ComputerTurn;
             if (!canMove) return;
             _mainForm.SetFocus();
             ShipButton senderButton = sender as ShipButton;

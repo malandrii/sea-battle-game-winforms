@@ -69,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameControllers\GameController.cs" />
+    <Compile Include="GameControllers\PreGameController.cs" />
+    <Compile Include="PlayerBranch\HumanPlayer\HumanPlayerShipController.cs" />
     <Compile Include="MainForm\MainFormButtonController.cs" />
     <Compile Include="MainForm\MainFormHumanPlayerStatus.cs" />
     <Compile Include="PlayerBranch\Enemy\Enemy.cs" />
@@ -86,11 +88,12 @@
     <Compile Include="PlayerBranch\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ship.cs" />
-    <Compile Include="ShipButton.cs">
+    <Compile Include="GameControllers\Randomizer.cs" />
+    <Compile Include="Ship\Ship.cs" />
+    <Compile Include="Ship\ShipButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PlayerBranch\HumanPlayer.cs" />
+    <Compile Include="PlayerBranch\HumanPlayer\HumanPlayer.cs" />
     <EmbeddedResource Include="MainForm\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
