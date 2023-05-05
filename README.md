@@ -1,6 +1,12 @@
-# "Sea Battle" Windows Forms
+# "Sea Battle" on Windows Forms
 Classic "Sea Battle" game on Windows Forms with Enemy bot
 
+## Installation
+Go to <a href="https://github.com/malandrii/sea-battle-game-winforms/releases">Releases</a>, choose the latest release and click the "sea-battle.exe" or
+just click <a href="https://github.com/malandrii/sea-battle-game-winforms/releases/download/v1.3/sea-battle.exe">here</a>.
+
+## Usage
+### 1. Place your ships
 > *Place ships panel* => *choose ship size* => *mouse cursor on the field*
 
 ![image](https://user-images.githubusercontent.com/111363234/205208661-8c191fac-0f5f-4828-b15f-07611fa2db8e.png)
@@ -16,10 +22,12 @@ Classic "Sea Battle" game on Windows Forms with Enemy bot
 > Ships can be arranged randomly <br /> <br />
 ![image](https://user-images.githubusercontent.com/111363234/205209269-c927bd74-653e-4f27-93c8-a8092d3621d5.png)
 
-After you place all the ships choose enemy settings and press "Start Game"
+### 2. Start Game
+After you've placed all the ships choose the enemy settings and press "Start Game"
 
 ![image](https://user-images.githubusercontent.com/111363234/205209496-fa32a483-32c4-4cb7-8076-79a4ef576701.png)
 
+### 3. Your turns
 Press on the enemy field button. You and enemy go one by one. <br />
 If the text of the button is dot - this cell is clear <br />
 If cross - you hit the enemy ship
@@ -38,10 +46,12 @@ As the enemy ship is dead - all the cells around gets covered
 
 ![image](https://user-images.githubusercontent.com/111363234/205210376-eadcc339-4027-41f0-86ab-5496235c537f.png)
 
+### 4. Enemy turns
 Meanwhile, enemy-bot is attacking our field
 
 ![image](https://user-images.githubusercontent.com/111363234/205210557-3b03fdf9-acb7-4d98-900c-45030238bc0b.png)
 
+### 5. End of the Game
 Game stops as someone destroys all the enemy ships and you can see where they were located
 
 ![image](https://user-images.githubusercontent.com/111363234/205210651-2c50fc15-1bff-4c64-b8bf-a57bfaf3fc66.png)
@@ -53,4 +63,4 @@ Game stops as someone destroys all the enemy ships and you can see where they we
 
 ![EnemyAttackTransparentDarkShadow](https://user-images.githubusercontent.com/111363234/205208423-ea1800c2-4437-42e5-936c-216f3fc9a110.png) <br />
 Works the same with any ship (also understands if the cell was already shot and goes the opposite way) <br />
-This algorithm is the most effective way to play "Sea Battle" (usually people play same) <br />
+This algorithm is the most effective way to play "Sea Battle" (usually people play the same way) <br />
