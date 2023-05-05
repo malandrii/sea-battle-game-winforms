@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace SeaBattle
@@ -9,8 +8,6 @@ namespace SeaBattle
         private readonly MainForm _mainForm;
         private static readonly Color ShipHit = Color.Red;
         private static readonly Color EnemyMarkedHit = Color.DarkRed;
-        private static readonly Color HumanPlayerShipPreview = Color.LightBlue;
-        private static readonly Color HumanPlayerShip = Color.Blue;
         public const int ButtonSize = 30;
 
         public MainFormButtonController(MainForm mainForm)
@@ -31,11 +28,6 @@ namespace SeaBattle
             shipButton.Font = new Font(shipButton.Font.Name, fontSize, fontStyle);
         }
 
-        public static bool HumanPlayerButtonIsShipPreviewPart(ShipButton chosenButton)
-        {
-            return chosenButton.BackColor == HumanPlayerShipPreview;
-        }
-
         public static void ButtonColorShipHit(ShipButton shipButton)
         {
             SetShipButtonColor(shipButton, ShipHit);
@@ -46,31 +38,7 @@ namespace SeaBattle
             SetShipButtonColor(shipButton, EnemyMarkedHit);
         }
 
-        public static void AppearShipPartPreview(ShipButton shipButton, bool toAppear)
-        {
-            if (toAppear)
-                ColorHumanPlayerShipPartPreview(shipButton);
-            else
-                ButtonColorToStandart(shipButton);
-        }
-
-        private static void ColorHumanPlayerShipPartPreview(ShipButton shipPart)
-        {
-            SetShipButtonColor(shipPart, HumanPlayerShipPreview);
-        }
-
-        public static void ColorHumanPlayerShipPart(ShipButton shipPart)
-        {
-            SetShipButtonColor(shipPart, HumanPlayerShip);
-        }
-
-        public static void ColorHumanPlayerShip(List<ShipButton> shipParts)
-        {
-            foreach (ShipButton shipPart in shipParts)
-                ColorHumanPlayerShipPart(shipPart);
-        }
-
-        private static void SetShipButtonColor(ShipButton shipButton, Color color)
+        public static void SetShipButtonColor(ShipButton shipButton, Color color)
         {
             shipButton.BackColor = color;
         }
@@ -84,7 +52,8 @@ namespace SeaBattle
             }
             if (shipButton.IsShot)
             {
-                Color shipButtonColor = shipButton.ShipFrom.IsDead ? ShipHit : (mark ? EnemyMarkedHit : HumanPlayerShip);
+                Color shipButtonColor = shipButton.ShipFrom.IsDead ? 
+                    ShipHit : (mark ? EnemyMarkedHit : HumanPlayerShipController.HumanPlayerShip);
                 SetShipButtonColor(shipButton, shipButtonColor);
             }
         }
@@ -98,18 +67,6 @@ namespace SeaBattle
                 Size = new Size(ButtonSize, ButtonSize)
             };
             _mainForm.Controls.Add(field[x, y]);
-        }
-
-        public static void UnableRegion(List<ShipButton> region)
-        {
-            foreach (var shipButton in region)
-                shipButton.Enabled = false;
-        }
-
-        public static void UnableField(ShipButton[,] Field)
-        {
-            foreach (ShipButton button in Field)
-                button.Enabled = false;
         }
     }
 }

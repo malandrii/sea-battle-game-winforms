@@ -5,7 +5,9 @@ namespace SeaBattle
     public class MainFormHumanPlayerStatus
     {
         private readonly MainForm _mainForm;
-        private static readonly Color StandartLabelStatusColor = Color.Black;
+        private static readonly Color StandartLabelStatus = Color.Black;
+        private static readonly Color HumanPlayerWin = Color.Green;
+        private static readonly Color EnemyWin = Color.Red;
         public const string StatusText = "Status: ";
 
         public MainFormHumanPlayerStatus(MainForm mainForm)
@@ -23,7 +25,7 @@ namespace SeaBattle
         public void SetStandartLabelStatus()
         {
             const string StandartLabelStatusText = "----";
-            _mainForm.SetLabelStatus(StandartLabelStatusText, StandartLabelStatusColor);
+            _mainForm.SetLabelStatus(StandartLabelStatusText, StandartLabelStatus);
         }
 
         public void SetHitEnemyShipStatus()
@@ -40,7 +42,7 @@ namespace SeaBattle
         {
             string gameFinishTitle = "You ";
             gameFinishTitle += humanWon ? "won" : "lost";
-            Color gameFinishTitleColor = humanWon ? Color.Green : Color.Red;
+            Color gameFinishTitleColor = humanWon ? HumanPlayerWin : EnemyWin;
             _mainForm.SetLabelStatus(gameFinishTitle, gameFinishTitleColor);
         }
     }

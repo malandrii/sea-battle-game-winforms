@@ -23,7 +23,7 @@ namespace SeaBattle
             get => _x;
             private set
             {
-                if (FieldController.IsCoordinateInsideField(value))
+                if (FieldController.CoordinateInsideField(value))
                     _x = value;
             }
         }
@@ -33,7 +33,7 @@ namespace SeaBattle
             get => _y;
             private set
             {
-                if (FieldController.IsCoordinateInsideField(value))
+                if (FieldController.CoordinateInsideField(value))
                     _y = value;
             }
         }

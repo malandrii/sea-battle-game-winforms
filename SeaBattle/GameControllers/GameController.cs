@@ -2,6 +2,7 @@
 {
     public class GameController
     {
+        public const int ShipSizesAmount = 4;
         private readonly MainForm _mainForm;
         private HumanPlayer _humanPlayer;
         private Enemy _enemy;
@@ -11,67 +12,42 @@
             _mainForm = mainForm;
         }
 
-        public ShipButton[,] HumanPlayerField { get => _humanPlayer.Field; }
-
         public HumanPlayer HumanPlayer { get => _humanPlayer; }
 
-        public void RefreshEnemyMovesMarking(bool markEnemyMoves)
+        public int ComputerMoveSpeed { get => _mainForm.ComputerMoveSpeedSelectedIndex; }
+
+        public bool ComputerTurn { get => _mainForm.ComputerTurnLabelVisible; }
+
+        public void RefreshPlayers(HumanPlayer humanPlayer, Enemy enemy)
         {
-            _enemy.MarkMoves = markEnemyMoves;
+            _humanPlayer = humanPlayer;
+            _enemy = enemy;
         }
 
-        public void ArrangeHumanPlayerShipsRandomly()
+        public void RefreshEnemyMovesMarking()
         {
-            RestartGame();
-            _humanPlayer.SpawnRandomShips();
-            _mainForm.UnableShipsArrangePanel();
-            FieldController.ColorHumanPlayerShips(_humanPlayer.Field);
-        }
-
-        public void StartGame()
-        {
-            const string clearFieldButtonText = "Clear Field";
-            _mainForm.ContextMenuStrip.Items[FieldController.StartingCoordinate].Text = clearFieldButtonText;
-            _mainForm.CreateShipSizeChoosingPanel();
-            DeclarePlayers();
-            _mainForm.SetButtonsEvents();
-            RefreshEnemyMovesMarking(_mainForm.EnemyMarkMoves);
-        }
-
-        public void DeclarePlayers()
-        {
-            _humanPlayer = new HumanPlayer(_mainForm);
-            _enemy = new Enemy(_mainForm, _humanPlayer);
-            _humanPlayer.SetEnemy(_enemy);
-            _humanPlayer.Field = new ShipButton[FieldController.FieldSize, FieldController.FieldSize];
-            _humanPlayer.DeclareField();
-        }
-
-        public void EnemyStartGame(bool enemyRandomMoves)
-        {
-            RefreshEnemyMovesMarking(_mainForm.EnemyMarkMoves);
-            _enemy.RandomMoves = enemyRandomMoves;
-            _enemy.DeclareField();
-            _enemy.SpawnRandomShips();
+            _enemy.MarkMoves = _mainForm.MarkComputerMovesToolStripMenuItemChecked;
         }
 
         public void FinishGame()
         {
             _mainForm.HumanPlayerStatus.SetFinishGameStatus(humanWon: _enemy.ShipPartsAlive == 0);
-            FieldController.RevealEnemyShips(_enemy.Field);
+            FieldController.ColorShips(_enemy.Field, humanField: false);
+            FieldController.UnableField(_enemy.Field);
+            _mainForm.SetRestartButtonVisibile();
         }
 
         public void RestartGame()
         {
             ResetGame();
-            StartGame();
+            _mainForm.PreGameController.StartPreGame();
         }
 
         private void ResetGame()
         {
             _mainForm.ResetControls();
-            FieldController.ClearField(_humanPlayer.Field);
-            FieldController.ClearField(_enemy.Field);
+            FieldController.DisposeField(_humanPlayer.Field);
+            FieldController.DisposeField(_enemy.Field);
         }
     }
 }
