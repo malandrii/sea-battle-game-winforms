@@ -5,7 +5,7 @@ namespace SeaBattle
 {
     public static class Randomizer
     {
-        public static Random _random = new Random(); // stackOverFlowExeption if not a single static random
+        public static Random _random = new Random(); // stackOverFlowException if not a single static random
 
         public static bool FiftyFifty { get => _random.Next(1, 3) == 1; }
 
