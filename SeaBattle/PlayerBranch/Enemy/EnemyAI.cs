@@ -39,9 +39,10 @@ namespace SeaBattle
             FoundHumanPlayerShip = true;
             _foundShipButton = button;
             _humanPlayerField = Field;
-            _buttonsAround.AddRange(from Point crossCoordianteOffset in crossCoordiantesOffset
-                                    let xShifted = _foundShipButton.X + crossCoordianteOffset.X
-                                    let yShifted = _foundShipButton.Y + crossCoordianteOffset.Y
+            Point point = new Point(button.X, button.Y);
+            _buttonsAround.AddRange(from Point neighbourPoint in crossCoordiantesOffset
+                                    let xShifted = _foundShipButton.X + neighbourPoint.X
+                                    let yShifted = _foundShipButton.Y + neighbourPoint.Y
                                     where FieldController.CoordinatesInsideField(xShifted, yShifted)
                                     let buttonAround = _humanPlayerField[xShifted, yShifted]
                                     where !buttonAround.IsShot

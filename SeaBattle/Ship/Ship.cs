@@ -6,15 +6,15 @@ namespace SeaBattle
     {
         private int _size;
 
-        public Ship(List<ShipButton> shipParts)
+        public Ship(HashSet<ShipButton> shipParts)
         {
             _size = shipParts.Count;
             ShipParts = shipParts;
         }
 
-        public List<ShipButton> ShipParts { get; private set; }
+        public HashSet<ShipButton> ShipParts { get; private set; }
 
-        public List<ShipButton> MarkedParts { get; set; } = new List<ShipButton>();
+        public HashSet<ShipButton> MarkedParts { get; set; } = new HashSet<ShipButton>();
 
         public bool IsDead { get => _size == 0; }
 

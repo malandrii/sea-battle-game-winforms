@@ -25,8 +25,9 @@ namespace SeaBattle
                 isHorizontal: _mainForm.PreGameController.ChosenShipIsHorizontal, randomShip: false);
             Ship newPlayerShip = DeclareShip(shipCoordinates);
             HumanPlayerShipController.ColorShip(newPlayerShip.ShipParts);
-            FieldController.UnableRegion(newPlayerShip.ShipParts);
-            FieldController.UnableRegion(newPlayerShip.MarkedParts);
+            HashSet<ShipButton> allShipParts = new HashSet<ShipButton>(newPlayerShip.ShipParts);
+            allShipParts.UnionWith(newPlayerShip.MarkedParts);
+            FieldController.UnableRegion(allShipParts);
         }
 
         public void UnableField()
