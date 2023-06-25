@@ -52,7 +52,7 @@
             this.InstantlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MarkComputerMovesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonRotate = new System.Windows.Forms.Button();
-            this.comboBoxComputerMoveSpeed = new System.Windows.Forms.ComboBox();
+            this.comboBoxEnemyMoveSpeed = new System.Windows.Forms.ComboBox();
             this.buttonGameStart = new System.Windows.Forms.Button();
             this.labelShipsPlaceLeft = new System.Windows.Forms.Label();
             this.labelPlaceShips = new System.Windows.Forms.Label();
@@ -273,17 +273,17 @@
             // 
             // comboBoxComputerMoveSpeed
             // 
-            this.comboBoxComputerMoveSpeed.FormattingEnabled = true;
-            this.comboBoxComputerMoveSpeed.Items.AddRange(new object[] {
+            this.comboBoxEnemyMoveSpeed.FormattingEnabled = true;
+            this.comboBoxEnemyMoveSpeed.Items.AddRange(new object[] {
             "Slowly",
             "Medium",
             "Fast",
             "Instantly"});
-            this.comboBoxComputerMoveSpeed.Location = new System.Drawing.Point(35, 42);
-            this.comboBoxComputerMoveSpeed.Name = "comboBoxComputerMoveSpeed";
-            this.comboBoxComputerMoveSpeed.Size = new System.Drawing.Size(135, 21);
-            this.comboBoxComputerMoveSpeed.TabIndex = 15;
-            this.comboBoxComputerMoveSpeed.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
+            this.comboBoxEnemyMoveSpeed.Location = new System.Drawing.Point(35, 42);
+            this.comboBoxEnemyMoveSpeed.Name = "comboBoxComputerMoveSpeed";
+            this.comboBoxEnemyMoveSpeed.Size = new System.Drawing.Size(135, 21);
+            this.comboBoxEnemyMoveSpeed.TabIndex = 15;
+            this.comboBoxEnemyMoveSpeed.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
             // 
             // buttonGameStart
             // 
@@ -372,7 +372,7 @@
             this.groupBoxEnemy.Controls.Add(this.checkBoxMarkEnemyMoves);
             this.groupBoxEnemy.Controls.Add(this.checkBoxEnemyRandomMoves);
             this.groupBoxEnemy.Controls.Add(this.labelComputerMovingSpeed);
-            this.groupBoxEnemy.Controls.Add(this.comboBoxComputerMoveSpeed);
+            this.groupBoxEnemy.Controls.Add(this.comboBoxEnemyMoveSpeed);
             this.groupBoxEnemy.Location = new System.Drawing.Point(77, 217);
             this.groupBoxEnemy.Name = "groupBoxEnemy";
             this.groupBoxEnemy.Size = new System.Drawing.Size(200, 126);
@@ -476,7 +476,7 @@
         private System.Windows.Forms.ToolStripMenuItem InstantlyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MarkComputerMovesToolStripMenuItem;
         private System.Windows.Forms.Button buttonRotate;
-        private System.Windows.Forms.ComboBox comboBoxComputerMoveSpeed;
+        private System.Windows.Forms.ComboBox comboBoxEnemyMoveSpeed;
         private System.Windows.Forms.Button buttonGameStart;
         private System.Windows.Forms.Label labelShipsPlaceLeft;
         private System.Windows.Forms.Label labelPlaceShips;

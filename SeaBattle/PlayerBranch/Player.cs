@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace SeaBattle
@@ -8,22 +9,31 @@ namespace SeaBattle
         private int _shipPartsAlive = 20;
         protected MainForm _mainForm;
         protected int _fieldSize;
-        protected int _markingOffset;
+        protected int _markingOffset = 0;
 
         public Player(MainForm mainForm)
         {
             _mainForm = mainForm;
-            _fieldSize = FieldController.FieldSize;
+            _fieldSize = Field.Size;
+            Field = new Field();
         }
 
-        public int ShipPartsAlive { get => _shipPartsAlive; protected set { if (value >= 0) _shipPartsAlive = value; } }
+        public Field Field { get; protected set; }
 
-        public ShipButton[,] Field { get; set; }
+        public int ShipPartsAlive 
+        { 
+            get => _shipPartsAlive;
+            protected set 
+            { 
+                if (value >= 0) 
+                    _shipPartsAlive = value;
+                else throw new ArgumentOutOfRangeException();
+            }
+        }
 
         public virtual void DeclareField()
         {
-            FieldController fieldController = new FieldController(_mainForm);
-            fieldController.CreateField(Field, _markingOffset);
+            Field.Declare(_mainForm, _markingOffset);
         }
 
         public void TakeDamage()
@@ -43,12 +53,6 @@ namespace SeaBattle
             }
         }
 
-        public static void ShiftCoordinates(bool isHorizontal, bool Add, ref int x, ref int y)
-        {
-            ref int coordinate = ref isHorizontal ? ref x : ref y;
-            coordinate = Add ? ++coordinate : --coordinate;
-        }
-
         private void SpawnRandomShip(int size)
         {
             int x = 0, y = 0;
@@ -59,6 +63,12 @@ namespace SeaBattle
                 DeclareShip(shipCoordinates);
             else
                 SpawnRandomShip(size);
+        }
+
+        public static void ShiftCoordinates(bool isHorizontal, bool Add, ref int x, ref int y)
+        {
+            ref int coordinate = ref isHorizontal ? ref x : ref y;
+            coordinate = Add ? ++coordinate : --coordinate;
         }
 
         private bool CanMakeShip(List<Point> shipCoordinates)
@@ -107,17 +117,23 @@ namespace SeaBattle
         {
             int sizeToCheck = _fieldSize - size - oneSquareShipSize, coordinateToCheck = isHorizontal ? x : y;
             bool insideField = coordinateToCheck < sizeToCheck;
-            ShiftCoordinates(isHorizontal, randomShip ? insideField : _mainForm.PreGameController.ChosenShipIsHorizontal, ref x, ref y);
+            ShiftCoordinates(isHorizontal, 
+                randomShip ? insideField : _mainForm.PreGameController.ChosenShipIsHorizontal,
+                ref x, ref y);
         }
 
         protected Ship DeclareShip(List<Point> shipCoordinates)
         {
-            var shipParts = new HashSet<ShipButton>();
-            foreach (Point shipCoordinate in shipCoordinates)
-                shipParts.Add(Field[shipCoordinate.X, shipCoordinate.Y]);
+            var shipParts = new ShipButton[shipCoordinates.Count];
+            for (int i = 0; i < shipParts.Length; i++)
+            {
+                shipParts[i] = Field[shipCoordinates[i].X, shipCoordinates[i].Y];
+            }
             Ship ship = new Ship(shipParts);
             foreach (Point shipCoordinate in shipCoordinates)
+            {
                 MakeShipPart(shipCoordinate.X, shipCoordinate.Y, ship);
+            }
             return ship;
         }
 

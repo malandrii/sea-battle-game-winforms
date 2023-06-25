@@ -2,7 +2,7 @@
 
 namespace SeaBattle
 {
-    sealed public class Enemy : Player
+    public class Enemy : Player
     {
         private readonly HumanPlayer _humanPlayer;
         private readonly EnemyTimer _attackTimer;
@@ -15,14 +15,17 @@ namespace SeaBattle
             const int enemyMarkingOffset = 380;
             _markingOffset = enemyMarkingOffset;
             _humanPlayer = humanPlayer;
-            Field = new ShipButton[_fieldSize, _fieldSize];
             _attackTimer = new EnemyTimer(this, mainForm);
-            _enemyAI = new EnemyAI(this);
+            _enemyAI = new EnemyAI(this, humanPlayerField: humanPlayer.Field);
         }
 
         public bool RandomMoves { get; set; } = false;
 
         public bool MarkMoves { private get; set; } = true;
+
+        public int MoveSpeed => _mainForm.EnemyMoveSpeedComboBox.SelectedIndex;
+
+        public int MoveSpeedsAmount => _mainForm.EnemyMoveSpeedComboBox.Items.Count;
 
         public override void DeclareField()
         {
@@ -62,7 +65,7 @@ namespace SeaBattle
         private void Attack(ShipButton buttonToAttack)
         {
             buttonToAttack.Shoot();
-            if (MarkMoves) MainFormButtonController.ButtonColorEnemyMarkedHit(buttonToAttack);
+            if (MarkMoves) FormButtonController.SetButtonColorToEnemyMarkedHit(buttonToAttack);
             if (buttonToAttack.IsShipPart)
             {
                 AttackShipPart(buttonToAttack);
@@ -85,7 +88,7 @@ namespace SeaBattle
                 _enemyAI.ResetVariables();
                 if (_humanPlayer.CheckDeath()) return;
             }
-            else _enemyAI.SetButtonsAroundButtonToAttack(buttonToAttack, _humanPlayer.Field);
+            else _enemyAI.SetButtonsAroundButtonToAttack(buttonToAttack);
             StartNewAttack();
         }
 

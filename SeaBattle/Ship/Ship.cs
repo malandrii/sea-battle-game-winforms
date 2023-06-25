@@ -4,19 +4,28 @@ namespace SeaBattle
 {
     public class Ship
     {
+        private readonly ShipButton[] _shipParts;
         private int _size;
 
-        public Ship(HashSet<ShipButton> shipParts)
+        public Ship(ShipButton[] shipParts)
         {
-            _size = shipParts.Count;
-            ShipParts = shipParts;
+            _size = shipParts.Length;
+            _shipParts = shipParts;
         }
-
-        public HashSet<ShipButton> ShipParts { get; private set; }
 
         public HashSet<ShipButton> MarkedParts { get; set; } = new HashSet<ShipButton>();
 
-        public bool IsDead { get => _size == 0; }
+        public bool IsDead => _size == 0;
+
+        public IEnumerator<ShipButton> GetEnumerator()
+        {
+            return ((IEnumerable<ShipButton>)_shipParts).GetEnumerator();
+        }
+
+        public static explicit operator ShipButton[](Ship ship)
+        {
+            return ship._shipParts;
+        }
 
         public void TakeDamage()
         {
@@ -25,9 +34,9 @@ namespace SeaBattle
 
         public void Death()
         {
-            foreach (ShipButton shipPart in ShipParts)
+            foreach (ShipButton shipPart in _shipParts)
             {
-                MainFormButtonController.ButtonColorShipHit(shipPart);
+                FormButtonController.SetButtonColorToShipHit(shipPart);
             }
             foreach (ShipButton button in MarkedParts)
             {

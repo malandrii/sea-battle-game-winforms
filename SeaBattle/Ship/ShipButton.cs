@@ -1,11 +1,10 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace SeaBattle
 {
-    sealed public class ShipButton : Button
+    public class ShipButton : Button
     {
-        private const string ShotShipPartText = "X";
-        private const string ShotText = ".";
         private bool _marked = false;
         private int _x;
         private int _y;
@@ -21,33 +20,34 @@ namespace SeaBattle
         public int X
         {
             get => _x;
-            private set
-            {
-                if (FieldController.CoordinateInsideField(value))
-                    _x = value;
-            }
+            private set => SetCoordinate(ref _x, value);
         }
 
         public int Y
         {
             get => _y;
-            private set
-            {
-                if (FieldController.CoordinateInsideField(value))
-                    _y = value;
-            }
+            private set => SetCoordinate(ref _y, value);
         }
 
         public bool IsShipPart { get; set; } = false;
 
         public bool IsShot { get; set; } = false;
 
-        public bool FreeForShipCreation { get => !IsShipPart && !_marked; }
+        public bool FreeForShipCreation => !IsShipPart && !_marked;
+
+        private static void SetCoordinate(ref int coordinate, int value)
+        {
+            if (Field.CoordinateInside(value))
+                coordinate = value;
+            else
+                throw new IndexOutOfRangeException();
+        }
 
         public void Shoot()
         {
-            IsShot = true;
+            const string ShotShipPartText = "X", ShotText = ".";
             Text = IsShipPart ? ShotShipPartText : ShotText;
+            IsShot = true;
             Enabled = false;
         }
 

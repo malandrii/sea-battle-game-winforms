@@ -4,7 +4,6 @@
     {
         public const int ShipSizesAmount = 4;
         private readonly MainForm _mainForm;
-        private HumanPlayer _humanPlayer;
         private Enemy _enemy;
 
         public GameController(MainForm mainForm) 
@@ -12,15 +11,13 @@
             _mainForm = mainForm;
         }
 
-        public HumanPlayer HumanPlayer { get => _humanPlayer; }
+        public HumanPlayer HumanPlayer { get; private set; }
 
-        public int ComputerMoveSpeed { get => _mainForm.ComputerMoveSpeedSelectedIndex; }
+        public bool EnemyTurn => _mainForm.ComputerTurnLabelVisible;
 
-        public bool ComputerTurn { get => _mainForm.ComputerTurnLabelVisible; }
-
-        public void RefreshPlayers(HumanPlayer humanPlayer, Enemy enemy)
+        public void SetPlayers(HumanPlayer humanPlayer, Enemy enemy)
         {
-            _humanPlayer = humanPlayer;
+            HumanPlayer = humanPlayer;
             _enemy = enemy;
         }
 
@@ -33,7 +30,7 @@
         {
             _mainForm.HumanPlayerStatus.SetFinishGameStatus(humanWon: _enemy.ShipPartsAlive == 0);
             FieldController.ColorShips(_enemy.Field, humanField: false);
-            FieldController.UnableField(_enemy.Field);
+            _enemy.Field.Unable();
             _mainForm.SetRestartButtonVisibile();
         }
 
@@ -46,8 +43,8 @@
         private void ResetGame()
         {
             _mainForm.ResetControls();
-            FieldController.DisposeField(_humanPlayer.Field);
-            FieldController.DisposeField(_enemy.Field);
+            HumanPlayer.Field.Dispose();
+            _enemy.Field.Dispose();
         }
     }
 }
