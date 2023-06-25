@@ -43,24 +43,6 @@ namespace SeaBattle
             }
         }
 
-        private void CheckForSameLocatedShips(ref bool sameCoordinates, int size,
-            List<Point> coordinateCopies)
-        {
-            const int minimumShipSizeToCheck = 2;
-            if (size <= minimumShipSizeToCheck) return;
-            for (int specificShipPart = 0; specificShipPart < coordinateCopies.Count - FieldController.NextIndex; specificShipPart++)
-            {
-                for (int nextShipPart = specificShipPart + FieldController.NextIndex;
-                    nextShipPart < coordinateCopies.Count; nextShipPart++)
-                {
-                    sameCoordinates =
-                        coordinateCopies[specificShipPart].X == coordinateCopies[nextShipPart].X
-                     && coordinateCopies[specificShipPart].Y == coordinateCopies[nextShipPart].Y;
-                    if (sameCoordinates) return;
-                }
-            }
-        }
-
         public static void ShiftCoordinates(bool isHorizontal, bool Add, ref int x, ref int y)
         {
             ref int coordinate = ref isHorizontal ? ref x : ref y;
@@ -73,22 +55,40 @@ namespace SeaBattle
             bool isHorizontal = Randomizer.FiftyFifty;
             Randomizer.MakeCoordinatesRandom(ref x, ref y);
             List<Point> shipCoordinates = GetShipCoordinates(size, x, y, isHorizontal, randomShip: true);
-            if (CanMakeShip(size, shipCoordinates))
+            if (CanMakeShip(shipCoordinates))
                 DeclareShip(shipCoordinates);
             else
                 SpawnRandomShip(size);
         }
 
-        private bool CanMakeShip(int size, List<Point> shipCoordinates)
+        private bool CanMakeShip(List<Point> shipCoordinates)
         {
             bool shipButtonsFree = true, sameCoordinates = false;
-            for (int i = 0; i < size; i++)
+            foreach (Point shipCoordinate in shipCoordinates)
             {
-                if (Field[shipCoordinates[i].X, shipCoordinates[i].Y].FreeForShipCreation) continue;
+                if (Field[shipCoordinate.X, shipCoordinate.Y].FreeForShipCreation) continue;
                 shipButtonsFree = false;
             }
-            CheckForSameLocatedShips(ref sameCoordinates, size, shipCoordinates);
+            CheckForSameLocatedShips(ref sameCoordinates, shipCoordinates);
             return shipButtonsFree && !sameCoordinates;
+        }
+
+        private void CheckForSameLocatedShips(ref bool sameCoordinates, List<Point> coordinateCopies)
+        {
+            const int minimumShipSizeToCheck = 2;
+            int shipSize = coordinateCopies.Count;
+            if (shipSize <= minimumShipSizeToCheck) return;
+            for (int specificShipPart = 0; specificShipPart < coordinateCopies.Count - FieldController.NextIndex; specificShipPart++)
+            {
+                for (int nextShipPart = specificShipPart + FieldController.NextIndex;
+                    nextShipPart < coordinateCopies.Count; nextShipPart++)
+                {
+                    sameCoordinates =
+                        coordinateCopies[specificShipPart].X == coordinateCopies[nextShipPart].X
+                     && coordinateCopies[specificShipPart].Y == coordinateCopies[nextShipPart].Y;
+                    if (sameCoordinates) return;
+                }
+            }
         }
 
         protected List<Point> GetShipCoordinates(int size, int x, int y, bool isHorizontal, bool randomShip)
@@ -112,13 +112,12 @@ namespace SeaBattle
 
         protected Ship DeclareShip(List<Point> shipCoordinates)
         {
-            int size = shipCoordinates.Count;
-            var shipParts = new List<ShipButton>();
-            for (int i = 0; i < size; i++)
-                shipParts.Add(Field[shipCoordinates[i].X, shipCoordinates[i].Y]);
+            var shipParts = new HashSet<ShipButton>();
+            foreach (Point shipCoordinate in shipCoordinates)
+                shipParts.Add(Field[shipCoordinate.X, shipCoordinate.Y]);
             Ship ship = new Ship(shipParts);
-            for (int i = 0; i < size; i++)
-                MakeShipPart(shipCoordinates[i].X, shipCoordinates[i].Y, ship);
+            foreach (Point shipCoordinate in shipCoordinates)
+                MakeShipPart(shipCoordinate.X, shipCoordinate.Y, ship);
             return ship;
         }
 

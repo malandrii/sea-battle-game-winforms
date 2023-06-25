@@ -61,7 +61,7 @@ namespace SeaBattle
             MainFormButtonController.SetShipButtonColor(shipPart, HumanPlayerShip);
         }
 
-        public static void ColorShip(List<ShipButton> shipParts)
+        public static void ColorShip(HashSet<ShipButton> shipParts)
         {
             foreach (ShipButton shipPart in shipParts)
                 ColorShipPart(shipPart);

@@ -2,12 +2,12 @@
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace SeaBattle
 {
     public class FieldController
     {
-        private const string EnglishAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         public const int StartingCoordinate = 0;
         public const int NextIndex = 1;
         public const int FieldSize = 10;
@@ -34,6 +34,7 @@ namespace SeaBattle
 
         private void AddMarking(int coordinate, int offset)
         {
+            const string EnglishAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             int buttonSize = MainFormButtonController.ButtonSize, doubleButtonSize = buttonSize * 2,
                 coordinateOffset = buttonSize * coordinate;
             var letter = new Label
@@ -68,43 +69,15 @@ namespace SeaBattle
             return coordinate >= StartingCoordinate && coordinate < FieldSize;
         }
 
-        public static List<Point> GetCoordinatesAround(int x, int y)
+        public static HashSet<Point> GetCoordinatesAround(int x, int y)
         {
-            int lastCoordinate = FieldSize - NextIndex, initialX = x, initialY = y;
-            var coordinatesAround = new List<Point>();
-            AddDimensionRelatedCoordinates(coordinatesAround, lastCoordinate, initialX, initialY, coordinateIsX: true);
-            AddDimensionRelatedCoordinates(coordinatesAround, lastCoordinate, initialX, initialY, coordinateIsX: false);
-            return coordinatesAround;
-        }
-
-        private static void AddDimensionRelatedCoordinates(List<Point> coordinatesAround, int lastCoordinate, int initialX, 
-            int initialY, bool coordinateIsX)
-        {
-            int coordinate = coordinateIsX ? initialX : initialY;
-            if (coordinate > StartingCoordinate)
-                AddSpecificDimensionRelatedCoordinates(coordinatesAround, lastCoordinate, initialX, initialY, 
-                    coordinateIsX, offsetToDownLeft: true);
-            if (coordinate < lastCoordinate)
-                AddSpecificDimensionRelatedCoordinates(coordinatesAround, lastCoordinate, initialX, initialY,
-                    coordinateIsX, offsetToDownLeft: false);
-        }
-
-        private static void AddSpecificDimensionRelatedCoordinates(List<Point> coordinatesAround, int lastCoordinate,
-            int initialX, int initialY, bool coordinateIsX, bool offsetToDownLeft)
-        {
-            int x = initialX, y = initialY,
-                offsetCoordinate = coordinateIsX ? x : y;
-            offsetCoordinate += offsetToDownLeft ? -NextIndex : NextIndex;
-            if (!coordinateIsX)
-            {
-                coordinatesAround.Add(new Point(x, offsetCoordinate));
-                return;
-            }
-            coordinatesAround.Add(new Point(offsetCoordinate, y));
-            if (y > StartingCoordinate)
-                coordinatesAround.Add(new Point(offsetCoordinate, y - NextIndex));
-            if (y < lastCoordinate)
-                coordinatesAround.Add(new Point(offsetCoordinate, y + NextIndex));
+            Point point = new Point(x, y);
+            int[] cartesianSet = { -1, 0, 1 };
+            return cartesianSet
+                .SelectMany(dx => cartesianSet.Select(dy => new Point(point.X + dx, point.Y + dy)))
+                .Where(selectedPoint => !point.Equals(selectedPoint))
+                .Where(selectedPoint => CoordinatesInsideField(selectedPoint.X, selectedPoint.Y))
+                .ToHashSet();
         }
 
         public static void ColorShips(ShipButton[,] Field, bool humanField)
@@ -117,7 +90,7 @@ namespace SeaBattle
             }
         }
 
-        public static void UnableRegion(List<ShipButton> region)
+        public static void UnableRegion(HashSet<ShipButton> region)
         {
             foreach (var shipButton in region)
                 shipButton.Enabled = false;
