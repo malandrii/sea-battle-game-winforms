@@ -1,4 +1,6 @@
-﻿namespace SeaBattle
+﻿using System;
+
+namespace SeaBattle
 {
     public class PreGameController
     {
@@ -17,8 +19,9 @@
             get => _chosenShipSize;
             set
             {
-                if (value >= FieldController.StartingCoordinate && value <= GameController.ShipSizesAmount)
+                if (value >= Field.StartingCoordinate && value <= GameController.ShipSizesAmount)
                     _chosenShipSize = value;
+                else throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -29,7 +32,7 @@
         public void StartPreGame()
         {
             const string clearFieldTitle = "Clear Field";
-            _mainForm.ContextMenuStrip.Items[FieldController.StartingCoordinate].Text = clearFieldTitle;
+            _mainForm.ContextMenuStrip.Items[Field.StartingCoordinate].Text = clearFieldTitle;
             _mainForm.CreateShipSizeChoosingPanel();
             DeclarePlayers();
             _mainForm.SetButtonsEvents();
@@ -40,16 +43,15 @@
         {
             _humanPlayer = new HumanPlayer(_mainForm);
             _enemy = new Enemy(_mainForm, _humanPlayer);
-            _mainForm.GameController.RefreshPlayers(_humanPlayer, _enemy);
+            _mainForm.GameController.SetPlayers(_humanPlayer, _enemy);
             _humanPlayer.SetEnemy(_enemy);
-            _humanPlayer.Field = new ShipButton[FieldController.FieldSize, FieldController.FieldSize];
             _humanPlayer.DeclareField();
         }
 
         public void StartGame(bool enemyRandomMoves)
         {
             const string restartGameTitle = "Restart Game";
-            _mainForm.ContextMenuStrip.Items[FieldController.StartingCoordinate].Text = restartGameTitle;
+            _mainForm.ContextMenuStrip.Items[Field.StartingCoordinate].Text = restartGameTitle;
             _mainForm.GameController.RefreshEnemyMovesMarking();
             _enemy.RandomMoves = enemyRandomMoves;
             _enemy.DeclareField();
@@ -79,7 +81,7 @@
 
         public void ResetProperties()
         {
-            ChosenShipSize = FieldController.StartingCoordinate;
+            ChosenShipSize = Field.StartingCoordinate;
             ShipHasBeenPlaced = false;
         }
     }

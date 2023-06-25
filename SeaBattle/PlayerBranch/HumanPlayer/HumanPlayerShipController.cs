@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace SeaBattle
 {
@@ -18,8 +17,8 @@ namespace SeaBattle
         {
             int previousSize = chosenSize - FieldController.NextIndex;
             bool spaceIsFree = chosenShipIsHorizontal ?
-                (button.X + previousSize) < FieldController.FieldSize :
-                (button.Y - previousSize) >= FieldController.StartingCoordinate;
+                (button.X + previousSize) < Field.Size :
+                (button.Y - previousSize) >= Field.StartingCoordinate;
             AppearShipPreview(button, chosenSize, ref spaceIsFree, toAppear, chosenShipIsHorizontal, spaceIsFreeSet: false);
             AppearShipPreview(button, chosenSize, ref spaceIsFree, toAppear, chosenShipIsHorizontal, spaceIsFreeSet: true);
         }
@@ -48,22 +47,22 @@ namespace SeaBattle
             if (toAppear)
                 ColorShipPartPreview(shipButton);
             else
-                MainFormButtonController.ButtonColorToStandart(shipButton);
+                FormButtonController.ButtonColorToStandart(shipButton);
         }
 
         private static void ColorShipPartPreview(ShipButton shipPart)
         {
-            MainFormButtonController.SetShipButtonColor(shipPart, HumanPlayerShipPreview);
+            FormButtonController.SetShipButtonColor(shipPart, HumanPlayerShipPreview);
         }
 
         public static void ColorShipPart(ShipButton shipPart)
         {
-            MainFormButtonController.SetShipButtonColor(shipPart, HumanPlayerShip);
+            FormButtonController.SetShipButtonColor(shipPart, HumanPlayerShip);
         }
 
-        public static void ColorShip(HashSet<ShipButton> shipParts)
+        public static void ColorShip(Ship ship)
         {
-            foreach (ShipButton shipPart in shipParts)
+            foreach (ShipButton shipPart in ship)
                 ColorShipPart(shipPart);
         }
 

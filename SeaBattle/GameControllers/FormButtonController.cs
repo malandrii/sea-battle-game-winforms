@@ -3,16 +3,16 @@ using System.Windows.Forms;
 
 namespace SeaBattle
 {
-    public class MainFormButtonController
+    public class FormButtonController
     {
-        private readonly MainForm _mainForm;
+        private readonly Form _form;
         private static readonly Color ShipHit = Color.Red;
         private static readonly Color EnemyMarkedHit = Color.DarkRed;
         public const int ButtonSize = 30;
 
-        public MainFormButtonController(MainForm mainForm)
+        public FormButtonController(Form form)
         {
-            _mainForm = mainForm;
+            _form = form;
         }
 
         public static void ButtonColorToStandart(Button button)
@@ -28,12 +28,12 @@ namespace SeaBattle
             shipButton.Font = new Font(shipButton.Font.Name, fontSize, fontStyle);
         }
 
-        public static void ButtonColorShipHit(ShipButton shipButton)
+        public static void SetButtonColorToShipHit(ShipButton shipButton)
         {
             SetShipButtonColor(shipButton, ShipHit);
         }
 
-        public static void ButtonColorEnemyMarkedHit(ShipButton shipButton)
+        public static void SetButtonColorToEnemyMarkedHit(ShipButton shipButton)
         {
             SetShipButtonColor(shipButton, EnemyMarkedHit);
         }
@@ -58,7 +58,7 @@ namespace SeaBattle
             }
         }
 
-        public void CreateNewShipButton(ShipButton[,] field, int markingOffset, int indent, int y, int x)
+        public void CreateNewShipButton(Field field, int markingOffset, int indent, int y, int x)
         {
             int xIndent = indent + markingOffset;
             field[x, y] = new ShipButton(x, y)
@@ -66,7 +66,7 @@ namespace SeaBattle
                 Location = new Point(x * ButtonSize + xIndent, y * ButtonSize + indent),
                 Size = new Size(ButtonSize, ButtonSize)
             };
-            _mainForm.Controls.Add(field[x, y]);
+            _form.Controls.Add(field[x, y]);
         }
     }
 }

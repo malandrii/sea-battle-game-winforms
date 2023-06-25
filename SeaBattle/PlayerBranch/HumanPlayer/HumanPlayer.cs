@@ -3,15 +3,11 @@ using System.Drawing;
 
 namespace SeaBattle
 {
-    sealed public class HumanPlayer : Player
+    public class HumanPlayer : Player
     {
         private Enemy _enemy;
 
-        public HumanPlayer(MainForm mainForm) : base(mainForm)
-        {
-            const int humanPlayerMarkingOffset = 0;
-            _markingOffset = humanPlayerMarkingOffset;
-        }
+        public HumanPlayer(MainForm mainForm) : base(mainForm) { }
 
         public void SetEnemy(Enemy enemy)
         {
@@ -24,21 +20,15 @@ namespace SeaBattle
                 senderShipButton.X, senderShipButton.Y, 
                 isHorizontal: _mainForm.PreGameController.ChosenShipIsHorizontal, randomShip: false);
             Ship newPlayerShip = DeclareShip(shipCoordinates);
-            HumanPlayerShipController.ColorShip(newPlayerShip.ShipParts);
-            HashSet<ShipButton> allShipParts = new HashSet<ShipButton>(newPlayerShip.ShipParts);
+            HumanPlayerShipController.ColorShip(newPlayerShip);
+            HashSet<ShipButton> allShipParts = new HashSet<ShipButton>((ShipButton[])newPlayerShip);
             allShipParts.UnionWith(newPlayerShip.MarkedParts);
             FieldController.UnableRegion(allShipParts);
         }
 
-        public void UnableField()
-        {
-            foreach (ShipButton button in Field)
-                button.Enabled = false;
-        }
-
         public void Attack(object sender)
         {
-            bool canMove = !_mainForm.GameController.ComputerTurn;
+            bool canMove = !_mainForm.GameController.EnemyTurn;
             if (!canMove) return;
             _mainForm.SetFocus();
             ShipButton senderButton = sender as ShipButton;
