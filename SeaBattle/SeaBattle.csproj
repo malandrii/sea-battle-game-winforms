@@ -71,6 +71,7 @@
     <Compile Include="GameControllers\Field\Field.cs" />
     <Compile Include="GameControllers\GameController.cs" />
     <Compile Include="GameControllers\PreGameController.cs" />
+    <Compile Include="MainForm\FormControlManager.cs" />
     <Compile Include="PlayerBranch\HumanPlayer\HumanPlayerShipController.cs" />
     <Compile Include="GameControllers\FormButtonController.cs" />
     <Compile Include="MainForm\MainFormHumanPlayerStatus.cs" />

@@ -22,10 +22,7 @@ namespace SeaBattle
             return ((IEnumerable<ShipButton>)_shipParts).GetEnumerator();
         }
 
-        public static explicit operator ShipButton[](Ship ship)
-        {
-            return ship._shipParts;
-        }
+        public static explicit operator ShipButton[](Ship ship) => ship._shipParts;
 
         public void TakeDamage()
         {
@@ -38,6 +35,7 @@ namespace SeaBattle
             {
                 FormButtonController.SetButtonColorToShipHit(shipPart);
             }
+
             foreach (ShipButton button in MarkedParts)
             {
                 if (button.IsShipPart) continue;

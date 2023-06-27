@@ -31,15 +31,9 @@ namespace SeaBattle
             }
         }
 
-        public virtual void DeclareField()
-        {
-            Field.Declare(_mainForm, _markingOffset);
-        }
+        public virtual void DeclareField() => Field.Declare(_mainForm, _markingOffset);
 
-        public void TakeDamage()
-        {
-            ShipPartsAlive--;
-        }
+        public void TakeDamage() => ShipPartsAlive--;
 
         public void SpawnRandomShips()
         {
@@ -56,9 +50,10 @@ namespace SeaBattle
         private void SpawnRandomShip(int size)
         {
             int x = 0, y = 0;
-            bool isHorizontal = Randomizer.FiftyFifty;
             Randomizer.MakeCoordinatesRandom(ref x, ref y);
-            List<Point> shipCoordinates = GetShipCoordinates(size, x, y, isHorizontal, randomShip: true);
+
+            List<Point> shipCoordinates = GetShipCoordinates(size, x, y, isHorizontal: Randomizer.FiftyFifty, randomShip: true);
+
             if (CanMakeShip(shipCoordinates))
                 DeclareShip(shipCoordinates);
             else
@@ -74,11 +69,13 @@ namespace SeaBattle
         private bool CanMakeShip(List<Point> shipCoordinates)
         {
             bool shipButtonsFree = true, sameCoordinates = false;
+
             foreach (Point shipCoordinate in shipCoordinates)
             {
                 if (Field[shipCoordinate.X, shipCoordinate.Y].FreeForShipCreation) continue;
                 shipButtonsFree = false;
             }
+
             CheckForSameLocatedShips(ref sameCoordinates, shipCoordinates);
             return shipButtonsFree && !sameCoordinates;
         }
@@ -88,6 +85,7 @@ namespace SeaBattle
             const int minimumShipSizeToCheck = 2;
             int shipSize = coordinateCopies.Count;
             if (shipSize <= minimumShipSizeToCheck) return;
+
             for (int specificShipPart = 0; specificShipPart < coordinateCopies.Count - FieldController.NextIndex; specificShipPart++)
             {
                 for (int nextShipPart = specificShipPart + FieldController.NextIndex;
@@ -129,6 +127,7 @@ namespace SeaBattle
             {
                 shipParts[i] = Field[shipCoordinates[i].X, shipCoordinates[i].Y];
             }
+
             Ship ship = new Ship(shipParts);
             foreach (Point shipCoordinate in shipCoordinates)
             {

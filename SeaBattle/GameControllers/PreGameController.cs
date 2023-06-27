@@ -9,12 +9,9 @@ namespace SeaBattle
         private Enemy _enemy;
         private int _chosenShipSize;
 
-        public PreGameController(MainForm mainForm)
-        {
-            _mainForm = mainForm;
-        }
+        public PreGameController(MainForm mainForm) => _mainForm = mainForm;
 
-        public int ChosenShipSize 
+        public int ChosenShipSize
         {
             get => _chosenShipSize;
             set
@@ -52,6 +49,7 @@ namespace SeaBattle
         {
             const string restartGameTitle = "Restart Game";
             _mainForm.ContextMenuStrip.Items[Field.StartingCoordinate].Text = restartGameTitle;
+
             _mainForm.GameController.RefreshEnemyMovesMarking();
             _enemy.RandomMoves = enemyRandomMoves;
             _enemy.DeclareField();
@@ -74,10 +72,19 @@ namespace SeaBattle
             }
         }
 
-        public void RotateShipHorizontality()
+        public void ChangeShipsLeftControls(System.Windows.Forms.Button selectedButton, 
+                                            System.Windows.Forms.Label currentSizeShipsLeft)
         {
-            ChosenShipIsHorizontal = !ChosenShipIsHorizontal;
+            int decreasedShipSize = Convert.ToInt32(currentSizeShipsLeft.Text) - FieldController.NextIndex;
+            currentSizeShipsLeft.Text = Convert.ToString(decreasedShipSize);
+            if (decreasedShipSize != Field.StartingCoordinate) return;
+
+            selectedButton.Enabled = false;
+            FormButtonController.ButtonColorToStandart(selectedButton);
+            ShipHasBeenPlaced = true;
         }
+
+        public void RotateShipHorizontality() => ChosenShipIsHorizontal = !ChosenShipIsHorizontal;
 
         public void ResetProperties()
         {

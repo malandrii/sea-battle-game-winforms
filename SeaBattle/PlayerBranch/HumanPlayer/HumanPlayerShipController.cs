@@ -8,10 +8,7 @@ namespace SeaBattle
         private static readonly Color HumanPlayerShipPreview = Color.LightBlue;
         public static readonly Color HumanPlayerShip = Color.Blue;
 
-        public HumanPlayerShipController(MainForm mainForm)
-        { 
-            _mainForm = mainForm;
-        }
+        public HumanPlayerShipController(MainForm mainForm) => _mainForm = mainForm;
 
         public void SetShipVisibility(ShipButton button, int chosenSize, bool toAppear, bool chosenShipIsHorizontal)
         {
@@ -26,8 +23,9 @@ namespace SeaBattle
         private void AppearShipPreview(ShipButton button, int chosenSize, ref bool spaceIsFree, bool toAppear,
             bool chosenShipIsHorizontal, bool spaceIsFreeSet)
         {
-            int x = button.X, y = button.Y;
             if (!spaceIsFree) return;
+
+            int x = button.X, y = button.Y;
             for (int i = 0; i < chosenSize; i++)
             {
                 if (!spaceIsFreeSet)
@@ -51,14 +49,10 @@ namespace SeaBattle
         }
 
         private static void ColorShipPartPreview(ShipButton shipPart)
-        {
-            FormButtonController.SetShipButtonColor(shipPart, HumanPlayerShipPreview);
-        }
+            => FormButtonController.SetShipButtonColor(shipPart, HumanPlayerShipPreview);
 
         public static void ColorShipPart(ShipButton shipPart)
-        {
-            FormButtonController.SetShipButtonColor(shipPart, HumanPlayerShip);
-        }
+            => FormButtonController.SetShipButtonColor(shipPart, HumanPlayerShip);
 
         public static void ColorShip(Ship ship)
         {
@@ -67,8 +61,6 @@ namespace SeaBattle
         }
 
         public static bool ButtonIsShipPreviewPart(ShipButton chosenButton)
-        {
-            return chosenButton.BackColor == HumanPlayerShipPreview;
-        }
+            => chosenButton.BackColor == HumanPlayerShipPreview;
     }
 }

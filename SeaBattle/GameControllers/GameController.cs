@@ -6,10 +6,7 @@
         private readonly MainForm _mainForm;
         private Enemy _enemy;
 
-        public GameController(MainForm mainForm) 
-        {
-            _mainForm = mainForm;
-        }
+        public GameController(MainForm mainForm) => _mainForm = mainForm;
 
         public HumanPlayer HumanPlayer { get; private set; }
 
@@ -22,9 +19,7 @@
         }
 
         public void RefreshEnemyMovesMarking()
-        {
-            _enemy.MarkMoves = _mainForm.MarkComputerMovesToolStripMenuItemChecked;
-        }
+            => _enemy.MarkMoves = _mainForm.MarkComputerMovesToolStripMenuItemChecked;
 
         public void FinishGame()
         {
