@@ -19,10 +19,7 @@ namespace SeaBattle
             _mainForm = mainForm;
         }
 
-        public void Start()
-        {
-            _timer.Start();
-        }
+        public void Start() => _timer.Start();
 
         public void Stop()
         {
@@ -30,21 +27,20 @@ namespace SeaBattle
             _mainForm.SetComputerMovesToolStripsEnables(enable: true);
         }
 
-        public void ResetTicks()
-        {
-            _timerTicks = 0;
-        }
+        public void ResetTicks() => _timerTicks = 0;
 
         private void Timer_Tick(object sender, EventArgs e)
         {
             const int speedTicksMutiplier = 30;
             int moveSpeedIndex = _enemy.MoveSpeedsAmount - FieldController.NextIndex - _enemy.MoveSpeed,
                 ticksAmountToStop = moveSpeedIndex * speedTicksMutiplier + FieldController.NextIndex;
+
             if (_timerTicks == ticksAmountToStop)
             {
                 _mainForm.SetLabelComputerMoveVisibility(visible: false);
                 _enemy.ContinueAttack();
             }
+
             _timerTicks++;
         }
     }

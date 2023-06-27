@@ -19,8 +19,10 @@ namespace SeaBattle
             List<Point> shipCoordinates = GetShipCoordinates(size: _mainForm.PreGameController.ChosenShipSize, 
                 senderShipButton.X, senderShipButton.Y, 
                 isHorizontal: _mainForm.PreGameController.ChosenShipIsHorizontal, randomShip: false);
+
             Ship newPlayerShip = DeclareShip(shipCoordinates);
             HumanPlayerShipController.ColorShip(newPlayerShip);
+
             HashSet<ShipButton> allShipParts = new HashSet<ShipButton>((ShipButton[])newPlayerShip);
             allShipParts.UnionWith(newPlayerShip.MarkedParts);
             FieldController.UnableRegion(allShipParts);
@@ -30,15 +32,18 @@ namespace SeaBattle
         {
             bool canMove = !_mainForm.GameController.EnemyTurn;
             if (!canMove) return;
+
             _mainForm.SetFocus();
             ShipButton senderButton = sender as ShipButton;
             senderButton.Shoot();
+
             if (!senderButton.IsShipPart)
             {
                 _mainForm.HumanPlayerStatus.SetStandartLabelStatus();
                 if (!_enemy.CheckDeath() && !CheckDeath()) _enemy.StartNewAttack();
                 return;
             }
+
             senderButton.ShipFrom.TakeDamage();
             _enemy.TakeDamage();
             SetHumanPlayerStatus(senderButton);

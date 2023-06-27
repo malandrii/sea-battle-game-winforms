@@ -10,10 +10,7 @@ namespace SeaBattle
         private static readonly Color EnemyWin = Color.Red;
         public const string StatusText = "Status: ";
 
-        public MainFormHumanPlayerStatus(MainForm mainForm)
-        {
-            _mainForm = mainForm;
-        }
+        public MainFormHumanPlayerStatus(MainForm mainForm) => _mainForm = mainForm;
 
         public static string GetShipPositionPlacementLabel(bool chosenShipIsHorizontal)
         {
@@ -29,14 +26,10 @@ namespace SeaBattle
         }
 
         public void SetHitEnemyShipStatus()
-        {
-            _mainForm.SetLabelStatus("Hit", Color.DarkRed);
-        }
+            => _mainForm.SetLabelStatus("Hit", Color.DarkRed);
 
         public void SetDeadEnemyShipStatus()
-        {
-            _mainForm.SetLabelStatus("Dead", Color.Red);
-        }
+            => _mainForm.SetLabelStatus("Dead", Color.Red);
 
         public void SetFinishGameStatus(bool humanWon)
         {

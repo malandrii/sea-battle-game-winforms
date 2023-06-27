@@ -10,10 +10,7 @@ namespace SeaBattle
         private static readonly Color EnemyMarkedHit = Color.DarkRed;
         public const int ButtonSize = 30;
 
-        public FormButtonController(Form form)
-        {
-            _form = form;
-        }
+        public FormButtonController(Form form) => _form = form;
 
         public static void ButtonColorToStandart(Button button)
         {
@@ -28,20 +25,14 @@ namespace SeaBattle
             shipButton.Font = new Font(shipButton.Font.Name, fontSize, fontStyle);
         }
 
-        public static void SetButtonColorToShipHit(ShipButton shipButton)
-        {
-            SetShipButtonColor(shipButton, ShipHit);
-        }
+        public static void SetButtonColorToShipHit(ShipButton shipButton) 
+            => SetShipButtonColor(shipButton, ShipHit);
 
-        public static void SetButtonColorToEnemyMarkedHit(ShipButton shipButton)
-        {
-            SetShipButtonColor(shipButton, EnemyMarkedHit);
-        }
+        public static void SetButtonColorToEnemyMarkedHit(ShipButton shipButton) 
+            => SetShipButtonColor(shipButton, EnemyMarkedHit);
 
-        public static void SetShipButtonColor(ShipButton shipButton, Color color)
-        {
-            shipButton.BackColor = color;
-        }
+        public static void SetShipButtonColor(ShipButton shipButton, Color color) 
+            => shipButton.BackColor = color;
 
         public static void RefreshShipButtonMarking(ShipButton shipButton, bool mark)
         {
@@ -50,6 +41,7 @@ namespace SeaBattle
                 ButtonColorToStandart(shipButton);
                 return;
             }
+
             if (shipButton.IsShot)
             {
                 Color shipButtonColor = shipButton.ShipFrom.IsDead ? 

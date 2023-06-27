@@ -76,6 +76,7 @@ namespace SeaBattle
                 Randomizer.GetRandomCoordinateAroundShip(out x, out y, _buttonsAround);
                 return;
             }
+
             if (!_shipHorizontalitySet) SetHorizontality(x, y);
             SetShiftedAttackingCoordinates(ref x, ref y);
         }
@@ -90,8 +91,10 @@ namespace SeaBattle
         private void SetShiftedAttackingCoordinates(ref int x, ref int y)
         {
             Player.ShiftCoordinates(_shipIsHorizontal, _changeAttackSide, ref x, ref y);
+
             bool needAttackSideChange = !Field.CoordinatesInside(x, y)
                 || ChangeDefinedAttackSide || _humanPlayerField[x, y].IsShot;
+
             if (needAttackSideChange)
             {
                 SwitchAttackSide(ref x, ref y);

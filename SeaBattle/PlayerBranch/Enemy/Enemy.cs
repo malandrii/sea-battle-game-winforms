@@ -49,6 +49,7 @@ namespace SeaBattle
         {
             _enemyAI.SetAttackCoordinates(ref _xToAttack, ref _yToAttack);
             ShipButton buttonToAttack = _humanPlayer.Field[_xToAttack, _yToAttack];
+
             if (buttonToAttack.IsShot)
             {
                 if (_enemyAI.HorizontalityDefined)
@@ -59,29 +60,30 @@ namespace SeaBattle
                     return;
                 }
             }
+
             Attack(buttonToAttack);
         }
 
         private void Attack(ShipButton buttonToAttack)
         {
             buttonToAttack.Shoot();
+
             if (MarkMoves) FormButtonController.SetButtonColorToEnemyMarkedHit(buttonToAttack);
-            if (buttonToAttack.IsShipPart)
-            {
+
+            if (buttonToAttack.IsShipPart) 
                 AttackShipPart(buttonToAttack);
-            }
-            else
-            {
+            else 
                 StopAttack();
-            }
         }
 
         private void AttackShipPart(ShipButton buttonToAttack)
         {
             if (_enemyAI.FoundHumanPlayerShip) _enemyAI.HorizontalityDefined = true;
             _enemyAI.FoundHumanPlayerShip = true;
+
             buttonToAttack.ShipFrom.TakeDamage();
             _humanPlayer.TakeDamage();
+
             if (buttonToAttack.ShipFrom.IsDead)
             {
                 buttonToAttack.ShipFrom.Death();
@@ -89,6 +91,7 @@ namespace SeaBattle
                 if (_humanPlayer.CheckDeath()) return;
             }
             else _enemyAI.SetButtonsAroundButtonToAttack(buttonToAttack);
+
             StartNewAttack();
         }
 
@@ -96,12 +99,11 @@ namespace SeaBattle
         {
             if (_enemyAI.HorizontalityDefined)
                 _enemyAI.ChangeDefinedAttackSide = true;
+
             _attackTimer.Stop();
         }
 
         private void Button_Click(object sender, EventArgs e)
-        {
-            _humanPlayer.Attack(sender);
-        }
+            => _humanPlayer.Attack(sender);
     }
 }

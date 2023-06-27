@@ -11,10 +11,7 @@ namespace SeaBattle
         public const int Size = 10;
         private readonly ShipButton[,] _shipButtons;
 
-        public Field()
-        {
-            _shipButtons = new ShipButton[Size, Size];
-        }
+        public Field() => _shipButtons = new ShipButton[Size, Size];
 
         public ShipButton this[int x, int y]
         {
@@ -33,25 +30,18 @@ namespace SeaBattle
             }
         }
 
-        public static explicit operator ShipButton[,](Field field)
-        {
-            return field._shipButtons;
-        }
+        public static explicit operator ShipButton[,](Field field) => field._shipButtons;
 
-        public static bool CoordinatesInside(int x, int y)
-        {
-            return CoordinateInside(x) && CoordinateInside(y);
-        }
+        public static bool CoordinatesInside(int x, int y) => CoordinateInside(x) && CoordinateInside(y);
 
-        public static bool CoordinateInside(int coordinate)
-        {
-            return coordinate >= StartingCoordinate && coordinate < Size;
-        }
+        public static bool CoordinateInside(int coordinate) 
+            => (coordinate >= StartingCoordinate && coordinate < Size);
 
         public void Declare(Form form, int markingOffset)
         {
             const int indent = 50;
             FormButtonController formButtonController = new FormButtonController(form);
+
             for (int y = 0; y < Size; y++)
             {
                 for (int x = 0; x < Size; x++)
@@ -68,18 +58,21 @@ namespace SeaBattle
             int buttonSize = FormButtonController.ButtonSize,
                 doubleButtonSize = buttonSize * 2,
                 coordinateOffset = buttonSize * coordinate;
+
             var letter = new Label
             {
                 Location = new Point(doubleButtonSize + offset + coordinateOffset, buttonSize),
                 Text = Convert.ToString(EnglishAlphabet[coordinate]),
                 AutoSize = true
             };
+
             var digit = new Label
             {
                 Location = new Point(buttonSize + offset, doubleButtonSize + coordinateOffset),
                 Text = Convert.ToString(coordinate + FieldController.NextIndex),
                 AutoSize = true
             };
+
             form.Controls.Add(digit);
             form.Controls.Add(letter);
         }

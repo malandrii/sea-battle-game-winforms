@@ -10,6 +10,7 @@ namespace SeaBattle
         private readonly PreGameController _preGameController;
         private readonly GameController _gameController;
         private readonly HumanPlayerShipController _humanPlayerShipController;
+        private readonly FormControlManager _formControlManager;
         private Button[] _chooseSizeButtons;
         private Label[] _chooseSizeLabels;
 
@@ -20,6 +21,7 @@ namespace SeaBattle
             _gameController = new GameController(this);
             _humanPlayerShipController = new HumanPlayerShipController(this);
             HumanPlayerStatus = new MainFormHumanPlayerStatus(this);
+            _formControlManager = new FormControlManager(this);
         }
 
         public MainFormHumanPlayerStatus HumanPlayerStatus { get; }
@@ -46,21 +48,17 @@ namespace SeaBattle
         {
             _chooseSizeButtons = new Button[GameController.ShipSizesAmount];
             _chooseSizeLabels = new Label[GameController.ShipSizesAmount];
+
             for (int shipSizeIndex = 0; shipSizeIndex < GameController.ShipSizesAmount; shipSizeIndex++)
             {
-                _chooseSizeButtons[shipSizeIndex] =
-                    (Button)Controls[GetControlText("button", shipSizeIndex + FieldController.NextIndex)];
-                _chooseSizeLabels[shipSizeIndex] =
-                    (Label)Controls[GetControlText("label", shipSizeIndex + FieldController.NextIndex)];
+                int controlIndex = shipSizeIndex + FieldController.NextIndex;
+                _chooseSizeButtons[shipSizeIndex] = _formControlManager.GetControlByIndex<Button>(controlIndex);
+                _chooseSizeLabels[shipSizeIndex] = _formControlManager.GetControlByIndex<Label>(controlIndex);
                 _chooseSizeButtons[shipSizeIndex].Click += new EventHandler(ButtonToChooseShipSize_Click);
+
                 ComputerMovesSpeedToolStripMenuItem.DropDownItems[shipSizeIndex].Click +=
                     new EventHandler(ToolStripItemToChooseComputerSpeed_Click);
             }
-        }
-
-        private string GetControlText(string controlName, int index)
-        {
-            return (controlName + (index) + "x").ToString();
         }
 
         public void SetButtonsEvents()
@@ -105,6 +103,7 @@ namespace SeaBattle
         {
             for (int i = 0; i < GameController.ShipSizesAmount; i++)
                 CheckComputerMovesSpeedToolStrip(i, check: false);
+
             CheckComputerMovesSpeedToolStrip(comboBoxEnemyMoveSpeed.SelectedIndex, check: true);
         }
 
@@ -119,8 +118,11 @@ namespace SeaBattle
             SetFocus();
             var senderShipButton = sender as ShipButton;
             if (!HumanPlayerShipController.ButtonIsShipPreviewPart(senderShipButton)) return;
-            ChangeShipsLeft((Button)Controls[GetControlText("button", _preGameController.ChosenShipSize)],
-                (Label)Controls[GetControlText("label", _preGameController.ChosenShipSize).ToString()]);
+
+            var selectedShipButton = _formControlManager.GetSelectedShipControl<Button>();
+            var selectedShipLabel = _formControlManager.GetSelectedShipControl<Label>();
+            ChangeShipsLeft(selectedShipButton, selectedShipLabel);
+
             _gameController.HumanPlayer.SetShip(senderShipButton);
             _preGameController.TryToChangeChosenShipSize();
         }
@@ -128,15 +130,11 @@ namespace SeaBattle
         private void ChangeShipsLeft(Button selectedButton, Label currentSizeShipsLeft)
         {
             const int progressBarIncrement = 10;
+
             if (progressBar.Value < ProgressBarMaximumValue - progressBarIncrement)
             {
                 progressBar.Value += progressBarIncrement;
-                currentSizeShipsLeft.Text =
-                    Convert.ToString(Convert.ToInt32(currentSizeShipsLeft.Text) - FieldController.NextIndex);
-                if (currentSizeShipsLeft.Text != Field.StartingCoordinate.ToString()) return;
-                selectedButton.Enabled = false;
-                FormButtonController.ButtonColorToStandart(selectedButton);
-                _preGameController.ShipHasBeenPlaced = true;
+                _preGameController.ChangeShipsLeftControls(selectedButton, currentSizeShipsLeft);
             }
             else UnableShipsArrangePanel();
         }
@@ -148,8 +146,10 @@ namespace SeaBattle
                 FormButtonController.ButtonColorToStandart(button);
                 button.Enabled = false;
             }
+
             foreach (Label label in _chooseSizeLabels)
                 label.Text = Field.StartingCoordinate.ToString();
+
             progressBar.Value = ProgressBarMaximumValue;
             SetShipArrangeButtonEnables(shipsPlaced: true);
             _gameController.HumanPlayer.Field.Unable();
@@ -178,7 +178,8 @@ namespace SeaBattle
         private void ButtonRotate_Click(object sender, EventArgs e)
         {
             _preGameController.RotateShipHorizontality();
-            labelShipPlacement.Text = MainFormHumanPlayerStatus.GetShipPositionPlacementLabel(_preGameController.ChosenShipIsHorizontal);
+            labelShipPlacement.Text = 
+                MainFormHumanPlayerStatus.GetShipPositionPlacementLabel(_preGameController.ChosenShipIsHorizontal);
         }
 
         private void ButtonGameStart_Click(object sender, EventArgs e)
@@ -186,13 +187,12 @@ namespace SeaBattle
             SetControlsVisibility(visible: false);
             labelStatus.Visible = true;
             labelEnemyField.Visible = true;
+
             _preGameController.StartGame(checkBoxEnemyRandomMoves.Checked);
         }
 
-        public void ShipButton_TextChanged(object sender, EventArgs e)
-        {
-            FormButtonController.SetShipButtonFontStyle(sender as ShipButton);
-        }
+        public void ShipButton_TextChanged(object sender, EventArgs e) 
+            => FormButtonController.SetShipButtonFontStyle(sender as ShipButton);
 
         public void SetLabelStatus(string status, Color color)
         {
@@ -204,18 +204,15 @@ namespace SeaBattle
         {
             for (int i = 0; i < GameController.ShipSizesAmount; i++)
                 ComputerMovesSpeedToolStripMenuItem.DropDownItems[i].Enabled = enable;
+
             GameRestartToolStripMenuItem.Enabled = enable;
         }
 
         public void SetLabelComputerMoveVisibility(bool visible)
-        {
-            labelComputerMove.Visible = visible;
-        }
+            => labelComputerMove.Visible = visible;
 
         private void LabelComputerMove_VisibleChanged(object sender, EventArgs e)
-        {
-            ComputerTurnLabelVisible = labelComputerMove.Visible;
-        }
+            => ComputerTurnLabelVisible = labelComputerMove.Visible;
 
         private void CheckBoxMarkEnemyMoves_CheckedChanged(object sender, EventArgs e)
         {
@@ -228,19 +225,14 @@ namespace SeaBattle
             MarkComputerMovesToolStripMenuItem.Checked = !MarkComputerMovesToolStripMenuItem.Checked;
             _gameController.RefreshEnemyMovesMarking();
             checkBoxMarkEnemyMoves.Checked = MarkComputerMovesToolStripMenuItem.Checked;
+
             foreach (ShipButton button in _gameController.HumanPlayer.Field)
                 FormButtonController.RefreshShipButtonMarking(button, mark: MarkComputerMovesToolStripMenuItem.Checked);
         }
 
-        public void SetFocus()
-        {
-            labelYourField.Focus();
-        }
+        public void SetFocus() => labelYourField.Focus();
 
-        public void SetRestartButtonVisibile()
-        {
-            buttonRestart.Visible = true;
-        }
+        public void SetRestartButtonVisibile() => buttonRestart.Visible = true;
 
         private void SetControlsVisibility(bool visible)
         {
@@ -250,7 +242,9 @@ namespace SeaBattle
                 label4x, labelPlaceShips, labelShipsPlaceLeft, progressBar,
                 buttonGameStart, labelComputerMovingSpeed,
                 comboBoxEnemyMoveSpeed, checkBoxMarkEnemyMoves, panel };
+
             Label[] labelsToSetOppositeVisibility = { labelStatus, labelEnemyField };
+
             foreach (Control control in controlsToSetVisibility) control.Visible = visible;
             foreach (Label label in labelsToSetOppositeVisibility) label.Visible = !visible;
         }
@@ -272,30 +266,26 @@ namespace SeaBattle
         private void SetStartingShipAmountControlSettings(int choosingSizeControlIndex)
         {
             _chooseSizeButtons[choosingSizeControlIndex].Enabled = true;
-            ((Label)Controls[GetControlText("label", choosingSizeControlIndex + FieldController.NextIndex)]).Text
-                = Convert.ToString(GameController.ShipSizesAmount - choosingSizeControlIndex);
-            Button choosingSizeButton = (Button)Controls[GetControlText("button", choosingSizeControlIndex + FieldController.NextIndex)];
+
+            int controlIndex = choosingSizeControlIndex + FieldController.NextIndex;
+
+            var choosingSizeLabel = _formControlManager.GetControlByIndex<Label>(controlIndex);
+            choosingSizeLabel.Text = Convert.ToString(GameController.ShipSizesAmount - choosingSizeControlIndex);
+
+            var choosingSizeButton = _formControlManager.GetControlByIndex<Button>(controlIndex);
             FormButtonController.ButtonColorToStandart(choosingSizeButton);
         }
 
         private void ButtonArrangeShipsRandomly_Click(object sender, EventArgs e)
-        {
-            _preGameController.ArrangeHumanPlayerShipsRandomly();
-        }
+            => _preGameController.ArrangeHumanPlayerShipsRandomly();
 
         private void ButtonRestart_Click(object sender, EventArgs e)
-        {
-            _gameController.RestartGame();
-        }
+            => _gameController.RestartGame();
 
         private void GameRestartToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _gameController.RestartGame();
-        }
+            => _gameController.RestartGame();
 
         private void ContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            labelPrompt.Visible = false;
-        }
+            => labelPrompt.Visible = false;
     }
 }
