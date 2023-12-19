@@ -34,8 +34,10 @@ namespace SeaBattle
 
         public static bool CoordinatesInside(int x, int y) => CoordinateInside(x) && CoordinateInside(y);
 
-        public static bool CoordinateInside(int coordinate) 
-            => (coordinate >= StartingCoordinate && coordinate < Size);
+        public static bool CoordinateInside(int coordinate)
+        {
+            return coordinate >= StartingCoordinate && coordinate < Size;
+        }
 
         public void Declare(Form form, int markingOffset)
         {

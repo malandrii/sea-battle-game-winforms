@@ -9,7 +9,9 @@ namespace SeaBattle
         public FormControlManager(MainForm mainForm) => _mainForm = mainForm;
 
         public T GetSelectedShipControl<T>() where T : Control
-            => GetControlByIndex<T>(_mainForm.PreGameController.ChosenShipSize);
+        {
+            return GetControlByIndex<T>(_mainForm.PreGameController.ChosenShipSize);
+        }
 
         public T GetControlByIndex<T>(int index) where T : Control
         {
@@ -18,7 +20,7 @@ namespace SeaBattle
 
         private static string GetControlKey(string controlName, int index)
         {
-            return (controlName + (index) + "x").ToString();
+            return (controlName + index + "x").ToString();
         }
     }
 }

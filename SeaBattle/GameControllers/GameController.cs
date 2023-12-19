@@ -19,7 +19,9 @@
         }
 
         public void RefreshEnemyMovesMarking()
-            => _enemy.MarkMoves = _mainForm.MarkComputerMovesToolStripMenuItemChecked;
+        {
+            _enemy.MarkMoves = _mainForm.MarkComputerMovesToolStripMenuItemChecked;
+        }
 
         public void FinishGame()
         {

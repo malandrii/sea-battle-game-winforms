@@ -12,6 +12,7 @@ namespace SeaBattle
         {
             Point point = new Point(x, y);
             int[] cartesianSet = { -1, 0, 1 };
+
             return cartesianSet
                 .SelectMany(dx => cartesianSet.Select(dy => new Point(point.X + dx, point.Y + dy)))
                 .Where(selectedPoint => !point.Equals(selectedPoint))
@@ -26,6 +27,7 @@ namespace SeaBattle
                      crossUp = new Point(0, 1),
                    crossLeft = new Point(-1, 0),
                    crossDown = new Point(0, -1);
+
             return new Point[crossCoordinatesCount] { crossRight, crossUp, crossLeft, crossDown };
         }
 
