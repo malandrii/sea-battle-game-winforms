@@ -22,17 +22,24 @@ namespace SeaBattle
         {
             int fontSize = shipButton.Text == "." ? 15 : 8;
             FontStyle fontStyle = shipButton.Text == "." ? FontStyle.Bold : FontStyle.Regular;
+
             shipButton.Font = new Font(shipButton.Font.Name, fontSize, fontStyle);
         }
 
-        public static void SetButtonColorToShipHit(ShipButton shipButton) 
-            => SetShipButtonColor(shipButton, ShipHit);
+        public static void SetButtonColorToShipHit(ShipButton shipButton)
+        {
+            SetShipButtonColor(shipButton, ShipHit);
+        }
 
-        public static void SetButtonColorToEnemyMarkedHit(ShipButton shipButton) 
-            => SetShipButtonColor(shipButton, EnemyMarkedHit);
+        public static void SetButtonColorToEnemyMarkedHit(ShipButton shipButton)
+        {
+            SetShipButtonColor(shipButton, EnemyMarkedHit);
+        }
 
-        public static void SetShipButtonColor(ShipButton shipButton, Color color) 
-            => shipButton.BackColor = color;
+        public static void SetShipButtonColor(ShipButton shipButton, Color color)
+        {
+            shipButton.BackColor = color;
+        }
 
         public static void RefreshShipButtonMarking(ShipButton shipButton, bool mark)
         {

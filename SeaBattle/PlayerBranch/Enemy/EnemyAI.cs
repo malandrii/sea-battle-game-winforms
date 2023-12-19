@@ -33,6 +33,7 @@ namespace SeaBattle
             ResetVariables();
             FoundHumanPlayerShip = true;
             _foundShipButton = button;
+
             _buttonsAround.AddRange(from Point neighbourPoint in FieldController.GetCrossCoordiantes()
                                     let xShifted = _foundShipButton.X + neighbourPoint.X
                                     let yShifted = _foundShipButton.Y + neighbourPoint.Y

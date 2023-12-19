@@ -25,11 +25,9 @@ namespace SeaBattle
             _mainForm.SetLabelStatus(StandartLabelStatusText, StandartLabelStatus);
         }
 
-        public void SetHitEnemyShipStatus()
-            => _mainForm.SetLabelStatus("Hit", Color.DarkRed);
+        public void SetHitEnemyShipStatus() => _mainForm.SetLabelStatus("Hit", Color.DarkRed);
 
-        public void SetDeadEnemyShipStatus()
-            => _mainForm.SetLabelStatus("Dead", Color.Red);
+        public void SetDeadEnemyShipStatus() => _mainForm.SetLabelStatus("Dead", Color.Red);
 
         public void SetFinishGameStatus(bool humanWon)
         {

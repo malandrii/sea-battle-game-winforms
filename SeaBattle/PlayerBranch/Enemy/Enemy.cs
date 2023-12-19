@@ -53,7 +53,9 @@ namespace SeaBattle
             if (buttonToAttack.IsShot)
             {
                 if (_enemyAI.HorizontalityDefined)
+                {
                     _enemyAI.ChangeDefinedAttackSide = true;
+                }
                 if (RandomMoves || !_enemyAI.FoundHumanPlayerShip)
                 {
                     ContinueAttack();
@@ -104,6 +106,8 @@ namespace SeaBattle
         }
 
         private void Button_Click(object sender, EventArgs e)
-            => _humanPlayer.Attack(sender);
+        {
+            _humanPlayer.Attack(sender);
+        }
     }
 }

@@ -191,8 +191,10 @@ namespace SeaBattle
             _preGameController.StartGame(checkBoxEnemyRandomMoves.Checked);
         }
 
-        public void ShipButton_TextChanged(object sender, EventArgs e) 
-            => FormButtonController.SetShipButtonFontStyle(sender as ShipButton);
+        public void ShipButton_TextChanged(object sender, EventArgs e)
+        {
+            FormButtonController.SetShipButtonFontStyle(sender as ShipButton);
+        }
 
         public void SetLabelStatus(string status, Color color)
         {
@@ -209,10 +211,14 @@ namespace SeaBattle
         }
 
         public void SetLabelComputerMoveVisibility(bool visible)
-            => labelComputerMove.Visible = visible;
+        {
+            labelComputerMove.Visible = visible;
+        }
 
         private void LabelComputerMove_VisibleChanged(object sender, EventArgs e)
-            => ComputerTurnLabelVisible = labelComputerMove.Visible;
+        {
+            ComputerTurnLabelVisible = labelComputerMove.Visible;
+        }
 
         private void CheckBoxMarkEnemyMoves_CheckedChanged(object sender, EventArgs e)
         {
@@ -277,15 +283,23 @@ namespace SeaBattle
         }
 
         private void ButtonArrangeShipsRandomly_Click(object sender, EventArgs e)
-            => _preGameController.ArrangeHumanPlayerShipsRandomly();
+        {
+            _preGameController.ArrangeHumanPlayerShipsRandomly();
+        }
 
         private void ButtonRestart_Click(object sender, EventArgs e)
-            => _gameController.RestartGame();
+        {
+            _gameController.RestartGame();
+        }
 
         private void GameRestartToolStripMenuItem_Click(object sender, EventArgs e)
-            => _gameController.RestartGame();
+        {
+            _gameController.RestartGame();
+        }
 
         private void ContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-            => labelPrompt.Visible = false;
+        {
+            labelPrompt.Visible = false;
+        }
     }
 }
