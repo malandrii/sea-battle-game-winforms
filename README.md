@@ -9,30 +9,30 @@ just click <a href="https://github.com/malandrii/sea-battle-game-winforms/releas
 ### 1. Place your ships
 > *Place ships panel* => *choose ship size* => *mouse cursor on the field*
 
-![image](https://user-images.githubusercontent.com/111363234/205208661-8c191fac-0f5f-4828-b15f-07611fa2db8e.png)
+![image](https://github.com/user-attachments/assets/e7eac021-077c-4310-a52e-724a25f59517)
 
 > *mouse left button*
 
-![image](https://user-images.githubusercontent.com/111363234/205208823-f3327c16-c121-4d5b-8182-6a796878feaf.png)
+![image](https://github.com/user-attachments/assets/fffe251c-c249-4dea-af9b-2dae4268b0cf)
 
 > Ships horizontality can be changed <br /> <br />
-![image](https://user-images.githubusercontent.com/111363234/205208967-d10b8f29-e66f-4c9a-8147-33f61f01f185.png) <br />
-![image](https://user-images.githubusercontent.com/111363234/205208984-6e86da1c-7458-46c1-91e2-e99007d69d18.png) <br />
+![image](https://github.com/user-attachments/assets/3cb9109d-efa9-4bdc-bddf-9934e0db9697) <br />
+![image](https://github.com/user-attachments/assets/1706d821-1818-41ec-b295-b3c3e1c5133e) <br />
 
 > Ships can be arranged randomly <br /> <br />
-![image](https://user-images.githubusercontent.com/111363234/205209269-c927bd74-653e-4f27-93c8-a8092d3621d5.png)
+![image](https://github.com/user-attachments/assets/a58e8b77-4171-46ef-bd2d-4a87c37ee831)
 
 ### 2. Start Game
 After you've placed all the ships choose the enemy settings and press "Start Game"
 
-![image](https://user-images.githubusercontent.com/111363234/205209496-fa32a483-32c4-4cb7-8076-79a4ef576701.png)
+![image](https://github.com/user-attachments/assets/96950755-84dd-453e-90a1-38d63dcde53a)
 
 ### 3. Your turns
 Press on the enemy field button. You and enemy go one by one. <br />
 If the text of the button is dot - this cell is clear <br />
 If cross - you hit the enemy ship
 
-![image](https://user-images.githubusercontent.com/111363234/205210176-bdb95f8f-42e8-4a2d-93dd-af9b8d8bfff8.png)
+![image](https://github.com/user-attachments/assets/d1a34138-4dab-4971-adec-48d148c0c4b3)
 
 Also status helps with that
 
@@ -42,19 +42,19 @@ As you hit an enemy ship - you continue your moves until you miss.
 
 As the enemy ship is dead - all the cells around gets covered
 
-![image](https://user-images.githubusercontent.com/111363234/205210360-96f9751d-58a8-4a10-b747-39ba5ceb3ed9.png)
+![image](https://github.com/user-attachments/assets/e0f3735b-d604-4504-9b04-8d872bb88c34)
 
 ![image](https://user-images.githubusercontent.com/111363234/205210376-eadcc339-4027-41f0-86ab-5496235c537f.png)
 
 ### 4. Enemy turns
 Meanwhile, enemy-bot is attacking our field
 
-![image](https://user-images.githubusercontent.com/111363234/205210557-3b03fdf9-acb7-4d98-900c-45030238bc0b.png)
+![image](https://github.com/user-attachments/assets/d1068a75-5edd-4686-b1be-fe636f8dcd45)
 
 ### 5. End of the Game
 Game stops as someone destroys all the enemy ships and you can see where they were located
 
-![image](https://user-images.githubusercontent.com/111363234/205210651-2c50fc15-1bff-4c64-b8bf-a57bfaf3fc66.png)
+![image](https://github.com/user-attachments/assets/7b907d50-1b71-42fa-ad0f-cc7727382491)
 
 
 
