@@ -2,6 +2,81 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<link href="css/gameStyles.css" rel="stylesheet" />
 
-Welcome to your new app.
+<div style="position:relative; width:@(Size * ButtonSize + MarkingOffset + "px");
+                              height:@(Size * ButtonSize + MarkingOffset + "px");">
+    @RenderLetterMarkings()
+    @RenderDigitMarkings()
+    @RenderPlayingField()
+</div>
+
+@code
+{
+    private int Size = 10;
+    private int ButtonSize = 28;
+    private int MarkingOffset = 25;
+    private int SpacingBetweenElements => ButtonSize + 5;
+    private const string EnglishAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    private string GetAlphabetChar(int index) => EnglishAlphabet[index].ToString();
+
+    private string GetLetterStyle(int index) =>
+        $"position:absolute; top:0; left:{(index + 1) * SpacingBetweenElements}px;";
+
+    private string GetDigitStyle(int index) =>
+        $"position:absolute; top:{(index + 1) * SpacingBetweenElements}px; left:0;";
+
+    private string GetButtonStyle(int x, int y) =>
+        $"position:absolute; " +
+        $"top:{y * SpacingBetweenElements + MarkingOffset}px; " +
+        $"left:{x * SpacingBetweenElements + MarkingOffset}px; " +
+        $"width:{ButtonSize}px;" +
+        $"height:{ButtonSize}px;";
+
+    private void OnButtonClick(int x, int y)
+    {
+        Console.WriteLine($"Button clicked at ({x}, {y})");
+    }
+
+    private RenderFragment RenderLetterMarkings() => builder =>
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            builder.OpenElement(0, "span");
+            builder.AddAttribute(1, "style", GetLetterStyle(i));
+            builder.AddContent(2, GetAlphabetChar(i));
+            builder.CloseElement();
+        }
+    };
+
+    private RenderFragment RenderDigitMarkings() => builder =>
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            builder.OpenElement(0, "span");
+            builder.AddAttribute(1, "style", GetDigitStyle(i));
+            builder.AddContent(2, (i + 1).ToString());
+            builder.CloseElement();
+        }
+    };
+
+    private RenderFragment RenderPlayingField() => builder =>
+    {
+        for (int y = 0; y < Size; y++)
+        {
+            for (int x = 0; x < Size; x++)
+            {
+                builder.OpenElement(0, "button");
+                builder.AddAttribute(1, "class", "game-button"); 
+                builder.AddAttribute(2, "style", GetButtonStyle(x, y));
+                builder.AddAttribute(3, "onclick", EventCallback.Factory.Create(this, () => OnButtonClick(x, y)));
+                builder.AddContent(4, $"{x},{y}");
+                builder.CloseElement();
+            }
+        }
+    };
+
+}
+
+
