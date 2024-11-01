@@ -1,0 +1,36 @@
+﻿.game-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    background-color: #3498db;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.2s, transform 0.2s;
+    cursor: pointer;
+}
+
+    .game-button:hover {
+        background-color: #2980b9;
+        transform: scale(1.05);
+        box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .game-button:active {
+        background-color: #1c638a;
+        transform: scale(0.95);
+    }
+
+    .game-button.hit {
+        background-color: #E74C3C;
+        pointer-events: none;
+        color: white;
+    }
+
+    .game-button.miss {
+        background-color: #95A5A6;
+    }

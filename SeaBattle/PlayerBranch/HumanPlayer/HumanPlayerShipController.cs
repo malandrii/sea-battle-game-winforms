@@ -49,10 +49,14 @@ namespace SeaBattle
         }
 
         private static void ColorShipPartPreview(ShipButton shipPart)
-            => FormButtonController.SetShipButtonColor(shipPart, HumanPlayerShipPreview);
+        {
+            FormButtonController.SetShipButtonColor(shipPart, HumanPlayerShipPreview);
+        }
 
         public static void ColorShipPart(ShipButton shipPart)
-            => FormButtonController.SetShipButtonColor(shipPart, HumanPlayerShip);
+        {
+            FormButtonController.SetShipButtonColor(shipPart, HumanPlayerShip);
+        }
 
         public static void ColorShip(Ship ship)
         {
@@ -61,6 +65,8 @@ namespace SeaBattle
         }
 
         public static bool ButtonIsShipPreviewPart(ShipButton chosenButton)
-            => chosenButton.BackColor == HumanPlayerShipPreview;
+        {
+            return chosenButton.BackColor == HumanPlayerShipPreview;
+        }
     }
 }
