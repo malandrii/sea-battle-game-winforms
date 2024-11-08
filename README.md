@@ -55,8 +55,26 @@ Meanwhile, enemy-bot is attacking our field!
 
 ![image](https://github.com/user-attachments/assets/7b907d50-1b71-42fa-ad0f-cc7727382491)
 
-# Enemy attack algorithm
+# Enemy computer attack algorithm 
+1. ![image](https://github.com/user-attachments/assets/f1628e26-42fd-4643-8133-54ed4828925f) ->
+![image](https://github.com/user-attachments/assets/c5bf72c4-379f-42f3-8a61-30afe83ea920)
+<br/> <br />
+2. After finding the first piece next move is going to be random around the current piece (1 to 4 in this case) until it hits next time. <br/>
+![image](https://github.com/user-attachments/assets/0042e17a-cb78-4c13-aa8e-792cb8239360) <br />
+↓
+<br /> ![image](https://github.com/user-attachments/assets/b3f03a89-0550-4e68-98cb-96783be61be3)
+<br /> <br />
+3. When it gets to the edge it checks if the edge's Y-axis coordinate is the same the original "hit" piece to determine whether the ship is horizontal.
+<br /> <br />
+![image](https://github.com/user-attachments/assets/6737f67f-928a-4445-ba7d-a3fe1d896752)
+<br /> <br />
+4. Now it goes back to the original ship piece shot and moves the opposite direction (up/down or left/right depending on the condition if the ship is horizontal, which it determined last step).
+<br /> <br /> ![image](https://github.com/user-attachments/assets/ae09fe2e-be8a-497d-a09e-0c2a957b908e)
 
-![EnemyAttackTransparentDarkShadow](https://user-images.githubusercontent.com/111363234/205208423-ea1800c2-4437-42e5-936c-216f3fc9a110.png) <br />
+
+
+
+
+ <br />
 * Enemy algorithm works the same with any ship size and it also understands if the cell was already shot and attacks the opposite way. <br />
-* This algorithm is the most effective way to play "Sea Battle" and usually people use the same strategy. <br />
+* This algorithm is the most effective way to play "Sea Battle" and usually people use the same strategy. <br /> <br />
